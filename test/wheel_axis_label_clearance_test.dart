@@ -63,6 +63,10 @@ import 'package:yahwehs_sword/pages/radial_chronology_page.dart'
         yearLabel;
 import 'package:yahwehs_sword/utils/radial_chronology_layout.dart';
 import 'package:yahwehs_sword/utils/wheel_search.dart' show parseWheelYears;
+import 'package:yahwehs_sword/utils/wheel_default_streams.dart'
+    show bandsFractionFor, rimFractionFor;
+import 'package:yahwehs_sword/utils/wheel_view_layout.dart'
+    show placeWheelAxisLabel;
 
 /// The wheel paints with no family of its own, so Latin resolves to
 /// Roboto and Han to the bundled subset.
@@ -71,7 +75,15 @@ const _fallback = ['NotoSansSC-Sub'];
 
 // Mirrors of the page's private geometry. Kept literal on purpose: a
 // test that imported them would agree with the page by construction.
-const _hubToBands = 0.285;
+//
+// EXCEPT THE RIM, since 2026-09-21. 0.445 is the rim from before
+// 2026-09-15 — `wheel_default_streams.dart` calls it 「the old 0.445
+// rim」 and explains why it went — and `_cell` measured the scale
+// against it for a week after the page stopped drawing there. `_cell`
+// now asks `rimFractionFor` / `bandsFractionFor`, the page's own
+// functions of the canvas side, because a literal cannot vary with the
+// side and the real fractions do. The two probes below that ask about
+// the old arithmetic by name keep the old literal.
 const _bandsToRim = 0.445;
 const _labelPx = 10.5;
 const _endPx = 11.0;
@@ -197,14 +209,14 @@ typedef _Cell = ({
   Offset centre,
   double rRim,
   double side,
-  List<({List<Offset> box, String text, int year, bool onRing})> axis,
+  List<({List<Offset> box, String text, int year, bool onRing, double angle})> axis,
   List<({List<Offset> box, String text})> events,
 });
 
 _Cell _cell(
     WheelHistoryData data, String locale, double side, double zoom) {
-  final rBands = side * _hubToBands;
-  final rRim = side * _bandsToRim;
+  final rBands = side * bandsFractionFor(side);
+  final rRim = side * rimFractionFor(side);
   final c = Offset(side / 2, side / 2);
   final titleSize = _labelPx / math.sqrt(zoom);
   final endSize = _endPx / math.sqrt(zoom);
@@ -245,7 +257,7 @@ _Cell _cell(
     ));
   }
 
-  final axis = <({List<Offset> box, String text, int year, bool onRing})>[];
+  final axis = <({List<Offset> box, String text, int year, bool onRing, double angle})>[];
   for (final l in planAxisLabels(
     minYear: kMinYear,
     maxYear: kMaxYear,
@@ -267,17 +279,34 @@ _Cell _cell(
           tp.width,
           tp.height);
     } else {
-      final r = axialLabelRadius(
+      // THE PAGE'S OWN PLACEMENT, since 2026-09-21. This branch used to
+      // call `axialLabelRadius`, which the page stopped calling when the
+      // labels went upright (`placeWheelAxisLabel`, 2026-09-15) — so it
+      // went on measuring a rule nothing drew. It held only while both
+      // range ends sat near the top, 53° and 37° off level, which is
+      // what `axialLabelRadius`'s own doc says it relies on. Year 0 now
+      // sits at six o'clock (`startRad`), the gap wedge has turned to
+      // the upper left, and 主后2026 points about 20° off due left —
+      // where that doc itself says a level label cannot fit outside.
+      // `placeWheelAxisLabel` steps such a label inward; measuring
+      // anything else here would fail a wheel nobody sees.
+      final placed = placeWheelAxisLabel(
         angle: l.angle,
-        rRim: rRim,
         width: tp.width,
         height: tp.height,
+        rimRadius: rRim,
         clearance: kAxisLabelClearance,
+        onRing: false,
+        canvasHalf: side / 2,
       );
-      box = _axisBox(c + Offset(math.cos(l.angle), math.sin(l.angle)) * r,
-          tp.width, tp.height);
+      box = _axisBox(c + placed.centre, tp.width, tp.height);
     }
-    axis.add((box: box, text: l.text, year: l.year, onRing: l.onRing));
+    axis.add((
+        box: box,
+        text: l.text,
+        year: l.year,
+        onRing: l.onRing,
+        angle: l.angle));
   }
 
   return (centre: c, rRim: rRim, side: side, axis: axis, events: events);
@@ -454,10 +483,32 @@ void main() {
           final cell = _cell(data, locale, side, zoom);
           for (final a in cell.axis) {
             checked++;
+            // THE POLICY, NOT THE OLD ABSOLUTE. 2026-09-21. Since
+            // `placeWheelAxisLabel` went upright (2026-09-15) a label
+            // with no room outside the rim steps just inside it, level
+            // and on a plate — its own doc: 「OUTSIDE WHEN THERE IS
+            // ROOM, JUST INSIDE WHEN THERE IS NOT」. This file measured
+            // the rule before that and so never saw the step.
+            //
+            // It sees it now, because year 0 went to six o'clock and the
+            // closing end turned to point nearly due left: measured the
+            // same day, seven cells step in, every one a range end at the
+            // 700 px pane — 主后2026 at 0.8x and 1.0x in both Chinese
+            // scripts, 主前4200 and AD 2026 at 0.8x. What must still hold
+            // is that nothing steps in WITHOUT being forced to: the
+            // outside placement would have left the square.
+            final tp = _tp(a.text, a.onRing ? _labelPx / math.sqrt(zoom)
+                : _endPx / math.sqrt(zoom));
+            final angle = a.angle;
+            final reach = (tp.width / 2) * math.cos(angle).abs() +
+                (tp.height / 2) * math.sin(angle).abs();
+            final forced =
+                cell.rRim + kAxisLabelClearance + 2 * reach > side / 2;
+            if (forced) continue;
             expect(_nearestToCentre(cell.centre, a.box),
                 greaterThanOrEqualTo(cell.rRim + kAxisLabelClearance - 0.05),
                 reason: '$locale ${side.toInt()}px ${zoom}x: "${a.text}" '
-                    'reaches inside the rim');
+                    'reaches inside the rim with room to spare outside');
           }
         }
       }

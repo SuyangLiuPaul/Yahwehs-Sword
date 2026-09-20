@@ -164,8 +164,15 @@ const String kWheelUrlPath = '/wheel';
 // and states a year nobody claims. -4200 is round, so the century loop
 // and the %500 label rule need no change, and it leaves 86 years of
 // room before Adam. The cost is 3.2% of angular resolution everywhere.
-const int kMinYear = -4200;
-const int kMaxYear = 2026;
+//
+// THE NUMBERS THEMSELVES MOVED TO `radial_chronology_layout.dart` on
+// 2026-09-21, and these two are aliases now. `startRad` is derived from
+// them — it is chosen so that year 0 lands at six o'clock — so a layout
+// file that only imagined it knew the range would put the BC|AD
+// boundary somewhere else the day this one changed. The argument for
+// the two values stays here, where it has always been.
+const int kMinYear = kAxisMinYear;
+const int kMaxYear = kAxisMaxYear;
 
 /// How far in the wheel will go.
 ///
@@ -1758,7 +1765,7 @@ class _RadialChronologyPageState extends State<RadialChronologyPage>
     }
     if (a - startRad > sweepRad) return null;
     final t = (a - startRad) / sweepRad;
-    return (kMinYear + t * (kMaxYear - kMinYear)).round();
+    return yearForFraction(t, kMinYear, kMaxYear);
   }
 
   /// Put the cursor on a year without moving the view. Ported from the
@@ -5350,6 +5357,7 @@ class _WorldWheelPainter extends CustomPainter {
     _paintRim(canvas, c, rBands, rRim);
     _paintHub(canvas, c, rHub);
     _paintAxisEnds(canvas, c, rHub, rRim);
+    _paintEraBoundary(canvas, c, rHub, rRim);
     WheelRenderStats.labelsDrawn = _inked.length;
     WheelRenderStats.noteFrameKinds(_drawn);
     WheelRenderStats.noteRecordNameBoxes(nameBoxes);
@@ -5416,13 +5424,13 @@ class _WorldWheelPainter extends CustomPainter {
   List<AxisLabel> _axisLabels(double rRim, double halfSide) =>
       retainSeparatedWheelAxisLabels(
           canvasBounds: Rect.fromLTRB(-halfSide, -halfSide, halfSide, halfSide),
-          labels: planAxisLabels(
+          labels: withoutEraBoundaryRingLabel(planAxisLabels(
             minYear: kMinYear,
             maxYear: kMaxYear,
             tickLabel: (y) => centuryTickLabel(y, locale),
             endLabel: (y) => yearLabel(y, locale),
             endSwing: kAxisEndSwing,
-          ),
+          )),
           gap: 4 / zoom,
           maxOnRing: axisLabelBudget(halfSide * 2),
           boundsOf: (label) {
@@ -6542,9 +6550,95 @@ class _WorldWheelPainter extends CustomPainter {
         endpointGap: 4 / zoom,
         canvasHalf: math.min(c.dx, c.dy),
       );
-      tp.paint(
-          canvas, c + placement.centre - Offset(tp.width / 2, tp.height / 2));
+      // A plate when the word has stepped inside the rim, on the same
+      // terms `_ringLabel` gives the century ticks one. The ends never
+      // needed it while they sat near the top, 53° and 37° off level;
+      // since year 0 went to six o'clock (`startRad`) the closing end
+      // points about 20° off due left, and on the 700 px pane a level
+      // 主后2026 has no room outside and lands on the bands.
+      final at = c + placement.centre;
+      if (placement.centre.distance < rRim) {
+        canvas.drawRRect(
+            RRect.fromRectAndRadius(
+                Rect.fromCenter(
+                    center: at,
+                    width: tp.width + 6 / zoom,
+                    height: tp.height + 1 / zoom),
+                Radius.circular(WbMetrics.radiusControl / zoom)),
+            Paint()..color = wb.paneBg.withValues(alpha: 0.86));
+      }
+      tp.paint(canvas, at - Offset(tp.width / 2, tp.height / 2));
     }
+  }
+
+  /// The BC|AD boundary, drawn as a mark of its own.
+  ///
+  /// 2026-09-21, 「sword wheel 真好6个字 一半的位置应该是0年 现在好像在
+  /// 7-8个字位置，并且要highlight出来」. [eraFraction] answered the first
+  /// half by putting year 0 at six o'clock; this is the second half,
+  /// which is that the reader has to be able to SEE it there.
+  ///
+  /// NOT a century tick with a special word. `_paintCenturies` strokes
+  /// 62 ticks in `wb.border` at alpha 0.35, and `_axisLabels` thins
+  /// their words down to `axisLabelBudget` — three on a 390 dp phone,
+  /// picked by even spacing with no exemption for year 0 — so the one
+  /// tick the whole axis is now built around was the one most often
+  /// printing nothing at all. Drawn here it is outside that budget and
+  /// cannot be thinned away; `_axisLabels` drops its ring copy so the
+  /// word is not set twice and the freed slot goes to another century.
+  ///
+  /// Two strokes, not one. There are up to 22 differently coloured
+  /// bands under this line, and a single flat rule vanishes into some
+  /// of them — the same reason `_ClaimOutlinePainter` draws a halo.
+  void _paintEraBoundary(Canvas canvas, Offset c, double rHub, double rRim) {
+    final a = angleForSpan(0, kMinYear, kMaxYear);
+    final dir = Offset(math.cos(a), math.sin(a));
+    final from = c + dir * rHub;
+    final to = c + dir * (rRim + kRimOuterRing);
+    canvas.drawLine(
+        from,
+        to,
+        Paint()
+          ..color = wb.paneBg.withValues(alpha: 0.75)
+          ..strokeWidth = 3.4 / zoom);
+    canvas.drawLine(
+        from,
+        to,
+        Paint()
+          ..color = wb.text
+          ..strokeWidth = 1.4 / zoom);
+    // The word is level and on a plate, and it goes where every other
+    // scale word goes: `placeWheelAxisLabel`, outside the rim when there
+    // is room and just inside it when there is not. Placed by hand at a
+    // fixed distance past the rim, it ran off the bottom of the canvas
+    // square on a 390 dp phone and the control row cut it in half.
+    final size = endFont / _labelScale(zoom);
+    final tp = _painter(centuryTickLabel(0, locale), wb.text, size);
+    // Measured as the PLATE, not the text, so it is the plate that is
+    // kept inside the square.
+    final plateW = tp.width + size * 0.7;
+    final plateH = tp.height * 1.3;
+    final placement = placeWheelAxisLabel(
+      angle: a,
+      width: plateW,
+      height: plateH,
+      rimRadius: rRim,
+      clearance: kAxisLabelClearance,
+      onRing: true,
+      canvasHalf: math.min(c.dx, c.dy),
+    );
+    final box = Rect.fromCenter(
+        center: c + placement.centre, width: plateW, height: plateH);
+    final corner = Radius.circular(WbMetrics.radiusControl / zoom);
+    canvas.drawRRect(RRect.fromRectAndRadius(box, corner),
+        Paint()..color = wb.paneBg.withValues(alpha: 0.92));
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(box, corner),
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1 / zoom
+          ..color = wb.border);
+    tp.paint(canvas, box.center - Offset(tp.width / 2, tp.height / 2));
   }
 
   /// A laid-out run. Everything outside the hub now needs the SIZE of

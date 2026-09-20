@@ -315,14 +315,31 @@ WheelAxisLabelPlacement placeWheelAxisLabel({
     // labels meet inside the gap wedge. Give each horizontal box its
     // own side of that wedge's centre line, moving only text and only
     // as far as its measured width needs. Their year rays stay fixed.
+    //
+    // ACROSS THE WEDGE'S CENTRE LINE, NOT ALONG X. 2026-09-21. This
+    // used to compare x against the gap's rim point, which is the same
+    // thing only while the wedge sits at the top. `startRad` is now
+    // derived from year 0 (「一半的位置应该是0年」), the wedge rides at
+    // the upper left, and an x-only push sent both ends the same way —
+    // off the canvas on a 700 px wheel, into each other on a 131 px one.
+    //
+    // [n] is the unit normal of the line from the centre through the
+    // middle of the wedge, so `n · p` is a point's signed distance from
+    // it, positive on the opening side — the same sign `sin(angle -
+    // gapAngle)` has always used to tell the two ends apart. A box's
+    // reach across that line is its half-width and half-height projected
+    // onto [n]. With the wedge at the top, [n] is +x and this is the old
+    // rule exactly.
     final gapAngle = startRad + (sweepRad + 2 * math.pi) / 2;
-    final gapX = math.cos(gapAngle) * rimRadius;
+    final n = Offset(-math.sin(gapAngle), math.cos(gapAngle));
     final opening = math.sin(angle - gapAngle) > 0;
-    centre = Offset(
-        opening
-            ? math.max(centre.dx, gapX + width / 2 + endpointGap / 2)
-            : math.min(centre.dx, gapX - width / 2 - endpointGap / 2),
-        centre.dy);
+    final across = (width / 2) * n.dx.abs() + (height / 2) * n.dy.abs();
+    final need = across + endpointGap / 2;
+    final at = n.dx * centre.dx + n.dy * centre.dy;
+    final shortfall = opening ? need - at : -need - at;
+    if (opening ? shortfall > 0 : shortfall < 0) {
+      centre += n * shortfall;
+    }
   }
   final halfWidth =
       (width * math.cos(rotation).abs() + height * math.sin(rotation).abs()) /

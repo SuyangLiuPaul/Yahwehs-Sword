@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:yahwehs_sword/utils/radial_chronology_layout.dart'
-    show ringRadii, startRad, sweepRad;
+    show ringRadii, startRad, sweepRad, yearForFraction;
 import 'package:yahwehs_sword/utils/wheel_stack_layout.dart';
 
 /// The existing wheel owns ring order and radii. Depth changes only the
@@ -383,7 +383,6 @@ int? chronologyDepthYearAt({
       (math.atan2(ground.dy, ground.dx) - yaw - startRad) % (2 * math.pi);
   if (angle > 2 * math.pi - 1e-10) angle = 0;
   if (angle > sweepRad + 1e-10) return null;
-  return (startYear + angle / sweepRad * (endYear - startYear))
-      .round()
+  return yearForFraction(angle / sweepRad, startYear, endYear)
       .clamp(startYear, endYear);
 }

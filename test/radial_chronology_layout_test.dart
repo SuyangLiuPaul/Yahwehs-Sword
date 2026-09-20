@@ -46,6 +46,62 @@ void main() {
       final a = angleForSpan(1, -4000, 2026);
       expect(a, greaterThan(startRad + sweepRad / 2));
     });
+
+    // 2026-09-21, 「sword wheel 真好6个字 一半的位置应该是0年 现在好像在
+    // 7-8个字位置」. THE LOAD-BEARING TEST for that ruling, and the one
+    // that fails if anyone moves `kAxisMinYear`, `kAxisMaxYear` or
+    // `sweepRad` without moving `startRad` with them — which is exactly
+    // how the boundary drifted to 7.2 o'clock in the first place.
+    //
+    // Clock position, not radians, because that is the unit the report
+    // came in: canvas 0 rad points at three o'clock, and a clockwise
+    // quarter turn is three hours.
+    test('year 0 sits at six o\'clock on the wheel\'s own axis', () {
+      final a = angleForSpan(0, kAxisMinYear, kAxisMaxYear);
+      final clock = (3 + a / (2 * math.pi) * 12) % 12;
+      expect(clock, closeTo(6, 1e-9));
+    });
+
+    test('the ends are still the ends and the years still run forwards', () {
+      expect(angleForSpan(kAxisMinYear, kAxisMinYear, kAxisMaxYear),
+          closeTo(startRad, 1e-9));
+      expect(angleForSpan(kAxisMaxYear, kAxisMinYear, kAxisMaxYear),
+          closeTo(startRad + sweepRad, 1e-9));
+      final years = [-4200, -3000, -1000, -1, 0, 1, 500, 1500, 2026];
+      for (var i = 1; i < years.length; i++) {
+        expect(angleForSpan(years[i], kAxisMinYear, kAxisMaxYear),
+            greaterThan(angleForSpan(years[i - 1], kAxisMinYear, kAxisMaxYear)),
+            reason: '${years[i]} must fall after ${years[i - 1]}');
+      }
+    });
+
+    // One degree is the same number of years everywhere. Rotating the
+    // axis was chosen over splitting it at year 0 precisely to keep
+    // this: a two-rate axis would have squeezed the crowded BC end.
+    test('the axis is evenly scaled, not split at the boundary', () {
+      final perYear = (angleForSpan(1, kAxisMinYear, kAxisMaxYear) -
+              angleForSpan(0, kAxisMinYear, kAxisMaxYear)) /
+          1;
+      for (final pair in [(-4200, -4199), (-587, -586), (1516, 1517)]) {
+        expect(
+            angleForSpan(pair.$2, kAxisMinYear, kAxisMaxYear) -
+                angleForSpan(pair.$1, kAxisMinYear, kAxisMaxYear),
+            closeTo(perYear, 1e-12),
+            reason: 'a year is a year at ${pair.$1} too');
+      }
+    });
+
+    test('the hit test inverts the mapping', () {
+      for (final y in [-4200, -4114, -2000, -586, 0, 1, 70, 1517, 2026]) {
+        final t = fractionForSpan(y, kAxisMinYear, kAxisMaxYear);
+        expect(yearForFraction(t, kAxisMinYear, kAxisMaxYear), y,
+            reason: 'year $y did not survive the round trip');
+      }
+      // The depth view rebuilds its axis from the reader's period
+      // filter, so both come through here with other ranges too.
+      expect(yearForFraction(0.5, 100, 1500), 800);
+      expect(fractionForSpan(500, 0, 1000), closeTo(0.5, 1e-9));
+    });
   });
 
   group('stackRadialLabels', () {

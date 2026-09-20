@@ -48,8 +48,39 @@ import 'package:yahwehs_sword/utils/related_verses.dart' show isCjkChar;
 /// How far round the wheel the axis runs. The remaining 40° is the gap.
 const double sweepRad = 320 * math.pi / 180;
 
-/// Twelve o'clock in canvas angles.
-const double startRad = -math.pi / 2;
+/// The axis's year range.
+///
+/// It lives here because [startRad] is DERIVED from it — move these and
+/// the BC|AD boundary slides off the bottom of the dial. The page keeps
+/// the argument for the two numbers (`kMinYear` / `kMaxYear`, with the
+/// creation anchor beside them) and now aliases these rather than
+/// stating them a second time.
+const int kAxisMinYear = -4200;
+const int kAxisMaxYear = 2026;
+
+/// Where the axis begins, in canvas angles.
+///
+/// SIX O'CLOCK IS YEAR 0, and this constant is the whole of what buys
+/// it. 2026-09-21, 「sword wheel 真好6个字 一半的位置应该是0年 现在好像
+/// 在7-8个字位置」 — and the reading was exact: on a linear -4200..2026
+/// axis starting at twelve o'clock, year 0 fell at 4200/6226 of a 320°
+/// sweep, which is 215.9°, which is 7.2 o'clock.
+///
+/// So the axis starts wherever it must for the boundary to land at the
+/// bottom: six o'clock, less however far round year 0 sits. Today that
+/// is 10:48, and the gap wedge rides round with it to the upper left.
+///
+/// THE ALTERNATIVE WAS MEASURED AND REJECTED. Giving BC the first half
+/// of the sweep and AD the rest puts year 0 at the bottom too, and it
+/// makes the two eras look equal, which is the tidier picture. It also
+/// squeezes every BC bearing by 17%, and the wheel's dense end IS the
+/// BC end: it cost seven of the twenty-five Genesis lives their name at
+/// 700 and 900 px, took the spokes still waiting for a name at 1.5x
+/// from two to six, and dropped a verse off the rim. Rotating costs
+/// nothing at all — every arc keeps the exact angle it had, and only
+/// the whole picture turns.
+const double startRad = math.pi / 2 -
+    (-kAxisMinYear / (kAxisMaxYear - kAxisMinYear)) * sweepRad;
 
 /// Centre-to-centre spacing of the rings, which is what a label has to
 /// stay inside to keep clear of the neighbouring stream — the band
@@ -183,6 +214,28 @@ int streamTierCount({
   );
 }
 
+/// Where [year] sits along an axis running [minYear]..[maxYear], as a
+/// fraction of the sweep.
+///
+/// LINEAR, end to end, and it stays that way. Two events in the same
+/// year sit at the same fraction, later years sit further round, and
+/// one degree is the same number of years everywhere on the dial — the
+/// last of those is what lets a tolerance be quoted in years at all
+/// (`packIntoRings`' 0.02 rad, the declutter's `minGap`).
+double fractionForSpan(int year, int minYear, int maxYear) =>
+    maxYear <= minYear
+        ? 0
+        : ((year - minYear) / (maxYear - minYear)).clamp(0.0, 1.0);
+
+/// The year at [t] of the way along an axis running [minYear]..[maxYear].
+///
+/// The inverse of [fractionForSpan], and the only one: every hit test on
+/// this wheel goes through here, so the year under a finger and the year
+/// the spoke was drawn for cannot drift apart.
+int yearForFraction(double t, int minYear, int maxYear) => maxYear <= minYear
+    ? minYear
+    : (minYear + t.clamp(0.0, 1.0) * (maxYear - minYear)).round();
+
 /// The angle for [year] on an axis running [minYear]..[maxYear].
 ///
 /// THE ONLY YEAR→ANGLE FUNCTION ON THIS WHEEL, and that is the whole
@@ -193,12 +246,8 @@ int streamTierCount({
 /// derived creation anchor and then calls THIS — so a life and an event
 /// in the same year are at the same angle, which is the claim the chart
 /// is making.
-double angleForSpan(int year, int minYear, int maxYear) {
-  final span = maxYear - minYear;
-  if (span <= 0) return startRad;
-  final t = ((year - minYear) / span).clamp(0.0, 1.0);
-  return startRad + t * sweepRad;
-}
+double angleForSpan(int year, int minYear, int maxYear) =>
+    startRad + fractionForSpan(year, minYear, maxYear) * sweepRad;
 
 /// Where one event's radial label starts and ends.
 ///
@@ -851,6 +900,21 @@ List<AxisLabel> planAxisLabels({
   }
   return out;
 }
+
+/// [labels] without the ring copy of the BC|AD boundary's word.
+///
+/// The boundary is drawn as its own mark now (`_paintEraBoundary`), on
+/// a plate, outside `axisLabelBudget`. Left in this list as well it
+/// would be set twice AND would spend one of the three ring slots a
+/// 390 dp phone has — which is how the one tick the axis is built
+/// around used to end up unlabelled on exactly the smallest screens.
+///
+/// Its TICK LINE is untouched; `_paintCenturies` still strokes it.
+List<AxisLabel> withoutEraBoundaryRingLabel(List<AxisLabel> labels) =>
+    [
+      for (final label in labels)
+        if (!(label.onRing && label.year == 0)) label,
+    ];
 
 // ── the arc labels, the last family no test could read ───────────────
 //
