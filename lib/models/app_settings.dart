@@ -92,6 +92,16 @@ const _kParagraphMode = 'paragraphMode';
 // 2026-08 (ported from YsWords v1.3.156): "护眼" paper reading theme —
 // scoped to the reading pane only, not a global theme swap.
 const _kReadingPaperTheme = 'readingPaperTheme';
+/// How long the splash holds, in seconds: the default and the range the
+/// Settings control offers. Ported from YsWords the same day and for the
+/// same reason — a fixed 3 s meant the opening verse was gone before it
+/// had been read (「都没有看清楚就进去了」). 3 s stays reachable as the
+/// fastest setting.
+const int kSplashSecondsDefault = 10;
+const int kSplashSecondsMin = 2;
+const int kSplashSecondsMax = 30;
+
+const _kSplashSeconds = 'splashSeconds';
 const _kMenuScale = 'menuScale';
 // 2026-05-08 (v1.1.1): which card / tile material to render across
 // the app's framing surfaces. See `lib/models/app_style_preset.dart`
@@ -353,6 +363,7 @@ class AppSettings extends ChangeNotifier {
   bool _paragraphMode = true;
   bool _readingPaperTheme = false;
   double _menuScale = 1.0;
+  int _splashSeconds = kSplashSecondsDefault;
   // 2026-05-08 (v1.1.1): card / tile material; classic by default.
   CardMaterial _cardMaterial = CardMaterial.classic;
 
@@ -450,6 +461,10 @@ class AppSettings extends ChangeNotifier {
   bool get paragraphMode => _paragraphMode;
   bool get readingPaperTheme => _readingPaperTheme;
   double get menuScale => _menuScale;
+
+  /// Seconds the splash stays up once the verse has resolved. The
+  /// button on the splash leaves sooner whenever the reader likes.
+  int get splashSeconds => _splashSeconds;
   CardMaterial get cardMaterial => _cardMaterial;
   String get booksViewMode => _booksViewMode;
   bool get boldVerseText => _boldVerseText;
@@ -1026,6 +1041,15 @@ class AppSettings extends ChangeNotifier {
     await prefs.setBool(_kShowBookIntro, enabled);
   }
 
+  Future<void> setSplashSeconds(int seconds) async {
+    final clamped = seconds.clamp(kSplashSecondsMin, kSplashSecondsMax);
+    if (_splashSeconds == clamped) return;
+    _splashSeconds = clamped;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_kSplashSeconds, clamped);
+  }
+
   Future<void> setMenuScale(double scale) async {
     final clamped = scale.clamp(kMenuScaleMin, kMenuScaleMax).toDouble();
     if (_menuScale == clamped) return;
@@ -1069,6 +1093,7 @@ class AppSettings extends ChangeNotifier {
     _paragraphMode = true;
     _readingPaperTheme = false;
     _menuScale = 1.0;
+    _splashSeconds = kSplashSecondsDefault;
     _cardMaterial = CardMaterial.classic;
     _booksViewMode = 'grid';
     _boldVerseText = false;
@@ -1118,6 +1143,7 @@ class AppSettings extends ChangeNotifier {
       _kThemeMode,
       _kParagraphMode,
       _kMenuScale,
+      _kSplashSeconds,
       _kCardMaterial,
       // 2026-05-07 (v17): the offlineMode toggle is gone, but we
       // still purge the stored bool on reset so users who toggled
@@ -1282,6 +1308,8 @@ class AppSettings extends ChangeNotifier {
     _themeMode = _parseThemeMode(prefs.getString(_kThemeMode));
     _paragraphMode = prefs.getBool(_kParagraphMode) ?? true;
     _readingPaperTheme = prefs.getBool(_kReadingPaperTheme) ?? false;
+    _splashSeconds = (prefs.getInt(_kSplashSeconds) ?? kSplashSecondsDefault)
+        .clamp(kSplashSecondsMin, kSplashSecondsMax);
     final rawMenuScale = prefs.getDouble(_kMenuScale) ?? 1.0;
     _menuScale = ((rawMenuScale * 10).roundToDouble() / 10)
         .clamp(kMenuScaleMin, kMenuScaleMax)

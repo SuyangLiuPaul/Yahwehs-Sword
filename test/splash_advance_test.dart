@@ -75,7 +75,10 @@ void main() {
     await tester.pump();
 
     // The 3 s hand-off must have been armed by that build.
-    await tester.pump(const Duration(seconds: 4));
+    // 2026-09-20: the hold is the reader's setting now (10 s by
+    // default), not a fixed 3 s.
+    await tester.pump(
+        const Duration(seconds: kSplashSecondsDefault + 1));
     expect(advanced, isTrue,
         reason: 'the splash never handed over — this is the v1.6.56 hang');
   });
@@ -90,7 +93,10 @@ void main() {
     var advanceCount = 0;
     await pumpSplash(tester, mp, onAdvance: () => advanceCount++);
 
-    await tester.pump(const Duration(seconds: 4));
+    // 2026-09-20: the hold is the reader's setting now (10 s by
+    // default), not a fixed 3 s.
+    await tester.pump(
+        const Duration(seconds: kSplashSecondsDefault + 1));
     expect(advanceCount, 1);
 
     // The eager version pre-load fires notifyListeners once per bundled
@@ -99,7 +105,10 @@ void main() {
       mp.setVerses(someVerses);
       await tester.pump();
     }
-    await tester.pump(const Duration(seconds: 4));
+    // 2026-09-20: the hold is the reader's setting now (10 s by
+    // default), not a fixed 3 s.
+    await tester.pump(
+        const Duration(seconds: kSplashSecondsDefault + 1));
     expect(advanceCount, 1, reason: 'the hand-off must not repeat');
   });
 
@@ -114,7 +123,31 @@ void main() {
     mp.setBootInFlight(true);
     var advanced = false;
     await pumpSplash(tester, mp, onAdvance: () => advanced = true);
-    await tester.pump(const Duration(seconds: 4));
+    // 2026-09-20: the hold is the reader's setting now (10 s by
+    // default), not a fixed 3 s.
+    await tester.pump(
+        const Duration(seconds: kSplashSecondsDefault + 1));
     expect(advanced, isFalse);
+  });
+
+  testWidgets('the verse stays for the reader\'s hold, and Enter leaves now',
+      (tester) async {
+    // 2026-09-20 「都没有看清楚就进去了」.
+    final mp = MainProvider()..setVerses(someVerses);
+    var handovers = 0;
+    await pumpSplash(tester, mp, onAdvance: () => handovers++);
+
+    // Where the old three seconds would have taken the reader away.
+    await tester.pump(const Duration(seconds: 4));
+    expect(handovers, 0, reason: 'the verse must still be on screen at 4 s');
+
+    expect(find.byKey(const Key('splash.enter')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('splash.enter')));
+    await tester.pump();
+    expect(handovers, 1, reason: 'Enter hands over at once');
+
+    // The cancelled timer cannot hand over a second time.
+    await tester.pump(const Duration(seconds: kSplashSecondsDefault + 5));
+    expect(handovers, 1);
   });
 }

@@ -322,21 +322,30 @@ class _LoadingPageState extends State<LoadingPage> {
     }
     _advanceScheduledOnce = true;
     _autoAdvance?.cancel();
-    _autoAdvance = Timer(const Duration(seconds: 3), () {
-      if (!mounted) return;
-      final advance = widget.onAdvance;
-      if (advance != null) {
-        advance();
-      } else {
-        // 2026-09-08: the Workbench. This boot route was the last
-        // place the app could still land a reader that was not the
-        // workspace.
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const WorkbenchPage()),
-        );
-      }
-    });
+    // 2026-09-20: was a fixed 3 s; the reader sets it now, 10 s by
+    // default, because the opening verse was gone before it had been
+    // read. The button on the splash leaves at once.
+    final seconds = context.read<AppSettings>().splashSeconds;
+    _autoAdvance = Timer(Duration(seconds: seconds), _enterApp);
     return true;
+  }
+
+  /// Leave the splash for the workbench. Safe to call twice — the
+  /// timer is cancelled first, so the button and the timeout cannot
+  /// both push a route.
+  void _enterApp() {
+    if (!mounted) return;
+    _autoAdvance?.cancel();
+    final advance = widget.onAdvance;
+    if (advance != null) {
+      advance();
+    } else {
+      // 2026-09-08: the Workbench. This boot route was the last place
+      // the app could still land a reader that was not the workspace.
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const WorkbenchPage()),
+      );
+    }
   }
 
   /// Schedule one auto-retry with linear backoff (2 s, 4 s, 6 s) while
@@ -761,6 +770,30 @@ class _LoadingPageState extends State<LoadingPage> {
                   // slow/blocked Firebase-auth network call earlier in
                   // `_bootstrap()` — which otherwise left this screen
                   // showing zero signal that anything was happening.
+                  // 2026-09-20: the way in, said out loud — the splash
+                  // holds for `splashSeconds` so the verse can be read,
+                  // and this is how a reader leaves the moment they
+                  // have. Only once there is something to enter.
+                  // The same condition `_scheduleAdvanceIfReady` uses:
+                  // a button that could not go anywhere is worse than
+                  // no button.
+                  if (mainProvider.verses.isNotEmpty &&
+                      mainProvider.loadError == null) ...[
+                    SizedBox(height: 28 * s),
+                    FilledButton.icon(
+                      key: const Key('splash.enter'),
+                      onPressed: _enterApp,
+                      icon: const Icon(Icons.arrow_forward_rounded, size: 18),
+                      label: Text(
+                        uiStrings['splashEnter']?[settings.locale] ?? 'Enter',
+                        style: TextStyle(
+                          fontFamily: settings.fontFamily,
+                          fontFamilyFallback: kCjkFontFallback,
+                          fontSize: settings.fontSize * 0.9,
+                        ),
+                      ),
+                    ),
+                  ],
                   if (loading) _buildPatienceFooter(context, settings),
                 ],
               ),

@@ -367,6 +367,26 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
                           onChanged: (val) => settings.setLineSpacing(
                               double.parse(val.toStringAsFixed(1))),
                         ),
+                        const Divider(height: 1),
+                        // 2026-09-20: how long the opening verse holds.
+                        // It was a fixed 3 s and the feedback was that
+                        // the verse was gone before it had been read.
+                        _SliderRow(
+                          settings: settings,
+                          s: s,
+                          label: uiStrings['splashSeconds']?[settings.locale] ??
+                              'Splash screen',
+                          value: settings.splashSeconds.toDouble(),
+                          min: kSplashSecondsMin.toDouble(),
+                          max: kSplashSecondsMax.toDouble(),
+                          divisions: kSplashSecondsMax - kSplashSecondsMin,
+                          readout: (uiStrings['splashSecondsValue']
+                                      ?[settings.locale] ??
+                                  '{n}s')
+                              .replaceAll('{n}', '${settings.splashSeconds}'),
+                          onChanged: (val) =>
+                              settings.setSplashSeconds(val.round()),
+                        ),
                       ],
                     ),
                   ),
