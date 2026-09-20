@@ -3840,6 +3840,17 @@ const uiStrings = {
   // differ by a factor of five.
   // 2026-09-20, ported from YsWords the same day: the splash held for a
   // fixed 3 s and readers said the verse was gone before they read it.
+  'showOriginalRows': {
+    'zh-Hans': '并排对照中显示原文',
+    'zh-Hant': '並排對照中顯示原文',
+    'en': 'Show the original languages in Browse',
+  },
+  'showOriginalRowsSubtitle': {
+    'zh-Hans': '在并排对照里，每节下面附上希腊文（BGT）或希伯来文（WTT）。',
+    'zh-Hant': '在並排對照裡，每節下面附上希臘文（BGT）或希伯來文（WTT）。',
+    'en': 'Print the Greek (BGT) or Hebrew (WTT) line under each verse '
+        'in the comparison view.',
+  },
   'splashEnter': {
     'zh-Hans': '进入',
     'zh-Hant': '進入',

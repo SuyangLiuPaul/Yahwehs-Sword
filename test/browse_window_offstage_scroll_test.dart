@@ -154,7 +154,10 @@ void main() {
         findsOneWidget,
         reason: 'and it built its list after the load, while offstage');
     expect(
-        find.textContaining('Genesis 1:',
+        // 2026-09-20: the gutter prints the book abbreviated now
+        // ('Gen 1:25'), so these finders read the label the rows
+        // actually carry. What they prove is unchanged.
+        find.textContaining('Gen 1:',
             findRichText: true, skipOffstage: false),
         findsNothing,
         reason: 'but not one row was ever laid out — a list builds its '
@@ -177,7 +180,7 @@ void main() {
   ///
   /// The reference row is the assertion rather than a scroll offset
   /// because a list only builds the rows near its viewport: finding
-  /// `Genesis 1:25` on screen at all is proof the list moved to it.
+  /// `Gen 1:25` on screen at all is proof the list moved to it.
   testWidgets('the same pane ON SCREEN still scrolls to the focused verse',
       (tester) async {
     SharedPreferences.setMockInitialValues(<String, Object>{});
@@ -220,12 +223,12 @@ void main() {
     }
 
     expect(
-        find.textContaining('Genesis 1:25', findRichText: true), findsWidgets,
+        find.textContaining('Gen 1:25', findRichText: true), findsWidgets,
         reason: 'the focused verse was scrolled into view — a list only '
             'builds the rows near its viewport, so finding it at all is '
             'the proof the scroll went ahead');
     // `1:5` and not `1:1`, which is a prefix of `1:10` … `1:19`.
-    expect(find.textContaining('Genesis 1:5', findRichText: true), findsNothing,
+    expect(find.textContaining('Gen 1:5', findRichText: true), findsNothing,
         reason: 'and the pane really did MOVE: the top of the chapter is '
             'behind it now');
     expect(tester.takeException(), isNull);

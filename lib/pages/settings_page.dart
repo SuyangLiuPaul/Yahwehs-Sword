@@ -1125,6 +1125,36 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
                         onChanged: (val) =>
                             settings.setShowStrongsInOriginals(val),
                       ),
+                      const Divider(height: 1),
+                      // 2026-09-20: 「希腊希伯来文总是出现」. Browse
+                      // appended the originals line to every verse with
+                      // nothing to turn it off. Off by default: a
+                      // reader who wants them asks for them.
+                      SwitchListTile(
+                        title: Text(
+                          uiStrings['showOriginalRows']?[settings.locale] ??
+                              'Show the original languages in Browse',
+                          style: TextStyle(
+                            fontSize: settings.fontSize + 2,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: settings.fontFamily,
+                            fontFamilyFallback: kCjkFontFallback,
+                          ),
+                        ),
+                        subtitle: Text(
+                          uiStrings['showOriginalRowsSubtitle']
+                                  ?[settings.locale] ??
+                              'Print the Greek (BGT) or Hebrew (WTT) line '
+                                  'under each verse in the comparison view.',
+                          style: TextStyle(
+                            fontSize: settings.fontSize,
+                            fontFamily: settings.fontFamily,
+                            fontFamilyFallback: kCjkFontFallback,
+                          ),
+                        ),
+                        value: settings.showOriginalRows,
+                        onChanged: (val) => settings.setShowOriginalRows(val),
+                      ),
                       // bwh47. Under the search/originals block
                       // because it is about which TEXTS the app holds,
                       // and shown only where there is a store to hold
@@ -2185,14 +2215,35 @@ class _ProjectorCard extends StatelessWidget {
               SizedBox(height: 12 * s),
               Text(t('projectorPreview', 'Preview'), style: label()),
               SizedBox(height: 8 * s),
-              // The real stage, in a 16:9 box. Its FittedBox scales the
-              // wall-sized type down to fit, so what the reader sees is
-              // the wall's proportions, not a mock of them.
+              // The real stage, drawn at WALL SIZE and then scaled down
+              // whole.
+              //
+              // 2026-09-20, from a phone: the preview was showing the
+              // verse as a five-character-wide column down the middle
+              // with the reference printed across it. Handing the stage
+              // the preview's own ~318 px box did that: `typeSize` is
+              // the operator's wall type — 64 px at the default step —
+              // and the stage pins its text to the box width before
+              // `BoxFit.scaleDown` acts, so the passage wrapped every
+              // four glyphs and then shrank as an already-wrapped
+              // block. The reference, which has a 22 px floor and sits
+              // outside that fit, stayed big enough to collide with it.
+              //
+              // A wall is not 318 px wide, so give the stage a wall:
+              // lay it out at 1280x720 where 64 px type means what it
+              // means in the room, and scale the finished picture into
+              // the card. That is what a preview is — the same wall,
+              // smaller — and it leaves the stage's own rules alone.
               ClipRRect(
                 borderRadius: BorderRadius.circular(WbMetrics.radiusControl),
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: ProjectionStage(
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: SizedBox(
+                      width: kProjectionPreviewWallWidth,
+                      height: kProjectionPreviewWallWidth * 9 / 16,
+                      child: ProjectionStage(
                     verses: previewVerses,
                     reference: previewVerses.length > 1
                         ? '${previewVerses.first.book} '
@@ -2212,6 +2263,8 @@ class _ProjectorCard extends StatelessWidget {
                     secondCode: null,
                     secondLoading: false,
                     layout: settings.projectionLayout,
+                  ),
+                    ),
                   ),
                 ),
               ),

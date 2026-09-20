@@ -50,6 +50,7 @@ import 'package:yahwehs_sword/utils/verse_text_absence.dart';
 import 'package:yahwehs_sword/utils/version_gutter.dart'
     show referenceGutterWidth, versionGutterWidth;
 import 'package:yahwehs_sword/utils/version_diff.dart';
+import 'package:yahwehs_sword/utils/short_book_name.dart';
 import 'package:yahwehs_sword/utils/version_mapper.dart' show localeAwareBookName;
 import 'package:yahwehs_sword/widgets/workbench_chrome.dart' show WbVersionTag;
 import 'package:yahwehs_sword/utils/safe_item_scroll.dart' show scrollToSafely;
@@ -113,6 +114,7 @@ class _BrowseRow {
     required this.verse,
     required this.code,
     required this.reference,
+    String? shortReference,
     required this.firstOfVerse,
     this.text,
     this.words,
@@ -121,7 +123,7 @@ class _BrowseRow {
     this.absence,
     this.mergedWith,
     this.superscription = '',
-  });
+  }) : shortReference = shortReference ?? reference;
 
   final int verse;
 
@@ -135,8 +137,13 @@ class _BrowseRow {
   /// would have silently invalidated every pinned word.
   final String code;
 
-  /// Localised "Genesis 1:1", printed after the tag like BibleWorks.
+  /// Localised "Genesis 1:1" — the hover payload, read by the status
+  /// bar and the Analysis pane.
   final String reference;
+
+  /// The same address with the book abbreviated ("创 1:1"), which is
+  /// what the gutter prints. Falls back to the full one.
+  final String shortReference;
 
   /// True on the first line of a verse group — draws the hairline above.
   final bool firstOfVerse;
@@ -314,7 +321,14 @@ class BrowseWindow extends StatefulWidget {
     this.focus = AnalysisFocus.empty,
     this.highlight = const SearchHighlight(),
     this.showDiff = false,
+    this.showOriginals = false,
   });
+
+  /// Whether the Greek/Hebrew line is printed under each verse. Off by
+  /// default since 2026-09-20 — 「希腊希伯来文总是出现」 — and it is a
+  /// LOAD-time choice rather than paint: the words are fetched per
+  /// verse, so leaving them out is also the cheaper chapter.
+  final bool showOriginals;
 
   /// Paint the bwh30 version-difference marks. Only the PAINT: the marks
   /// themselves are computed with the chapter either way, so this toggles
@@ -417,6 +431,7 @@ class _BrowseWindowState extends State<BrowseWindow> {
     // within a chapter is a highlight change plus a scroll, not a fetch.
     if (old.book != widget.book ||
         old.chapter != widget.chapter ||
+        old.showOriginals != widget.showOriginals ||
         !_sameList(old.versionCodes, widget.versionCodes)) {
       setState(_startLoad);
     } else if (old.focusedVerse != widget.focusedVerse) {
@@ -623,8 +638,19 @@ class _BrowseWindowState extends State<BrowseWindow> {
       var first = true;
       final verseStart = rows.length;
       _firstRowOfVerse[n] = rows.length;
+      final versionForName =
+          widget.versionCodes.isEmpty ? '' : widget.versionCodes.first;
       final reference =
-          '${localeAwareBookName(widget.book, locale, widget.versionCodes.isEmpty ? '' : widget.versionCodes.first)} '
+          '${localeAwareBookName(widget.book, locale, versionForName)} '
+          '${widget.chapter}:$n';
+      // 2026-09-20: what the GUTTER prints. 使徒行传 24:7 on every row
+      // of every verse spends about 64 px of a phone's width repeating
+      // what the header already says — 「user肯定知道的类似于使就可以了
+      // 空出多些位置」. `reference` stays the full name: it is also the
+      // hover payload the status bar and the Analysis pane read, and
+      // those have the room for it.
+      final shortReference =
+          '${shortBookName(widget.book, locale, versionForName)} '
           '${widget.chapter}:$n';
 
       for (final code in widget.versionCodes) {
@@ -686,6 +712,7 @@ class _BrowseWindowState extends State<BrowseWindow> {
           verse: n,
           code: code,
           reference: reference,
+          shortReference: shortReference,
           firstOfVerse: first,
           text: text,
           runs: runs,
@@ -700,6 +727,7 @@ class _BrowseWindowState extends State<BrowseWindow> {
       // not a comparable edition and must not be swept into a group.
       _markDifferences(rows.sublist(verseStart), diffGroups);
 
+      if (!widget.showOriginals) continue;
       final words =
           await OriginalsService.forVerse(widget.book, widget.chapter, n);
       if (words != null && words.isNotEmpty) {
@@ -713,6 +741,7 @@ class _BrowseWindowState extends State<BrowseWindow> {
           verse: n,
           code: isHebrew ? 'wtt' : 'bgt',
           reference: reference,
+          shortReference: shortReference,
           firstOfVerse: first,
           words: words,
           rtl: isHebrew,
@@ -820,7 +849,7 @@ class _BrowseWindowState extends State<BrowseWindow> {
         // — and it has to be recomputed per build too, because `t.text`
         // follows the same font-size slider.
         final referenceWidth = referenceGutterWidth(
-          {for (final r in rows) r.reference},
+          {for (final r in rows) r.shortReference},
           t.text,
           letterSpacing: kBrowseReferenceLetterSpacing,
         );
@@ -1087,7 +1116,7 @@ class _RowView extends StatelessWidget {
                       ),
                     ),
                   BrowseVerseRow(
-                    reference: row.reference,
+                    reference: row.shortReference,
                     referenceWidth: referenceWidth,
                     referenceStyle: referenceStyle,
                     child: row.words != null

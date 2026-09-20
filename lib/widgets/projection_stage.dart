@@ -111,6 +111,20 @@ const double kProjectionReferenceScale = 0.26;
 /// as a mistake rather than as restraint.
 const double kProjectionReferenceFloor = 22.0;
 
+/// The wall a PREVIEW pretends to be, in logical pixels.
+///
+/// 2026-09-20. A preview card on a phone is about 320 px wide. Handing
+/// the stage that box makes wall-sized type wrap every few characters,
+/// because [ProjectionStage] pins its text to the width it is given
+/// before `BoxFit.scaleDown` can act (see "THE CHOSEN SIZE IS A
+/// CEILING" above) — so the preview showed a narrow column of tiny
+/// glyphs, which is not what the room would see. A preview lays the
+/// stage out at this width instead and scales the whole picture down,
+/// so the line breaks, the margins and the reference all land where
+/// they will on the wall. 1280x720 is the smallest projector this is
+/// likely to drive, and any 16:9 size gives the same picture.
+const double kProjectionPreviewWallWidth = 1280.0;
+
 /// The share of the viewport left as margin on each side, and top and
 /// bottom.
 ///

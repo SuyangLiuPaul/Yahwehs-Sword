@@ -115,6 +115,11 @@ const _kCardMaterial = 'cardMaterial';
 const _kBooksViewMode = 'booksViewMode';
 const _kBoldVerseText = 'boldVerseText';
 const _kShowStrongsInOriginals = 'showStrongsInOriginals';
+// 2026-09-20: 「要有可以default tick off on 原文吗因为你看希腊希伯来文总是
+// 出现」. The Greek/Hebrew line was appended to every verse in Browse
+// with nothing to turn it off. Default OFF: a reader who wants the
+// originals asks for them.
+const _kShowOriginalRows = 'showOriginalRows';
 const _kAutoExpandFirstRef = 'autoExpandFirstRef';
 const _kNotificationsEnabled = 'notificationsEnabled';
 // 2026-05-24 (v1.3.0): per-category notification prefs. Stored as a
@@ -376,6 +381,7 @@ class AppSettings extends ChangeNotifier {
   /// Show the Strong's # badge inside each word chip in the originals
   /// (exegesis) sheet — handy for power users, distracting for some.
   bool _showStrongsInOriginals = true;
+  bool _showOriginalRows = false;
 
   /// Auto-expand the first book group in the concordance section of
   /// each Strong's entry so the user sees verse refs immediately.
@@ -469,6 +475,9 @@ class AppSettings extends ChangeNotifier {
   String get booksViewMode => _booksViewMode;
   bool get boldVerseText => _boldVerseText;
   bool get showStrongsInOriginals => _showStrongsInOriginals;
+
+  /// Whether Browse prints the Greek/Hebrew line under each verse.
+  bool get showOriginalRows => _showOriginalRows;
   bool get autoExpandFirstRef => _autoExpandFirstRef;
   bool get notificationsEnabled => _notificationsEnabled;
 
@@ -917,6 +926,14 @@ class AppSettings extends ChangeNotifier {
     await prefs.setBool(_kBoldVerseText, enabled);
   }
 
+  Future<void> setShowOriginalRows(bool enabled) async {
+    if (_showOriginalRows == enabled) return;
+    _showOriginalRows = enabled;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kShowOriginalRows, enabled);
+  }
+
   Future<void> setShowStrongsInOriginals(bool enabled) async {
     if (_showStrongsInOriginals == enabled) return;
     _showStrongsInOriginals = enabled;
@@ -1098,6 +1115,7 @@ class AppSettings extends ChangeNotifier {
     _booksViewMode = 'grid';
     _boldVerseText = false;
     _showStrongsInOriginals = true;
+    _showOriginalRows = false;
     _autoExpandFirstRef = false;
     _crossVersionSearchMode = CrossVersionSearchMode.currentOnly;
     _searchIgnoresPointing = true;
@@ -1152,6 +1170,7 @@ class AppSettings extends ChangeNotifier {
       _kBooksViewMode,
       _kBoldVerseText,
       _kShowStrongsInOriginals,
+      _kShowOriginalRows,
       _kAutoExpandFirstRef,
       _kNotificationsEnabled,
       _kShowSectionTitles,
@@ -1326,6 +1345,7 @@ class AppSettings extends ChangeNotifier {
     _booksViewMode = rawBooksView == 'grid' ? 'grid' : 'list';
     _boldVerseText = prefs.getBool(_kBoldVerseText) ?? false;
     _showStrongsInOriginals = prefs.getBool(_kShowStrongsInOriginals) ?? true;
+    _showOriginalRows = prefs.getBool(_kShowOriginalRows) ?? false;
     _autoExpandFirstRef = prefs.getBool(_kAutoExpandFirstRef) ?? false;
     _crossVersionSearchMode =
         crossVersionModeFromName(prefs.getString(_kCrossVersionSearchMode));
@@ -1489,6 +1509,7 @@ class AppSettings extends ChangeNotifier {
         'booksViewMode': _booksViewMode,
         'boldVerseText': _boldVerseText,
         'showStrongsInOriginals': _showStrongsInOriginals,
+        'showOriginalRows': _showOriginalRows,
         'crossVersionSearchMode': _crossVersionSearchMode.name,
         'searchIgnoresPointing': _searchIgnoresPointing,
         'excludeKetivFromSearch': _excludeKetivFromSearch,
@@ -1606,6 +1627,9 @@ class AppSettings extends ChangeNotifier {
       }
       if (m['showStrongsInOriginals'] is bool) {
         _showStrongsInOriginals = m['showStrongsInOriginals'] as bool;
+      }
+      if (m['showOriginalRows'] is bool) {
+        _showOriginalRows = m['showOriginalRows'] as bool;
       }
       if (m['autoExpandFirstRef'] is bool) {
         _autoExpandFirstRef = m['autoExpandFirstRef'] as bool;

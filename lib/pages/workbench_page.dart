@@ -2411,7 +2411,8 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
                     ),
                   )
                 : BrowseWindow(
-                    key: ValueKey('browse-$book-$chapter-${codes.join(",")}'),
+                    key: ValueKey('browse-$book-$chapter-'
+                        '${codes.join(",")}-${settings.showOriginalRows}'),
                     book: book,
                     chapter: chapter,
                     versionCodes: codes,
@@ -2424,6 +2425,11 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
                     // ride along with the chapter either way, so this is
                     // a repaint and not a reload.
                     showDiff: _wb.browseDiff,
+                    // 2026-09-20: the Greek/Hebrew line is the reader's
+                    // choice now, and off by default. It is in the key
+                    // because it changes what gets LOADED, not just
+                    // what is painted.
+                    showOriginals: settings.showOriginalRows,
                     onWordTap: _selectWord,
                     onWordHover: _onWordHover,
                     focus: _browseFocus(book, chapter),
