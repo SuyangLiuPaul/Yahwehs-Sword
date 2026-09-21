@@ -46,6 +46,7 @@ import 'package:yahwehs_sword/utils/ketiv_qere.dart'
 import 'package:yahwehs_sword/utils/morphology.dart' show describeMorphology;
 import 'package:yahwehs_sword/utils/font_catalog.dart' show kCjkFontFallback;
 import 'package:yahwehs_sword/utils/strongs_inline.dart';
+import 'package:yahwehs_sword/utils/wlc_alignment.dart';
 import 'package:yahwehs_sword/utils/verse_text_absence.dart';
 import 'package:yahwehs_sword/utils/version_gutter.dart'
     show referenceGutterWidth, versionGutterWidth;
@@ -701,6 +702,22 @@ class _BrowseWindowState extends State<BrowseWindow> {
                 chapter: widget.chapter,
                 verse: n,
               );
+        // WLC's numbers come from the originals, laid against the
+        // edition's own words — see `alignWlcWords` for why it aligns
+        // rather than drawing the originals in the edition's place.
+        List<OriginalWord>? wlcWords;
+        if (code == 'wlc' && absence == null && text != null) {
+          final tagged =
+              await OriginalsService.forVerse(widget.book, widget.chapter, n);
+          if (tagged != null && tagged.isNotEmpty) {
+            wlcWords = alignWlcWords(text, tagged);
+            for (final w in wlcWords) {
+              if (w.strongs.isNotEmpty && !_glosses.containsKey(w.strongs)) {
+                _glosses[w.strongs] = await StrongsService.lookup(w.strongs);
+              }
+            }
+          }
+        }
         if (runs != null) {
           for (final r in runs) {
             if (r.strongs.isNotEmpty && !_glosses.containsKey(r.strongs)) {
@@ -716,6 +733,8 @@ class _BrowseWindowState extends State<BrowseWindow> {
           firstOfVerse: first,
           text: text,
           runs: runs,
+          words: wlcWords,
+          rtl: wlcWords != null,
           absence: absence,
           mergedWith: absentHead ?? mergedHeads[code]?[n],
           superscription: supers[code]?[n] ?? '',
