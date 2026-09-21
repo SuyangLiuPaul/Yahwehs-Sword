@@ -416,9 +416,11 @@ List<LifeArc> packWheelBand({
     creationYear: creationYear,
     minYear: kMinYear,
     maxYear: kMaxYear,
-    // STATED, not defaulted. `packIntoRings`' own 0.02 rad is 22
-    // years on this axis today and would be some other number of
-    // years the day `kMinYear` moved — a silent repack.
+    // STATED, not defaulted. `packIntoRings`' own 0.02 rad is about
+    // 27 BC years and 17 AD years on this axis today — the two differ
+    // since year 0 was pinned to six o'clock (`eraFraction`), and both
+    // would be some other number the day `kMinYear` moved. A silent
+    // repack either way.
     minGap: 0.02,
     alsoPack: [
       ...kingReignSpans(kings),

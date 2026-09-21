@@ -569,15 +569,30 @@ void main() {
   // the planner still has to find that one label a size and a place.
   // They are kept because that capacity is real and can still be spent
   // by accident — not because 19 names are on screen.
+  //
+  // 2026-09-21: the two English cells drop again, and the cause is the
+  // AXIS this time, not the type. 「创世是12点钟方向」 with
+  // 「一半的位置应该是0年」 puts the chart's start at twelve and year 0 at
+  // six, which is half a turn apart — so BC holds exactly 180° of the
+  // dial where a single-rate axis gave it 215.9°, and every Genesis arc
+  // is 17% shorter in ANGLE than it was. The short lives are the ones
+  // that stop fitting their own name: 700 en 19 → 18 (loses Moses),
+  // 900 en 20 → 18 (loses Aaron and Moses).
+  //
+  // Recorded as the real cost it is. Measured the same day, the other
+  // four cells are unmoved — 700 zh-Hans 23, 900 zh-Hans 22, 1400 en 19,
+  // 1400 zh-Hant 24 — and the falsifier below, under 20 of 25 in Chinese
+  // at the smallest canvas, is nowhere near. That is what says this is a
+  // squeeze and not a collapse.
   const floors = <String, int>{
-    '700 en': 19,
+    '700 en': 18,
     // 22 → 20 on the same day and for the same reason as `700 en`:
     // wider type. Note this is still the FALSIFIER's value — the
     // ruling below withdraws the layer's "named at rest" claim under
     // 20 of 25 here — so the two numbers now meet, and the next loss
     // at this cell is a decision rather than an edit.
     '700 zh-Hans': 20,
-    '900 en': 20,
+    '900 en': 18,
     '900 zh-Hans': 20,
     // 21 → 19, same cause as the two 700 cells: 12.5 px type. The
     // widest canvas keeps losing the most, which this table already

@@ -349,8 +349,19 @@ void main() {
       // is UNCHANGED at zero — no name is lost, one more simply needs a
       // second step of zoom. That is the cost of a denser ancient end,
       // charged here rather than hidden.
+      //
+      // 2026-09-21: 2 -> 6, same sentence, new cause. The axis now
+      // starts at twelve o'clock and puts year 0 at six
+      // (「创世是12点钟方向」 + 「一半的位置应该是0年」), which are half a
+      // turn apart, so BC holds 180° of the dial instead of 215.9° and
+      // its spokes are 17% closer together. Four more of them wait a
+      // step of zoom for their name.
+      //
+      // The 2.5x assertion below was MEASURED the same day with this
+      // bound lifted, not assumed: still zero, in both scripts. Nothing
+      // is lost; the ancient end simply asks for one more step sooner.
       final q = _plan(data, locale, 900, 1.5);
-      expect(q.spokes.where((s) => !s.hasText).length, lessThanOrEqualTo(2),
+      expect(q.spokes.where((s) => !s.hasText).length, lessThanOrEqualTo(6),
           reason: '\$locale at 1.5x: at most two names may still be waiting');
       expect(q.spokes.length, greaterThan(80),
           reason: '$locale at 1.5x: zoom should also draw MORE spokes, '
@@ -410,7 +421,13 @@ void main() {
     // the chart for keeping one more scripture-citing event, which is
     // the opposite of what this file is for. What must not fall is the
     // number of verses that reach the rim.
-    expect(shown, greaterThanOrEqualTo(11),
+    // 11 -> 10 on 2026-09-21, and this one IS a fall rather than a
+    // delay: with BC compressed into half the dial, one citable label
+    // in the ancient end no longer has the arc to carry its reference
+    // beside its title at rest. It is still reachable — the spoke, the
+    // list and the popup all carry the verse — but it is one fewer on
+    // the rim, and this file exists to say so out loud.
+    expect(shown, greaterThanOrEqualTo(10),
         reason: 'the verses that reach the rim must not fall');
     expect(shown * 3, greaterThanOrEqualTo(citable),
         reason: 'and a citable label carrying no verse must stay the '

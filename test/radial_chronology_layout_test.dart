@@ -17,6 +17,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:yahwehs_sword/utils/radial_chronology_layout.dart';
 
+/// A canvas angle as a clock position: canvas 0 rad points at three
+/// o'clock, and a clockwise quarter turn is three hours. 12 rather than
+/// 0 at the top, because that is how the owner reads the wheel.
+double _clock(double a) {
+  final h = (3 + a / (2 * math.pi) * 12) % 12;
+  return h < 1e-9 ? 12 : h;
+}
+
 void main() {
   group('ringRadii', () {
     test('ring 0 touches the rim and rings step inward without meeting '
@@ -47,19 +55,38 @@ void main() {
       expect(a, greaterThan(startRad + sweepRad / 2));
     });
 
-    // 2026-09-21, 「sword wheel 真好6个字 一半的位置应该是0年 现在好像在
-    // 7-8个字位置」. THE LOAD-BEARING TEST for that ruling, and the one
-    // that fails if anyone moves `kAxisMinYear`, `kAxisMaxYear` or
-    // `sweepRad` without moving `startRad` with them — which is exactly
-    // how the boundary drifted to 7.2 o'clock in the first place.
+    // 2026-09-21, in two asks. 「sword wheel 真好6个字 一半的位置应该是
+    // 0年 现在好像在7-8个字位置」 — the reading was exact; a single-rate
+    // -4200..2026 axis put year 0 at 4200/6226 of a 320° sweep, 215.9°,
+    // 7.2 o'clock. Then 「创世是12点钟方向 这样时钟可能要密度再整理一下」.
     //
-    // Clock position, not radians, because that is the unit the report
-    // came in: canvas 0 rad points at three o'clock, and a clockwise
-    // quarter turn is three hours.
-    test('year 0 sits at six o\'clock on the wheel\'s own axis', () {
+    // THE LOAD-BEARING PAIR. Together they fix the whole axis, and
+    // either one failing alone says which half broke.
+    test('the chart begins at twelve o\'clock', () {
+      final a = angleForSpan(kAxisMinYear, kAxisMinYear, kAxisMaxYear);
+      expect(_clock(a), closeTo(12, 1e-9));
+    });
+
+    test('year 0 sits at six o\'clock', () {
       final a = angleForSpan(0, kAxisMinYear, kAxisMaxYear);
-      final clock = (3 + a / (2 * math.pi) * 12) % 12;
-      expect(clock, closeTo(6, 1e-9));
+      expect(_clock(a), closeTo(6, 1e-9));
+    });
+
+    // The creation itself is 86 years after the axis start — the
+    // headroom `kMinYear` exists to leave — so it sits just past the
+    // top rather than exactly on it. 86 of 4200 BC years across 180°.
+    test('the creation sits just past twelve, by its own headroom', () {
+      // In hours past the top rather than as a clock reading, which
+      // wraps to 0 the moment it passes twelve.
+      final past =
+          (angleForSpan(-4114, kAxisMinYear, kAxisMaxYear) - startRad) /
+              (2 * math.pi) *
+              12;
+      expect(past, greaterThan(0));
+      expect(past, lessThan(0.2),
+          reason: 'the creation must read as the top of the clock — it is '
+              'seven minutes past it, which is the 86 years of headroom '
+              '`kMinYear` leaves before Adam');
     });
 
     test('the ends are still the ends and the years still run forwards', () {
@@ -75,32 +102,58 @@ void main() {
       }
     });
 
-    // One degree is the same number of years everywhere. Rotating the
-    // axis was chosen over splitting it at year 0 precisely to keep
-    // this: a two-rate axis would have squeezed the crowded BC end.
-    test('the axis is evenly scaled, not split at the boundary', () {
-      final perYear = (angleForSpan(1, kAxisMinYear, kAxisMaxYear) -
-              angleForSpan(0, kAxisMinYear, kAxisMaxYear)) /
-          1;
-      for (final pair in [(-4200, -4199), (-587, -586), (1516, 1517)]) {
-        expect(
-            angleForSpan(pair.$2, kAxisMinYear, kAxisMaxYear) -
-                angleForSpan(pair.$1, kAxisMinYear, kAxisMaxYear),
-            closeTo(perYear, 1e-12),
-            reason: 'a year is a year at ${pair.$1} too');
+    // A degree is no longer the same number of years on both sides, and
+    // that is the density change the second ask named. Pinned so the
+    // two rates cannot drift into one another by accident.
+    test('each era runs at its own even rate', () {
+      double rate(int from, int to) =>
+          (angleForSpan(to, kAxisMinYear, kAxisMaxYear) -
+                  angleForSpan(from, kAxisMinYear, kAxisMaxYear)) /
+              (to - from);
+      final bc = rate(-4200, -4199);
+      final ad = rate(1, 2);
+      for (final pair in [(-4200, -3000), (-587, -586), (-1, 0)]) {
+        expect(rate(pair.$1, pair.$2), closeTo(bc, 1e-12),
+            reason: 'a BC year is a BC year at ${pair.$1} too');
       }
+      for (final pair in [(0, 1), (1516, 1517), (1000, 2026)]) {
+        expect(rate(pair.$1, pair.$2), closeTo(ad, 1e-12),
+            reason: 'an AD year is an AD year at ${pair.$1} too');
+      }
+      // BC is the slower of the two: 4200 years into 180°, against
+      // 2026 into the remaining 140°.
+      expect(ad, greaterThan(bc));
+      expect(1 / (bc * 180 / math.pi), closeTo(23.3, 0.1),
+          reason: 'BC years per degree');
+      expect(1 / (ad * 180 / math.pi), closeTo(14.5, 0.1),
+          reason: 'AD years per degree');
     });
 
-    test('the hit test inverts the mapping', () {
+    test('the hit test inverts the mapping on both sides of year 0', () {
       for (final y in [-4200, -4114, -2000, -586, 0, 1, 70, 1517, 2026]) {
         final t = fractionForSpan(y, kAxisMinYear, kAxisMaxYear);
         expect(yearForFraction(t, kAxisMinYear, kAxisMaxYear), y,
             reason: 'year $y did not survive the round trip');
       }
-      // The depth view rebuilds its axis from the reader's period
-      // filter, so both come through here with other ranges too.
-      expect(yearForFraction(0.5, 100, 1500), 800);
+    });
+
+    // The depth view rebuilds its axis from the reader's period filter,
+    // and most of those ranges are no place for the pin.
+    test('an axis with no real second era runs at one rate', () {
+      expect(axisPinsEraBoundary(0, 1000), isFalse);
       expect(fractionForSpan(500, 0, 1000), closeTo(0.5, 1e-9));
+      expect(fractionForSpan(-500, -1000, 0), closeTo(0.5, 1e-9));
+      expect(yearForFraction(0.5, 1000, 2000), 1500);
+
+      // Straddling is not enough: 100 BC years do not earn half a dial.
+      expect(axisPinsEraBoundary(-100, 1500), isFalse);
+      expect(fractionForSpan(700, -100, 1500), closeTo(0.5, 1e-9));
+      expect(yearForFraction(0.5, -100, 1500), 700);
+
+      expect(axisPinsEraBoundary(kAxisMinYear, kAxisMaxYear), isTrue,
+          reason: 'the wheel\'s own axis is what the pin is for');
+      expect(axisPinsEraBoundary(-500, 1000), isTrue);
+      expect(fractionForSpan(0, -500, 1000), closeTo(eraFraction, 1e-9));
     });
   });
 

@@ -50,37 +50,31 @@ const double sweepRad = 320 * math.pi / 180;
 
 /// The axis's year range.
 ///
-/// It lives here because [startRad] is DERIVED from it — move these and
-/// the BC|AD boundary slides off the bottom of the dial. The page keeps
-/// the argument for the two numbers (`kMinYear` / `kMaxYear`, with the
-/// creation anchor beside them) and now aliases these rather than
-/// stating them a second time.
+/// It lives here because the era pin is measured against it and the
+/// layout tests read it. The page keeps the argument for the two
+/// numbers (`kMinYear` / `kMaxYear`, with the creation anchor beside
+/// them) and aliases these rather than stating them a second time.
 const int kAxisMinYear = -4200;
 const int kAxisMaxYear = 2026;
 
-/// Where the axis begins, in canvas angles.
+/// Twelve o'clock in canvas angles, where the axis begins.
 ///
-/// SIX O'CLOCK IS YEAR 0, and this constant is the whole of what buys
-/// it. 2026-09-21, 「sword wheel 真好6个字 一半的位置应该是0年 现在好像
-/// 在7-8个字位置」 — and the reading was exact: on a linear -4200..2026
-/// axis starting at twelve o'clock, year 0 fell at 4200/6226 of a 320°
-/// sweep, which is 215.9°, which is 7.2 o'clock.
+/// TWO ANCHORS, AND THEY FIX EVERYTHING ELSE. 2026-09-21, in two asks:
+/// 「一半的位置应该是0年」 put year 0 at six o'clock, and then 「创世是12点
+/// 钟方向 这样时钟可能要密度再整理一下」 put the start of the chart back at
+/// twelve — with the density change named as the price of having both.
 ///
-/// So the axis starts wherever it must for the boundary to land at the
-/// bottom: six o'clock, less however far round year 0 sits. Today that
-/// is 10:48, and the gap wedge rides round with it to the upper left.
+/// It IS the price, and it is not adjustable. The axis start at twelve
+/// and year 0 at six are half a turn apart, so BC gets exactly 180° of
+/// the dial whatever [sweepRad] is; a wider sweep lengthens AD's half
+/// and cannot give BC back a degree. See [eraFraction] for what that
+/// costs and what it buys.
 ///
-/// THE ALTERNATIVE WAS MEASURED AND REJECTED. Giving BC the first half
-/// of the sweep and AD the rest puts year 0 at the bottom too, and it
-/// makes the two eras look equal, which is the tidier picture. It also
-/// squeezes every BC bearing by 17%, and the wheel's dense end IS the
-/// BC end: it cost seven of the twenty-five Genesis lives their name at
-/// 700 and 900 px, took the spokes still waiting for a name at 1.5x
-/// from two to six, and dropped a verse off the rim. Rotating costs
-/// nothing at all — every arc keeps the exact angle it had, and only
-/// the whole picture turns.
-const double startRad = math.pi / 2 -
-    (-kAxisMinYear / (kAxisMaxYear - kAxisMinYear)) * sweepRad;
+/// The FIRST attempt at 「一半的位置应该是0年」 kept one rate and rotated
+/// the whole picture instead, which cost nothing but put the start at
+/// 10:48 — and the start of this chart is the creation, which the owner
+/// wants at the top of the clock.
+const double startRad = -math.pi / 2;
 
 /// Centre-to-centre spacing of the rings, which is what a label has to
 /// stay inside to keep clear of the neighbouring stream — the band
@@ -214,27 +208,92 @@ int streamTierCount({
   );
 }
 
+/// How far along the axis the BC|AD boundary sits, as a fraction of
+/// [sweepRad].
+///
+/// HALF A TURN ROUND THE DIAL, so that with [startRad] at twelve
+/// o'clock year 0 is at six: 「创世是12点钟方向」 and 「一半的位置应该是
+/// 0年」 at once. π/[sweepRad] rather than the 0.5625 it works out to,
+/// because the thing being named is the clock position — move the
+/// sweep and the boundary must still come out at the bottom.
+///
+/// WHAT IT COSTS, measured rather than estimated. BC held 215.9° of the
+/// dial when one rate ran end to end and holds 180° now, so every BC
+/// bearing is 17% tighter, and the BC end is this chart's crowded end.
+/// The prices, all measured on 2026-09-21: the Genesis annulus can
+/// place 18 of its 25 names instead of 19 at 700 px and 20 at 900 px in
+/// English (Chinese is unmoved at 23 and 22); spokes still waiting for
+/// a name at 1.5x go from two to six; one verse leaves the rim, 11 to
+/// 10. Nothing is unreachable — every life is still in its stream's
+/// sheet, tappable, and named at a small zoom.
+///
+/// WHAT IT BUYS is the other half of the dial. AD ran at 19.5 years to
+/// the degree and runs at 14.5 now, which is 34% more room in the
+/// stretch this chart is densest in by record count — the modern
+/// centuries whose crowding `radial_chronology_page.dart` complains
+/// about directly.
+final double eraFraction = math.pi / sweepRad;
+
+/// The least of the axis either era must hold before the boundary is
+/// worth pinning.
+///
+/// THE PIN IS FOR AN AXIS WHERE BOTH ERAS ARE REAL. The wheel's own
+/// -4200..2026 qualifies twice over: BC is 67% of it by years and AD
+/// 33%. But the depth view rebuilds its axis from whatever period the
+/// reader filtered to (`radial_chronology_page.dart` hands the stacked
+/// wheel a `startYear` / `endYear`), and a range like -100..1500
+/// straddles the boundary with 100 BC years in it. Giving those 100
+/// years half the dial is the very distortion the pin exists to
+/// prevent, so under this share the axis stays plain linear.
+const double kEraPinFloor = 0.2;
+
+/// Whether an axis running [minYear]..[maxYear] pins the BC|AD boundary
+/// at [eraFraction], or runs at one rate end to end.
+bool axisPinsEraBoundary(int minYear, int maxYear) {
+  if (maxYear <= minYear || minYear >= 0 || maxYear <= 0) return false;
+  final span = maxYear - minYear;
+  return -minYear >= span * kEraPinFloor && maxYear >= span * kEraPinFloor;
+}
+
 /// Where [year] sits along an axis running [minYear]..[maxYear], as a
 /// fraction of the sweep.
 ///
-/// LINEAR, end to end, and it stays that way. Two events in the same
-/// year sit at the same fraction, later years sit further round, and
-/// one degree is the same number of years everywhere on the dial — the
-/// last of those is what lets a tolerance be quoted in years at all
-/// (`packIntoRings`' 0.02 rad, the declutter's `minGap`).
-double fractionForSpan(int year, int minYear, int maxYear) =>
-    maxYear <= minYear
-        ? 0
-        : ((year - minYear) / (maxYear - minYear)).clamp(0.0, 1.0);
+/// Linear WITHIN each era and pinned at the boundary. The two claims
+/// this chart rests on are untouched — two events in the same year are
+/// at the same fraction, and a later year is always further round — but
+/// a degree is no longer the same number of years on both sides, so a
+/// tolerance quoted in years has to say which era it meant.
+///
+/// An axis with no boundary in it, or barely any of one era, runs at
+/// one rate — see [axisPinsEraBoundary].
+double fractionForSpan(int year, int minYear, int maxYear) {
+  if (maxYear <= minYear) return 0;
+  if (!axisPinsEraBoundary(minYear, maxYear)) {
+    return ((year - minYear) / (maxYear - minYear)).clamp(0.0, 1.0);
+  }
+  if (year <= 0) {
+    return (eraFraction * (year - minYear) / -minYear).clamp(0.0, 1.0);
+  }
+  return (eraFraction + (1 - eraFraction) * year / maxYear).clamp(0.0, 1.0);
+}
 
 /// The year at [t] of the way along an axis running [minYear]..[maxYear].
 ///
 /// The inverse of [fractionForSpan], and the only one: every hit test on
 /// this wheel goes through here, so the year under a finger and the year
-/// the spoke was drawn for cannot drift apart.
-int yearForFraction(double t, int minYear, int maxYear) => maxYear <= minYear
-    ? minYear
-    : (minYear + t.clamp(0.0, 1.0) * (maxYear - minYear)).round();
+/// the spoke was drawn for cannot drift apart — which matters more now
+/// that inverting the mapping is no longer one multiplication.
+int yearForFraction(double t, int minYear, int maxYear) {
+  if (maxYear <= minYear) return minYear;
+  final f = t.clamp(0.0, 1.0);
+  if (!axisPinsEraBoundary(minYear, maxYear)) {
+    return (minYear + f * (maxYear - minYear)).round();
+  }
+  if (f <= eraFraction) {
+    return (minYear + f / eraFraction * -minYear).round();
+  }
+  return ((f - eraFraction) / (1 - eraFraction) * maxYear).round();
+}
 
 /// The angle for [year] on an axis running [minYear]..[maxYear].
 ///

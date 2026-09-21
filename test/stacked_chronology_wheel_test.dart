@@ -718,7 +718,19 @@ void main() {
       final cold = WheelTextMetrics.layoutsForTest;
       final count = (painter(tester).scene.records as Map).length;
       expect(cold, greaterThan(0));
-      expect(cold, lessThanOrEqualTo(2 * (count + 5)),
+      // 5 -> 6 on 2026-09-21. Year 0 moved to six o'clock
+      // (`eraFraction`), which moves every prism's bearing, so the
+      // initial camera fit lands elsewhere and one more label needs its
+      // second font size: cold 32 -> 34 in the China-only cell, which
+      // sat EXACTLY on the old ceiling and so could not absorb any
+      // geometry change at all.
+      //
+      // The claim this test is really making is untouched, and it was
+      // measured rather than assumed: with this bound lifted entirely,
+      // warm is still 0 and rotation is still 0 in both cells — nothing
+      // re-lays-out on a repaint or a turn — and the China-only cell
+      // paints one MORE name than before.
+      expect(cold, lessThanOrEqualTo(2 * (count + 6)),
           reason: 'Initial camera fit can require one additional font size.');
       WheelTextMetrics.zeroCounterForTest();
       expectRealPaintClear(tester);
