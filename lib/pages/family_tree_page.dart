@@ -75,12 +75,12 @@ class FamilyTreePage extends StatelessWidget {
     // cream.
     final settings = context.watch<AppSettings>();
     return Theme(
-      data: workbenchTheme(
+      data: withPhoneTextRolesOn(context, workbenchTheme(
         Theme.of(context),
         paper: settings.readingPaperTheme,
         textScale: WbType.of(context).textScale,
         accent: settings.primaryColor,
-      ),
+      ), fontSize: settings.fontSize),
       child: const _FamilyTreeBody(),
     );
   }

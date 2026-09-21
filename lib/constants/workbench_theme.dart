@@ -65,6 +65,7 @@ import 'package:provider/provider.dart';
 import 'package:yahwehs_sword/models/app_settings.dart';
 import 'package:yahwehs_sword/utils/analysis_focus.dart';
 import 'package:yahwehs_sword/utils/scripture_markup.dart' show ScriptureSpan;
+import 'package:yahwehs_sword/utils/responsive.dart';
 
 /// Metrics shared by every Workbench surface. Numbers, not opinions —
 /// they exist so panes stay on the same rhythm instead of each picking
@@ -1033,6 +1034,66 @@ Color versionTagColor(String code) {
   return HSLColor.fromAHSL(1, (h % 360).toDouble(), 0.55, 0.35).toColor();
 }
 
+/// [theme] with [withPhoneTextRoles] applied when [context] is a phone,
+/// untouched otherwise.
+///
+/// Every place that builds a workbench theme goes through this, not
+/// only the app root. Five surfaces rebuild `workbenchTheme` locally —
+/// the workbench itself, the family tree, the books list, the changelog
+/// and the chapter picker — and a rebuild resets the text roles to the
+/// dense 12 px underneath whatever the root had set. The first cut of
+/// this change applied the phone roles at the root alone, and the family
+/// tree's search hint stayed at 12 px for exactly that reason.
+ThemeData withPhoneTextRolesOn(BuildContext context, ThemeData theme,
+        {required double fontSize}) =>
+    ResponsiveBreakpoints.isPhone(MediaQuery.sizeOf(context).width)
+        ? withPhoneTextRoles(theme, fontSize: fontSize)
+        : theme;
+
+/// On a phone, the theme's text roles take Yahweh's Words' sizes.
+///
+/// 2026-09-21, 「跟words一样大」, after a side-by-side of both apps at 390
+/// wide. The gap was not everywhere: family tree, evidence and timeline
+/// already printed at Words' sizes, measured glyph for glyph, because
+/// those pages name their sizes. What was small was every surface that
+/// leans on the THEME — list-tile titles, search fields, expansion
+/// headers — because this theme pins `bodyLarge` / `bodyMedium` at the
+/// workbench's dense 12 px, where Words' theme sets them from the
+/// reader's Font Size: 20 and 18 at the default. A sermon topic title
+/// measured 11 px of ink in Sword and 19 in Words.
+///
+/// So on a phone the roles Words overrides take Words' values, and the
+/// three this theme had pinned to the 11 px chrome size go back to
+/// Material's, which is what Words uses — each still on the Font Size
+/// slider's scale here, so at the default they are exactly Words'
+/// numbers and the slider keeps working. A wide screen keeps the
+/// workbench's density: it is a three-pane analysis surface there, and
+/// the owner's instruction was to leave wide screens as they are.
+ThemeData withPhoneTextRoles(ThemeData theme, {required double fontSize}) {
+  final t = theme.textTheme;
+  final scale = WbType.scaleFor(fontSize);
+  TextStyle? at(TextStyle? r, double size) => r?.copyWith(fontSize: size);
+  return theme.copyWith(
+    textTheme: t.copyWith(
+      // Words: `settings.fontSize`, `- 2`, `+ 4` (lib/main.dart there).
+      bodyLarge: at(t.bodyLarge, fontSize),
+      bodyMedium: at(t.bodyMedium, fontSize - 2),
+      titleLarge: at(t.titleLarge, fontSize + 4),
+      // Words: Material's own sizes for these three.
+      bodySmall: at(t.bodySmall, 12 * scale),
+      labelSmall: at(t.labelSmall, 11 * scale),
+      titleSmall: at(t.titleSmall, 14 * scale),
+    ),
+    // A field's hint is theme text too. This theme pins it at 12 px;
+    // Words leaves it to Material, which draws it at `bodyLarge` — the
+    // same size the reader's typed words will be.
+    inputDecorationTheme: theme.inputDecorationTheme.copyWith(
+      hintStyle: theme.inputDecorationTheme.hintStyle
+          ?.copyWith(fontSize: fontSize),
+    ),
+  );
+}
+
 /// Builds the Workbench's [ThemeData] from the app's own [parent] theme.
 ///
 /// Deliberately does NOT inherit the app's seeded purple scheme: the
@@ -1566,6 +1627,59 @@ ThemeData workbenchTheme(
 /// it RELATIVE to their own defaults rather than being adopted
 /// outright: a reader at font size 24 gets a proportionally larger
 /// workbench, not a workbench with 24px body text.
+/// How much larger a [PhoneBoostedPage] draws on a phone.
+///
+/// 2026-09-21, 「跟words一样大」 for every page. Most of Sword reached
+/// Words' sizes through the theme (`withPhoneTextRoles`), and the pages
+/// ported from Words name Words' own numbers. What was left are the pages
+/// Sword wrote for the workbench — Nave's, the lexicon, the
+/// illustrations, the atlas, the concordance, the word list — which
+/// name the workbench's dense 11 and 12 px and have no Words counterpart
+/// to copy. (Phrasing is not one of them: it sizes itself off the
+/// reader's own Font Size, so it was never small. Nor are the CHARTS —
+/// the kings chart, the chronologies, the wheel: their label room is laid
+/// out for the dense sizes, and boosting the kings chart was tried and
+/// clipped 「大卫 公元前1010–」 to 「大卫 公元前」 at 390 wide.)
+///
+/// So they are calibrated to the band Words' own named sizes sit in.
+/// Words' family tree, evidence and timeline set most of their text
+/// between 13 and 16 px (measured glyph for glyph against Sword's ports
+/// of the same pages, which match them); 1.25 takes the workbench's 11
+/// and 12 to about 14 and 15, inside it. One number for all of them, so
+/// they stay consistent with each other.
+const double kPhonePageBoost = 1.25;
+
+/// A page written at the workbench's density, which should draw at
+/// [kPhonePageBoost] on a phone. `pushPage` wraps it in [WbPhoneBoost].
+mixin PhoneBoostedPage on Widget {}
+
+/// Carries [kPhonePageBoost] down to [WbType.of] for a [PhoneBoostedPage].
+///
+/// Applied only on a phone: [of] answers 1 on any screen 600 wide or
+/// more, so a boosted page on a tablet or desktop is exactly as dense as
+/// it always was.
+class WbPhoneBoost extends InheritedWidget {
+  const WbPhoneBoost({
+    super.key,
+    this.factor = kPhonePageBoost,
+    required super.child,
+  });
+
+  final double factor;
+
+  static double of(BuildContext context) {
+    final boost = context.dependOnInheritedWidgetOfExactType<WbPhoneBoost>();
+    if (boost == null) return 1.0;
+    return ResponsiveBreakpoints.isPhone(MediaQuery.sizeOf(context).width)
+        ? boost.factor
+        : 1.0;
+  }
+
+  @override
+  bool updateShouldNotify(WbPhoneBoost oldWidget) =>
+      oldWidget.factor != factor;
+}
+
 class WbType {
   const WbType({
     required this.text,
@@ -1692,6 +1806,7 @@ class WbType {
       menuScale: s.menuScale,
       fontFamily: s.fontFamily,
       platform: Theme.of(context).platform,
+      boost: WbPhoneBoost.of(context),
     );
   }
 
@@ -1749,12 +1864,16 @@ class WbType {
     /// the density alone", which is the safe direction: the other way
     /// round, a forgotten argument would silently grow the workspace.
     TargetPlatform platform = TargetPlatform.macOS,
+    /// [kPhonePageBoost] on a boosted page on a phone, else 1. Applied
+    /// after the guards, so it lifts whatever the sliders chose.
+    double boost = 1.0,
   }) {
     // 20 / 1.5 / 1.0 are the app defaults for these three. Expressing
     // the bounds as the slider's own ends divided by the default is what
     // makes the two impossible to drift apart again.
-    final textScale = scaleFor(fontSize);
-    final chromeScale = menuScale.clamp(kMenuScaleMin, kMenuScaleMax);
+    final textScale = scaleFor(fontSize) * boost;
+    final chromeScale =
+        menuScale.clamp(kMenuScaleMin, kMenuScaleMax).toDouble() * boost;
     // Plus the hairline, because every one of these strips draws one
     // and a border eats its own width out of the content box: floored
     // at a bare 24 the strips came out 24 and the buttons inside them

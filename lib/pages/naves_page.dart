@@ -73,7 +73,7 @@ const int _textHitCap = 200;
 /// Below this the search field stops sharing a row with the tier button.
 const double _controlsOneRowMin = 560;
 
-class NavesPage extends StatefulWidget {
+class NavesPage extends StatefulWidget with PhoneBoostedPage {
   const NavesPage({super.key, this.initialTopicId, this.initialLine});
 
   /// Opened on a topic rather than on the index.

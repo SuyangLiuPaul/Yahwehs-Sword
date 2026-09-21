@@ -164,7 +164,7 @@ class _Articles {
       _fold[number] ??= lexiconCollationKey(articleOf(number));
 }
 
-class LexiconPage extends StatefulWidget {
+class LexiconPage extends StatefulWidget with PhoneBoostedPage {
   const LexiconPage({super.key, this.initial = LexiconId.hebrew});
 
   final LexiconId initial;

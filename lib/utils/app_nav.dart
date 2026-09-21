@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import 'package:yahwehs_sword/constants/motion.dart';
+import 'package:yahwehs_sword/constants/workbench_theme.dart';
 
 /// Canonical page-push helper — every `Get.to(...)` in the app should
 /// route through here instead of specifying its own transition/duration/
@@ -28,7 +29,9 @@ Future<T?>? pushPage<T>(
   bool preventDuplicates = true,
 }) =>
     Get.to<T>(
-      () => page,
+      // A page written at the workbench's density draws larger on a
+      // phone — see `kPhonePageBoost`.
+      () => page is PhoneBoostedPage ? WbPhoneBoost(child: page) : page,
       routeName: routeName ?? '/${page.runtimeType}',
       preventDuplicates: preventDuplicates,
       transition: reverse ? Transition.leftToRight : Transition.rightToLeft,

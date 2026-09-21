@@ -72,7 +72,7 @@ import 'package:yahwehs_sword/widgets/language_switcher_button.dart';
 import 'package:yahwehs_sword/widgets/localized_back_button.dart';
 import 'package:yahwehs_sword/widgets/wb_surfaces.dart';
 
-class ModernConcordancePage extends StatefulWidget {
+class ModernConcordancePage extends StatefulWidget with PhoneBoostedPage {
   const ModernConcordancePage({super.key, this.initialTopicId});
 
   /// Open straight onto a topic. Used by tests and by any future caller

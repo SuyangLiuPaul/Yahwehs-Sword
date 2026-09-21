@@ -311,12 +311,12 @@ class _BookChapterPickerState extends State<BookChapterPicker> {
     // ground of its own, so without one the host's Material 3 surface
     // shows between the rows — a white list under a workbench header.
     return Theme(
-      data: workbenchTheme(
+      data: withPhoneTextRolesOn(context, workbenchTheme(
         Theme.of(context),
         paper: settings.readingPaperTheme,
         textScale: WbType.scaleFor(settings.fontSize),
         accent: settings.primaryColor,
-      ),
+      ), fontSize: settings.fontSize),
       child: Builder(
         builder: (themedContext) => ColoredBox(
           color: WbColors.of(themedContext).paneBg,

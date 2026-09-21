@@ -49,12 +49,12 @@ class _ChangelogPageState extends State<ChangelogPage> {
     final settings = Provider.of<AppSettings>(context);
     final locale = settings.locale;
     return Theme(
-      data: workbenchTheme(
+      data: withPhoneTextRolesOn(context, workbenchTheme(
         Theme.of(context),
         paper: settings.readingPaperTheme,
         textScale: WbType.scaleFor(settings.fontSize),
         accent: settings.primaryColor,
-      ),
+      ), fontSize: settings.fontSize),
       child: Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(

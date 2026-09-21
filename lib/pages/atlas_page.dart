@@ -105,7 +105,7 @@ const double _detailPanelWidth = 320;
 
 /// The one map surface. Everything is optional, because the page has to
 /// stand alone when opened cold from the Resources menu.
-class AtlasPage extends StatefulWidget {
+class AtlasPage extends StatefulWidget with PhoneBoostedPage {
   const AtlasPage({
     super.key,
     this.subjectPlaces,

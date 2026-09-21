@@ -37,10 +37,13 @@ import 'package:yahwehs_sword/services/jesus_teachings_service.dart';
 import 'package:yahwehs_sword/services/map_service.dart';
 import 'package:yahwehs_sword/services/sermon_service.dart';
 import 'package:yahwehs_sword/utils/font_catalog.dart' show kCjkFontFallback;
-import 'package:yahwehs_sword/utils/passage_localizer.dart' show localizePassage;
+import 'package:yahwehs_sword/utils/passage_localizer.dart'
+    show localizePassage;
 import 'package:yahwehs_sword/utils/reference_parser.dart' show parseReference;
+import 'package:yahwehs_sword/utils/responsive.dart';
 import 'package:yahwehs_sword/widgets/localized_back_button.dart';
-import 'package:yahwehs_sword/widgets/verse_popup_sheet.dart' show showVersePopup;
+import 'package:yahwehs_sword/widgets/verse_popup_sheet.dart'
+    show showVersePopup;
 
 const Map<String, String> kJesusTeachingsTitle = {
   'zh-Hans': '主耶稣的教导',
@@ -108,6 +111,16 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
   /// still in the order the gospels put them.
   String? _kind;
 
+  /// True on a phone, where this page takes Yahweh's Words' sizes.
+  ///
+  /// 2026-09-21, 「跟words一样大」. Most shared pages reached Words' sizes
+  /// through the theme (`withPhoneTextRoles`); this one names its sizes,
+  /// because it was written for the workbench first, so every size below
+  /// carries its own phone number — the one Words' copy of this page uses
+  /// for the same element — still on the Font Size slider's scale. A wide
+  /// screen keeps the workbench size. Set at the top of [build].
+  bool _phoneLayout = false;
+
   @override
   void initState() {
     super.initState();
@@ -141,6 +154,8 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
     final locale = context.watch<AppSettings>().locale;
     final wb = WbColors.of(context);
     final t = WbType.of(context);
+    _phoneLayout =
+        ResponsiveBreakpoints.isPhone(MediaQuery.sizeOf(context).width);
     return Scaffold(
       backgroundColor: wb.paneBg,
       appBar: AppBar(
@@ -202,7 +217,7 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
                 color: wb.text,
                 fontFamily: t.fontFamily,
                 fontFamilyFallback: kCjkFontFallback,
-                fontSize: t.scaled(12.5),
+                fontSize: t.scaled(_phoneLayout ? 14 : 12.5),
                 height: 1.5,
               )),
           const SizedBox(height: 10),
@@ -220,8 +235,9 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
                 color: wb.mutedText,
                 fontFamily: t.fontFamily,
                 fontFamilyFallback: kCjkFontFallback,
-                fontSize:
-                    _atLeast(t.scaledSmall(11), WbMetrics.smallPrintFloor),
+                fontSize: _phoneLayout
+                    ? t.scaled(12)
+                    : _atLeast(t.scaledSmall(11), WbMetrics.smallPrintFloor),
                 height: 1.45,
               )),
         ],
@@ -249,8 +265,9 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
               color: on ? wb.text : wb.mutedText,
               fontFamily: t.fontFamily,
               fontFamilyFallback: kCjkFontFallback,
-              fontSize:
-                  _atLeast(t.scaledSmall(11.5), WbMetrics.smallPrintFloor),
+              fontSize: _phoneLayout
+                  ? t.scaled(13)
+                  : _atLeast(t.scaledSmall(11.5), WbMetrics.smallPrintFloor),
               fontWeight: on ? FontWeight.w600 : FontWeight.w400,
             )),
       ),
@@ -284,7 +301,13 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
                           color: wb.text,
                           fontFamily: t.fontFamily,
                           fontFamilyFallback: kCjkFontFallback,
-                          fontSize: t.scaled(teaching.isDiscourse ? 14 : 12.5),
+                          fontSize: t.scaled(_phoneLayout
+                              ? teaching.isDiscourse
+                                  ? 16
+                                  : 15
+                              : teaching.isDiscourse
+                                  ? 14
+                                  : 12.5),
                           fontWeight: teaching.isDiscourse
                               ? FontWeight.w700
                               : FontWeight.w600,
@@ -302,8 +325,10 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
                               color: wb.mutedText,
                               fontFamily: t.fontFamily,
                               fontFamilyFallback: kCjkFontFallback,
-                              fontSize: _atLeast(
-                                  t.scaledSmall(11), WbMetrics.smallPrintFloor),
+                              fontSize: _phoneLayout
+                                  ? t.scaled(12.5)
+                                  : _atLeast(t.scaledSmall(11),
+                                      WbMetrics.smallPrintFloor),
                               height: 1.35,
                             )),
                       ],
@@ -313,8 +338,10 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
                             color: wb.mutedText,
                             fontFamily: t.fontFamily,
                             fontFamilyFallback: kCjkFontFallback,
-                            fontSize: _atLeast(
-                                t.scaledSmall(11), WbMetrics.smallPrintFloor),
+                            fontSize: _phoneLayout
+                                ? t.scaled(12.5)
+                                : _atLeast(t.scaledSmall(11),
+                                    WbMetrics.smallPrintFloor),
                             height: 1.35,
                           )),
                     ],
@@ -344,8 +371,9 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
                   color: wb.mutedText,
                   fontFamily: t.fontFamily,
                   fontFamilyFallback: kCjkFontFallback,
-                  fontSize:
-                      _atLeast(t.scaledSmall(11), WbMetrics.smallPrintFloor),
+                  fontSize: _phoneLayout
+                      ? t.scaled(12.5)
+                      : _atLeast(t.scaledSmall(11), WbMetrics.smallPrintFloor),
                   fontWeight: FontWeight.w600,
                 )),
             const SizedBox(height: 5),
@@ -368,8 +396,10 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
                       color: wb.link,
                       fontFamily: t.fontFamily,
                       fontFamilyFallback: kCjkFontFallback,
-                      fontSize: _atLeast(
-                          t.scaledSmall(11.5), WbMetrics.smallPrintFloor),
+                      fontSize: _phoneLayout
+                          ? t.scaled(13.5)
+                          : _atLeast(
+                              t.scaledSmall(11.5), WbMetrics.smallPrintFloor),
                     )),
                 if (note != null)
                   Text(note,
@@ -384,8 +414,10 @@ class _JesusTeachingsPageState extends State<JesusTeachingsPage> {
                         // note the same size as the label above it at
                         // the bottom of the slider, which inverts their
                         // rank exactly where legibility is tightest.
-                        fontSize: _atLeast(
-                            t.scaledSmall(11), WbMetrics.smallPrintFloor),
+                        fontSize: _phoneLayout
+                            ? t.scaled(12)
+                            : _atLeast(
+                                t.scaledSmall(11), WbMetrics.smallPrintFloor),
                       )),
               ],
             ),

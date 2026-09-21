@@ -71,7 +71,7 @@ const double _controlsOneRowMin = 620;
 const double _tileMaxWidth = 210;
 const double _tileHeight = 196;
 
-class IllustrationsPage extends StatefulWidget {
+class IllustrationsPage extends StatefulWidget with PhoneBoostedPage {
   const IllustrationsPage({super.key});
 
   @override

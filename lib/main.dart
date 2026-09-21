@@ -857,6 +857,12 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
             ),
           )),
           builder: (context, child) {
+            // On a phone, Words' text sizes — see `withPhoneTextRoles`.
+            final page = Theme(
+              data: withPhoneTextRolesOn(context, Theme.of(context),
+                  fontSize: settings.fontSize),
+              child: child!,
+            );
             return ScrollConfiguration(
               // 2026-08 (ported from YsWords v1.4.5): AppScrollBehavior
               // adds bouncy physics to EVERY scrollable app-wide (see its
@@ -864,7 +870,7 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
               // covers a fraction of the list files. `scrollbars: true`
               // is preserved.
               behavior: const AppScrollBehavior().copyWith(scrollbars: true),
-              child: child!,
+              child: page,
             );
           },
           // 2026-05-24 (v1.3.21): BreadcrumbObserver auto-records

@@ -47,12 +47,12 @@ class BooksPage extends StatelessWidget {
     final settings = Provider.of<AppSettings>(context);
 
     return Theme(
-      data: workbenchTheme(
+      data: withPhoneTextRolesOn(context, workbenchTheme(
         Theme.of(context),
         paper: settings.readingPaperTheme,
         textScale: WbType.scaleFor(settings.fontSize),
         accent: settings.primaryColor,
-      ),
+      ), fontSize: settings.fontSize),
       child: Builder(
         builder: (context) =>
             _buildScaffold(context, mainProvider, settings),

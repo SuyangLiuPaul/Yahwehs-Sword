@@ -23,7 +23,8 @@ import 'package:flutter/services.dart';
 import 'package:yahwehs_sword/constants/book_names.dart'
     show bookNameToEnglish, standardBookOrder;
 import 'package:yahwehs_sword/constants/ui_strings.dart';
-import 'package:yahwehs_sword/constants/workbench_theme.dart' show WbType;
+import 'package:yahwehs_sword/constants/workbench_theme.dart'
+    show PhoneBoostedPage, WbType;
 import 'package:yahwehs_sword/pages/strongs_entry_page.dart';
 import 'package:yahwehs_sword/services/concordance_service.dart';
 import 'package:yahwehs_sword/models/original_word.dart';
@@ -49,7 +50,7 @@ enum _Scope { chapter, book, testament, compare }
 /// never be read as counting something else (#308).
 enum _CmpFilter { all, both, onlyA, onlyB }
 
-class WordListPage extends StatefulWidget {
+class WordListPage extends StatefulWidget with PhoneBoostedPage {
   const WordListPage({
     super.key,
     required this.book,
