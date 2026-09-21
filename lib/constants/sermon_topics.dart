@@ -9,6 +9,17 @@
 /// in published materials). Add a new entry here whenever a new
 /// topic appears in the corpus index.
 const Map<String, Map<String, String>> sermonTopicI18n = {
+  // 2026-09-21: the 140 Chinese-only messages that reached Yahweh's
+  // Words from the 福音电台 source when the owner ruled there is one
+  // corpus, Pastor Eric Chang's. 106 of them sit in the existing
+  // topics; this is the topic the other 34 keep. Copied with
+  // the key unchanged — it has to be ASCII, because `topicSlug()` throws
+  // on a name that slugs to nothing.
+  'FYDT Chinese Messages': {
+    'zh-Hans': '福音电台信息',
+    'zh-Hant': '福音電台信息',
+    'en': 'FYDT Radio Messages',
+  },
   'Baptism': {
     'zh-Hans': '洗礼',
     'zh-Hant': '洗禮',

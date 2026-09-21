@@ -99,18 +99,23 @@ void main() {
     // `parts` fields sum to 589, which is the number 587 was probably
     // reaching for. A reader choosing what to download is choosing
     // sermons, so the label states sermons.
-    test('the sermon index really holds 289 records', () {
+    // 429 since 2026-09-21 — the 140 Chinese-only messages from the
+    // 福音电台 merge — of which 289 ship in all three languages. The
+    // label states both, in Words' wording.
+    test('the sermon index really holds 429 records', () {
       final raw =
           File('assets/sermons/index.json').readAsStringSync();
       final records = jsonDecode(raw) as List<dynamic>;
-      expect(records.length, 289);
+      expect(records.length, 429);
     });
 
     test('the label states that number in every locale', () {
       final entry = uiStrings['offlinePackSermons'];
       expect(entry, isNotNull);
       for (final l in _locales) {
-        expect(entry![l], contains('289'), reason: 'stale count in $l');
+        expect(entry![l], contains('429'), reason: 'stale count in $l');
+        expect(entry[l], contains('289'),
+            reason: 'the three-language share is gone in $l');
         expect(entry[l], isNot(contains('587')));
       }
     });

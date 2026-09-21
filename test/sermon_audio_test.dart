@@ -57,13 +57,32 @@ void main() {
   });
 
   group('the two assets agree', () {
-    test('289 sermons on both sides, an exact bijection', () {
-      expect(index.length, 289);
+    // 2026-09-21: no longer a bijection, and deliberately. The 140
+    // Chinese-only messages from the 福音电台 merge have transcripts and
+    // no recordings — their `parts` is empty — so the index holds 429 and
+    // the audio 289. What must still hold is that the two agree about
+    // WHICH: every sermon that lists parts has them, and nothing without
+    // parts has audio. `sermon_detail_page` shows no player for an empty
+    // list, so a sermon with no recording costs no space at all.
+    test('every sermon that lists parts has its recording, and no other',
+        () {
+      expect(index.length, 429);
       expect(audio.length, 289);
-      final indexIds = {for (final s in index) s['id'] as String};
-      expect(audio.keys.toSet(), indexIds,
-          reason: 'a sermon has audio the index does not list, or the '
-              'other way round');
+      final recorded = {
+        for (final s in index)
+          if (((s['parts'] as String?) ?? '').trim().isNotEmpty)
+            s['id'] as String
+      };
+      expect(audio.keys.toSet(), recorded,
+          reason: 'a sermon has audio the index does not list parts for, '
+              'or the other way round');
+      final unrecorded = {
+        for (final s in index)
+          if (!recorded.contains(s['id'])) s['id'] as String
+      };
+      expect(unrecorded, hasLength(140));
+      expect(unrecorded.every((id) => id.startsWith('fy-')), isTrue,
+          reason: 'only the 福音电台 messages come without recordings');
     });
 
     test('the part letters match `index.json` sermon for sermon', () {
@@ -78,7 +97,8 @@ void main() {
             .where((p) => p.isNotEmpty)
             .toList();
         final got = [
-          for (final f in audio[id]!) (f as Map<String, dynamic>)['p'] as String
+          for (final f in audio[id] ?? const <dynamic>[])
+            (f as Map<String, dynamic>)['p'] as String
         ];
         expect(got, want, reason: 'sermon $id: index says ${s['parts']}');
       }

@@ -363,6 +363,75 @@ _ONE_CHAPTER_VERSE_RE = re.compile(
     re.IGNORECASE)
 
 
+# Chinese citations as the preacher SPEAKS them, 2026-09-21.
+#
+# The 140 Chinese-only messages that came over from Yahweh's Words with
+# the 福音电台 merge cite scripture aloud: 「罗马书五章十二到二十一节」,
+# 「马太福音第五章」. REF_RE cannot see any of it, for two reasons at
+# once — the numbers are Chinese numerals, and its leading `\b` never
+# fires inside Chinese text, where every character is a word character,
+# so 「看罗马书」 has no boundary between 看 and 罗. Thirteen of the 140
+# reached the index with no reference at all; Words indexes all 13.
+#
+# Two guards keep this from reading prose as scripture. A citation must
+# say 章 (or give a colon verse) after its number, which no ordinary
+# sentence puts after a book name. And only book names of two characters
+# or more are admitted: the 64 one-character abbreviations — 约, 路, 罗 —
+# occur inside ordinary words (大约三章 is not John 3).
+_CN_DIGITS = {'零': 0, '〇': 0, '一': 1, '二': 2, '两': 2, '兩': 2,
+              '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8, '九': 9}
+
+
+def _cn_int(s: str) -> int | None:
+    """「十二」→ 12, 「二十一」→ 21, 「一百五十」→ 150, or Arabic digits."""
+    if s.isdigit():
+        return int(s)
+    total = num = 0
+    for ch in s:
+        if ch in _CN_DIGITS:
+            num = _CN_DIGITS[ch]
+        elif ch == '十':
+            total += (num or 1) * 10
+            num = 0
+        elif ch == '百':
+            total += (num or 1) * 100
+            num = 0
+        else:
+            return None
+    return total + num
+
+
+_ZH_NUM = '0-9零〇一二两兩三四五六七八九十百'
+_ZH_BOOKS = sorted(
+    {k for k in ALIAS
+     if len(k) >= 2 and all('一' <= c <= '鿿' for c in k)},
+    key=lambda k: (-len(k), k))
+_ZH_REF_RE = re.compile(
+    '(' + '|'.join(re.escape(b) for b in _ZH_BOOKS) + ')'
+    rf'\s*第?([{_ZH_NUM}]+)\s*'
+    # The verse ends at 节 — or runs straight on into a range or a list,
+    # 「第十一章第二十八和二十九节」, 「七章二十一至二十三节」, which
+    # names the verse just as surely; the 章 before it is the guard.
+    rf'(?:章(?:\s*第?([{_ZH_NUM}]+)\s*(?=[节節至到和、\-–—~]))?'
+    rf'|[:：]\s*(\d+))')
+
+
+def _key(canon: str, ch: int, v: int | None) -> str | None:
+    """The index key for a citation, or None when it names nothing.
+
+    A one-chapter book keeps the corpus's `Book N` convention (see
+    _ONE_CHAPTER_BOOKS): 「犹大书1:1」 is `Jude 1`, and a bare 「犹大书
+    一章」 names the whole book, which the verse-shaped key cannot say.
+    """
+    if ch <= 0 or ch > 200:
+        return None
+    if canon in _ONE_CHAPTER_BOOKS:
+        if ch == 1 and v:
+            return f'{canon} {v}'
+        return None if ch == 1 else f'{canon} {ch}'
+    return f'{canon} {ch}:{v}' if v else f'{canon} {ch}'
+
+
 def extract_refs(text: str) -> list[str]:
     """Return canonical "Book chapter:verse" strings (deduped, in
     order of first appearance) found in [text]."""
@@ -389,9 +458,14 @@ def extract_refs(text: str) -> list[str]:
                 v = int(verse)
             except ValueError:
                 v = None
-            key = f"{canon} {ch}:{v}" if v else f"{canon} {ch}"
         else:
-            key = f"{canon} {ch}"
+            v = None
+        # A one-chapter book's `1:N` is `Book N` in this corpus — see
+        # `_key`. Anything else keeps the shape it always had.
+        if canon in _ONE_CHAPTER_BOOKS and ch == 1 and v:
+            key = f"{canon} {v}"
+        else:
+            key = f"{canon} {ch}:{v}" if v else f"{canon} {ch}"
         if key not in seen:
             seen.add(key)
             found.append((m.start(), key))
@@ -407,6 +481,21 @@ def extract_refs(text: str) -> list[str]:
             continue
         key = f"{canon} {v}"
         if key not in seen:
+            seen.add(key)
+            found.append((m.start(), key))
+
+    # The spoken Chinese form, merged by position like the one above.
+    for m in _ZH_REF_RE.finditer(text):
+        canon = ALIAS.get(normalize_alias(m.group(1)))
+        if not canon:
+            continue
+        ch = _cn_int(m.group(2))
+        verse_raw = m.group(3) or m.group(4)
+        v = _cn_int(verse_raw) if verse_raw else None
+        if ch is None or (verse_raw and not v) or (v and v > 200):
+            continue
+        key = _key(canon, ch, v)
+        if key and key not in seen:
             seen.add(key)
             found.append((m.start(), key))
 

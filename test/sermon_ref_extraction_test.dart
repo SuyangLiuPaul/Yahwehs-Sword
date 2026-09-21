@@ -172,7 +172,37 @@ void main() {
         if ((bySermon[s['id'] as String] ?? const <String>[]).isEmpty)
           s['id'] as String
     ];
-    expect(empty, isEmpty,
+    // 2026-09-21: ONE sermon is allowed to cite nothing, because it
+    // doesn't. `fy-topm_01`, 「尼西亚信经与康士坦丁大帝」, is church
+    // history — the council and the creed, not an exposition — and names
+    // no chapter anywhere. Yahweh's Words, whose extractor reads the same
+    // text independently, indexes nothing for it either. Checked below
+    // rather than trusted: if a citation ever appears in it, this
+    // exemption is wrong and the test says so.
+    const citesNothing = {'fy-topm_01'};
+    expect(empty.where((id) => !citesNothing.contains(id)), isEmpty,
         reason: 'these sermons cite scripture the index cannot see');
+    for (final id in citesNothing) {
+      for (final lang in ['zh-CN', 'zh-TW']) {
+        final text =
+            File('assets/sermons/$lang/$id.txt').readAsStringSync();
+        expect(RegExp(r'[0-9一二三四五六七八九十]+\s*[章:：]').hasMatch(text),
+            isFalse,
+            reason: '$id ($lang) names a chapter after all — it should be '
+                'indexed, not exempted');
+      }
+    }
+  });
+
+  // The spoken Chinese form, 2026-09-21. The 140 messages from the
+  // 福音电台 merge cite scripture aloud, in Chinese numerals, inside
+  // running Chinese text — where REF_RE's `\b` never fires.
+  test('Chinese numerals and ranges are read as the verses they name', () {
+    expect(bySermon['fy-rms06-01'], contains('Romans 5:12'),
+        reason: '「罗马书五章十二到二十一节」');
+    expect(bySermon['366'], contains('Matthew 11:28'),
+        reason: '「马太福音第11章第28和…」 — a verse running into a list');
+    expect(bySermon['047'], contains('Matthew 7:21'),
+        reason: '「马太福音七章二十一至…」 — a verse running into a range');
   });
 }

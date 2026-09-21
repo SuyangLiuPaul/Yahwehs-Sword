@@ -1637,12 +1637,17 @@ const uiStrings = {
   // 289, not 587 — see the note at `offlinePackSermons` below. The
   // offline-pack rows were corrected when that count was first measured;
   // these three, the FIRST number a new reader is ever shown, were
-  // missed. `assets/sermons/index.json` holds 289 records.
+  // missed.
+  //
+  // 429 since 2026-09-21: the 140 Chinese-only messages from the 福音电台
+  // merge came over from Yahweh's Words, so the corpus is no longer one
+  // shape. The sentence is Words' own, word for word — it already had to
+  // say this, and two apps describing one corpus should say it alike.
   'onboardSermonsBody': {
-    'zh-Hans': '289 篇解经讲道（英／简／繁）。讲道中的经文引用可弹出小窗预览，无需离开。主页有「继续讲道」卡片显示上次进度。',
-    'zh-Hant': '289 篇解經講道（英／簡／繁）。講道中的經文引用可彈出小窗預覽，無需離開。主頁有「繼續講道」卡片顯示上次進度。',
+    'zh-Hans': '429 篇解经讲道，其中 289 篇有英／简／繁三语，另 140 篇为简／繁双语。讲道中的经文引用可弹出小窗预览，无需离开。主页有「继续讲道」卡片显示上次进度。',
+    'zh-Hant': '429 篇解經講道，其中 289 篇有英／簡／繁三語，另 140 篇為簡／繁雙語。講道中的經文引用可彈出小窗預覽，無需離開。主頁有「繼續講道」卡片顯示上次進度。',
     'en':
-        '289 expository sermons in EN / 简 / 繁. Verse refs in the body open a popup so you can peek at scripture without leaving. Home shows a "Resume sermon" card with your progress.',
+        '429 expository sermons — 289 in EN / 简 / 繁, plus 140 more in 简 / 繁 only. Verse refs in the body open a popup so you can peek at scripture without leaving. Home shows a "Resume sermon" card with your progress.',
   },
   'onboardDiscoverTitle': {
     'zh-Hans': '探索工具',
@@ -1770,10 +1775,13 @@ const uiStrings = {
   // `parts` fields sum to 589, and each record ships in up to 3
   // languages for 867 body files. 587 looks like a mis-transcribed part
   // count. 289 is what a reader is choosing to download.
+  //
+  // 429 since 2026-09-21, 289 of them in three languages — the 140 from
+  // the 福音电台 merge are Chinese only. Words' wording, as above.
   'offlinePackSermons': {
-    'zh-Hans': '{name}讲道（289 篇 ×3 语）',
-    'zh-Hant': '{name}講道（289 篇 ×3 語）',
-    'en': 'Sermons by {name} (289 × 3 languages)',
+    'zh-Hans': '{name}讲道（429 篇，289 篇 ×3 语）',
+    'zh-Hant': '{name}講道（429 篇，289 篇 ×3 語）',
+    'en': "{name}'s sermons (429, 289 × 3 langs)",
   },
   'offlinePackTools': {
     'zh-Hans': '研经工具（家谱 / 时间轴 / 证据 / 互参 / 读经计划等）',
