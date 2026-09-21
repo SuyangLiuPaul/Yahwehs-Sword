@@ -693,6 +693,8 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         uiStrings[key]?[locale] ?? fallback;
     final splitFits =
         splitFitsIn(_paneWidths(MediaQuery.sizeOf(context).width).centre);
+    // One pane at a time, and no side panes — see the View menu.
+    final phone = !_isThreePane(MediaQuery.sizeOf(context).width);
     // The stack as the Browse pane will actually draw it — the reading
     // version first, then the comparisons — which is the same list the
     // diff partitions by language.
@@ -717,16 +719,42 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         // was already showing.
       ]),
       WbMenu(s('menuView', 'View'), [
-        WbMenuItem(
-          s('menuSearchWindow', 'Search window'),
-          () => _setLeftOpen(!_leftOpen),
-          checked: _leftOpen,
-        ),
-        WbMenuItem(
-          s('menuAnalysisWindow', 'Analysis window'),
-          () => _setRightOpen(!_rightOpen),
-          checked: _rightOpen,
-        ),
+        // On a phone these name SCREENS, not side panes. A phone draws one
+        // pane at a time and never the side ones, so toggling
+        // `_leftOpen` there changed nothing on screen — harmless while
+        // the bottom tabs were the phone's way to these two, and a dead
+        // entry once the reader went immersive and the tabs went with it
+        // (2026-09-21, 「那个不用」). Choosing one now shows it, and its
+        // screen brings the workspace chrome — tabs included — back.
+        if (phone) ...[
+          WbMenuItem(
+            s('menuSearchWindow', 'Search window'),
+            () => setState(() {
+              _closePhoneOverlays();
+              _phonePane = _PhonePane.search;
+            }),
+            checked: _phonePane == _PhonePane.search,
+          ),
+          WbMenuItem(
+            s('menuAnalysisWindow', 'Analysis window'),
+            () => setState(() {
+              _closePhoneOverlays();
+              _phonePane = _PhonePane.analyse;
+            }),
+            checked: _phonePane == _PhonePane.analyse,
+          ),
+        ] else ...[
+          WbMenuItem(
+            s('menuSearchWindow', 'Search window'),
+            () => _setLeftOpen(!_leftOpen),
+            checked: _leftOpen,
+          ),
+          WbMenuItem(
+            s('menuAnalysisWindow', 'Analysis window'),
+            () => _setRightOpen(!_rightOpen),
+            checked: _rightOpen,
+          ),
+        ],
         const WbMenuItem.separator(),
         // bwh12. Disabled rather than hidden when there is no second
         // column: the reader is choosing how the column BEHAVES, and a
@@ -1751,13 +1779,14 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
     // the full six-field status line and the whole menu row do not fit
     // in 390px, and an overflowing bar is worse than a shorter one.
     final compact = !_isThreePane(width);
+    final immersive = _phoneReadsImmersively(context, compact: compact);
 
     return Scaffold(
       backgroundColor: wb.chromeBg,
       body: SafeArea(
         child: Column(
           children: [
-            ...[
+            if (!immersive) ...[
               WorkbenchMenuBar(
                 menus: _buildMenus(context, locale),
                 // The language switcher only. The build label used to sit
@@ -1772,24 +1801,26 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
                 ),
               ),
               WorkbenchToolbar(groups: _buildToolbar(context)),
-              // Under the toolbar, above the panes: the first horizontal
-              // band that is not chrome the reader uses every second, and
-              // the place their eye is already travelling through on the
-              // way to the text.
-              if (_update != null &&
-                  _update!.latestVersion != _updateWavedAway)
-                UpdateAvailableBanner(
-                  info: _update!,
-                  locale: locale,
-                  onDismiss: () => setState(
-                      () => _updateWavedAway = _update!.latestVersion),
-                ),
             ],
+            // Under the toolbar, above the panes: the first horizontal
+            // band that is not chrome the reader uses every second, and
+            // the place their eye is already travelling through on the
+            // way to the text. Kept in immersive reading too — it is the
+            // one band that says a newer version exists.
+            if (_update != null &&
+                _update!.latestVersion != _updateWavedAway)
+              UpdateAvailableBanner(
+                info: _update!,
+                locale: locale,
+                onDismiss: () => setState(
+                    () => _updateWavedAway = _update!.latestVersion),
+              ),
             Expanded(child: _buildPanes(context)),
             // The phone's navigation, between the panes and the status
             // bar so it sits where a thumb is.
-            if (compact) _buildPhoneBar(context, locale),
-            WorkbenchStatusBar(
+            if (compact && !immersive) _buildPhoneBar(context, locale),
+            if (!immersive)
+              WorkbenchStatusBar(
               message: _statusMessage(locale),
               // Reference and version only on a phone — the rest
               // (Browse/Strong's/Analysis state) is desktop detail.
@@ -1801,6 +1832,38 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         ),
       ),
     );
+  }
+
+  /// Whether a phone is showing the chapter reader and nothing else —
+  /// in which case the workspace's own bars step aside and the reader
+  /// draws the Words-style ones it already has.
+  ///
+  /// 2026-09-21, 「sword read mode是不是很多界面应该学习words … 在保持
+  /// sword风格的同时」, with the bottom tabs ruled out: 「那个不用」.
+  /// Measured on a 390-wide phone at John 3, the workspace spent five
+  /// bands on chrome around the text — menu bar, toolbar, title row,
+  /// Search/Read/Analysis tabs, status line — where Words spends two, a
+  /// floating top bar and a reading bar. Sword's reader IS that reader
+  /// (the same `BibleReadingPane`); `hostChrome: true` had switched its
+  /// bars off because the workspace drew its own (#313). On a phone in
+  /// reading, the workspace's bars are the ones that go.
+  ///
+  /// Nothing becomes unreachable. The reader's own bar carries search
+  /// (a full page on a phone, as the Search tab's pane already was on
+  /// the narrowest screens), the parallel view (对照, which brings the
+  /// workspace back), the chapter picker, text size and settings; a
+  /// tapped word still opens its analysis sheet. The Search and
+  /// Analysis panes keep the workspace chrome — and with it the tabs —
+  /// because they are workspace surfaces, not reading.
+  bool _phoneReadsImmersively(BuildContext context, {required bool compact}) {
+    if (!compact || _chartStrongs != null) return false;
+    if (_phonePane != _PhonePane.read) return false;
+    return effectiveCentreMode(
+          preferred: context.watch<WorkbenchProvider>().centreMode,
+          centreWidth: MediaQuery.sizeOf(context).width,
+          threePane: false,
+        ) ==
+        WbCentreMode.reader;
   }
 
   Widget _buildPanes(BuildContext context) {
@@ -1884,7 +1947,9 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
   /// than one that is not there; the View menu and the toolbar, which
   /// can carry a reason, show it greyed with one.
   Widget _buildReaderFrame(BuildContext context,
-          {required bool splitAvailable, required bool analysisAvailable}) =>
+          {required bool splitAvailable,
+          required bool analysisAvailable,
+          bool hostChrome = true}) =>
       BibleReadingPane(
         key: const ValueKey('workbench-reader'),
         showSidebarToggle: false,
@@ -1900,7 +1965,13 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         // that already has a menu bar, a toolbar and a status bar. It
         // keeps the controls that act on the column and gives up the
         // ones that duplicate the workspace's own.
-        hostChrome: true,
+        hostChrome: hostChrome,
+        // With the menu bar gone, the reader's leading button is the
+        // door to it — the same menus, as a sheet.
+        onWorkspaceMenu: hostChrome
+            ? null
+            : () => showWorkbenchMenuSheet(context,
+                _buildMenus(context, context.read<AppSettings>().locale)),
         onOpenParallel: () => _setCentreMode(WbCentreMode.browse),
         onAnalysisRequest: (request) =>
             _takeReaderRequest(request, paneAvailable: analysisAvailable),
@@ -1951,8 +2022,13 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         )) {
           WbCentreMode.browse => _buildParallelFrame(context),
           WbCentreMode.split => _buildSplitFrame(context),
+          // The one place a phone reads immersively: no workspace bars
+          // around it, so the reader draws its own (see
+          // `_phoneReadsImmersively`).
           WbCentreMode.reader => _buildReaderFrame(context,
-              splitAvailable: splitFitsIn(width), analysisAvailable: false),
+              splitAvailable: splitFitsIn(width),
+              analysisAvailable: false,
+              hostChrome: false),
         },
       _PhonePane.analyse => _buildAnalysisFrame(context),
     };

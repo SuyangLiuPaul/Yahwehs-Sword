@@ -144,6 +144,16 @@ class BibleReadingPane extends StatefulWidget {
   /// BibleWorks-style parallel Browse stack. Null everywhere else.
   final VoidCallback? onOpenParallel;
 
+  /// Opens the WORKSPACE's menus, for a reader that is the whole screen.
+  ///
+  /// 2026-09-21. Set only by Yahweh's Sword's workbench on a phone in read
+  /// mode, where the workspace's menu bar and toolbar step aside and this
+  /// reader draws its own bars. Setting it does two things: the leading
+  /// slot shows a menu button that calls it, and Home disappears from
+  /// both the leading slot and the ⋮ — the workspace IS the app, and a
+  /// Home that pops to the first route would land on the splash.
+  final VoidCallback? onWorkspaceMenu;
+
   /// What "search" means to whoever mounted this reader. The Workbench
   /// already has the command line on screen, so there it opens the left
   /// pane and puts the caret in it; a reader with no command pane beside
@@ -206,6 +216,7 @@ class BibleReadingPane extends StatefulWidget {
     this.showSearchAndSettings = true,
     this.onOpenWorkbench,
     this.onOpenParallel,
+    this.onWorkspaceMenu,
     this.onSearchRequested,
     this.onAnalysisRequest,
     this.activeAnalysisRequest,
@@ -1972,6 +1983,7 @@ class _BibleReadingPaneState extends State<BibleReadingPane> {
                                     _showFontSizeSheet(context, settings),
                                 onOpenWorkbench: widget.onOpenWorkbench,
                                 onOpenParallel: widget.onOpenParallel,
+                                onWorkspaceMenu: widget.onWorkspaceMenu,
                                 chapterMaps: _chapterMaps,
                                 bookMaps: _bookMaps,
                                 chapterSermons: _chapterSermons,
@@ -5878,6 +5890,16 @@ class _FloatingHeader extends StatelessWidget {
   /// 2026-08-04 (Workbench): overflow-menu "Classic Reader" entry —
   /// the way back, shown only by the Workbench's center pane.
   final VoidCallback? onOpenParallel;
+
+  /// Opens the WORKSPACE's menus, for a reader that is the whole screen.
+  ///
+  /// 2026-09-21. Set only by Yahweh's Sword's workbench on a phone in read
+  /// mode, where the workspace's menu bar and toolbar step aside and this
+  /// reader draws its own bars. Setting it does two things: the leading
+  /// slot shows a menu button that calls it, and Home disappears from
+  /// both the leading slot and the ⋮ — the workspace IS the app, and a
+  /// Home that pops to the first route would land on the splash.
+  final VoidCallback? onWorkspaceMenu;
   final List<BibleMap> chapterMaps;
   final List<BibleMap> bookMaps;
 
@@ -5935,6 +5957,7 @@ class _FloatingHeader extends StatelessWidget {
     this.onTextSize,
     this.onOpenWorkbench,
     this.onOpenParallel,
+    this.onWorkspaceMenu,
     this.chapterMaps = const [],
     this.bookMaps = const [],
     this.chapterSermons = const [],
@@ -6028,7 +6051,20 @@ class _FloatingHeader extends StatelessWidget {
                           // it now lives here (no duplicate home icons).
                           // Hidden in the split-view secondary pane
                           // (where `onClose` already sits in this slot).
-                          if (onClose == null && Navigator.of(context).canPop())
+                          if (onWorkspaceMenu != null && onClose == null)
+                            IconButton(
+                              key: const ValueKey('reader-workspace-menu'),
+                              onPressed: onWorkspaceMenu,
+                              icon: Icon(Icons.menu_rounded, size: iconSize),
+                              padding: EdgeInsets.all(iconPad),
+                              constraints: const BoxConstraints(
+                                  minWidth: 36, minHeight: 36),
+                              tooltip:
+                                  uiStrings['workspaceMenu']?[locale] ?? 'Menu',
+                            ),
+                          if (onClose == null &&
+                              onWorkspaceMenu == null &&
+                              Navigator.of(context).canPop())
                             IconButton(
                               onPressed: () => Navigator.of(context)
                                   .popUntil((r) => r.isFirst),
@@ -6288,7 +6324,7 @@ class _FloatingHeader extends StatelessWidget {
                               // — the Workbench IS the app, and this entry
                               // popped to a route that no longer means
                               // anything from there.
-                              if (!hostChrome) {
+                              if (!hostChrome && onWorkspaceMenu == null) {
                                 items.add(PopupMenuItem(
                                   value: 'home',
                                   onTap: () {

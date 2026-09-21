@@ -73,6 +73,94 @@ class WbMenu {
 }
 
 /// The menu bar strip. Click a title to open its menu.
+/// The workspace's menus as a sheet, for a phone that is reading
+/// without the menu bar.
+///
+/// 2026-09-21. On a phone in read mode the workspace's bars step aside
+/// so the reader can draw its own (`_phoneReadsImmersively` in
+/// `workbench_page.dart`). Every action those bars carried has to stay
+/// reachable, and this is the door: the SAME `WbMenu` list the menu bar
+/// renders — File, View, Search, Tools, Resources, Help — so nothing
+/// here is a second copy that can drift, and a menu entry added
+/// tomorrow appears in both places at once.
+///
+/// One scrolling list with each menu as a heading, rather than six
+/// nested popups: on a phone a menu inside a menu is two small targets
+/// in a row, and the whole workspace fits in two thumb-scrolls.
+Future<void> showWorkbenchMenuSheet(BuildContext context, List<WbMenu> menus) {
+  return showModalBottomSheet<void>(
+    context: context,
+    useSafeArea: true,
+    isScrollControlled: true,
+    showDragHandle: true,
+    builder: (sheetContext) {
+      final wb = WbColors.of(sheetContext);
+      final t = WbType.of(sheetContext);
+      return DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.7,
+        minChildSize: 0.4,
+        maxChildSize: 0.95,
+        builder: (context, controller) => ListView(
+          key: const ValueKey('workbenchMenuSheet'),
+          controller: controller,
+          padding: const EdgeInsets.only(bottom: 24),
+          children: [
+            for (final menu in menus) ...[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 14, 20, 4),
+                child: Text(
+                  menu.title,
+                  style: TextStyle(
+                    color: wb.accent,
+                    fontWeight: FontWeight.w700,
+                    fontSize: t.scaledChrome(13),
+                    fontFamilyFallback: kCjkFontFallback,
+                  ),
+                ),
+              ),
+              for (final item in menu.items)
+                if (item.isSeparator)
+                  Divider(height: 8, indent: 20, endIndent: 20, color: wb.border)
+                else
+                  ListTile(
+                    dense: true,
+                    enabled: item.onSelected != null,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                    title: Text(
+                      item.label,
+                      style: TextStyle(
+                        fontSize: t.scaledChrome(14),
+                        fontFamilyFallback: kCjkFontFallback,
+                      ),
+                    ),
+                    // A greyed entry keeps its reason, exactly as the
+                    // menu bar's tooltip carries it.
+                    subtitle: item.onSelected == null && item.hint != null
+                        ? Text(item.hint!,
+                            style: TextStyle(
+                                fontSize: t.scaledChrome(11.5),
+                                fontFamilyFallback: kCjkFontFallback))
+                        : null,
+                    trailing: item.checked == true
+                        ? Icon(Icons.check_rounded,
+                            size: t.scaledChrome(18), color: wb.accent)
+                        : null,
+                    onTap: item.onSelected == null
+                        ? null
+                        : () {
+                            Navigator.of(sheetContext).pop();
+                            item.onSelected!();
+                          },
+                  ),
+            ],
+          ],
+        ),
+      );
+    },
+  );
+}
+
 class WorkbenchMenuBar extends StatelessWidget {
   const WorkbenchMenuBar({super.key, required this.menus, this.trailing});
 
