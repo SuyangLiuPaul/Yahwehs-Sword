@@ -322,6 +322,35 @@ would take.
 
 ---
 
+## Pending requests — sent, not yet a grant
+
+**None of the three texts below ship in this app, and none may until an
+actual grant lands here.** A request having been sent is not permission;
+it is the record of having asked. This section exists so the next reader
+does not mistake "we asked" for "we may use it" — the same distinction
+`docs/permissions/drafts/` itself is named to keep visible.
+
+| Text | Publisher | Request | Status |
+|---|---|---|---|
+| 吕振中译本 (Lü Zhenzhong's translation, 1970) | Hong Kong Bible Society | [`drafts/HKBS request (LZZ + RCUV2010) 2026-09-22.md`](drafts/HKBS%20request%20%28LZZ%20%2B%20RCUV2010%29%202026-09-22.md) | **Sent** 2026-09-22 23:26 to info@hkbs.org.hk, from support@yahwehword.com |
+| 和合本2010 / RCUV (2010) | Hong Kong Bible Society | same file as above | same — one letter covers both, same publisher |
+| 新译本 / CNV (Chinese New Version) | 环球圣经公会 (Worldwide Bible Society) | [`drafts/WWBS request (CNV) 2026-09-22.md`](drafts/WWBS%20request%20%28CNV%29%202026-09-22.md) | **Sent** 2026-09-22 23:26 to info@wwbible.org, from support@yahwehword.com; WWBS also has a formal application form at wwbible.org/copyright-application-form still to be filed as a follow-up |
+
+**吕振中译本 specifically is not public domain**, contrary to an initial
+assumption that prompted this whole thread. Lü Zhenzhong died in 1988;
+life+50 puts the translation in copyright until roughly 2038 across
+HK/Taiwan/mainland China. Wikisource's index page for it
+(zh.wikisource.org, 圣经_(吕振中译本)) lists chapters but every chapter
+link is red — nothing is actually hosted there — which is consistent
+with it not being free rather than evidence either way.
+
+When any of these three gets an actual reply, the reply (or the signed
+document it points to) goes in this directory next to the CSB PDF, the
+table row above gets a real grant summary like the CSB one has, and only
+then can an importer be written.
+
+---
+
 ## The other bundled texts
 
 No document on file for these; their licence strings live in
