@@ -45,6 +45,7 @@ import 'package:yahwehs_sword/widgets/command_builder_sheet.dart'
     show showCommandBuilder;
 import 'package:yahwehs_sword/widgets/cross_version_strip.dart';
 import 'package:yahwehs_sword/widgets/search_stats_strip.dart';
+import 'package:yahwehs_sword/widgets/search_book_chart.dart';
 
 /// The command line's grammar, as the `?` card prints it — a heading
 /// key, then the example keys under it. Public since 2026-09-18 so the
@@ -1723,6 +1724,7 @@ class _CommandPaneState extends State<CommandPane> {
         SearchStatsStrip(
           distribution: distribution,
           locale: locale,
+          scope: wb.searchLimitLabel,
           version: wb.mainProvider.currentVersion,
         ),
         Expanded(
@@ -1881,6 +1883,14 @@ class _CommandPaneState extends State<CommandPane> {
           () => _copyAllTextResults(settings, results),
           settings,
           locale,
+        ),
+        SearchBookChart(
+          counts:
+              searchBookCounts(results.map((v) => toEnglish(v.book) ?? v.book)),
+          locale: locale,
+          scope: wb.searchLimitLabel,
+          bookLabel: (book) =>
+              localeAwareBookName(book, locale, wb.mainProvider.currentVersion),
         ),
         // Directly under the count, above the broadening offer: it is a
         // fact about the search that was just run, where the offer is a
