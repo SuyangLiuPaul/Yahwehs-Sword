@@ -101,6 +101,9 @@ flutter:
     - assets/net.json
     - assets/ogt.json
     - assets/sblgnt.json
+    - assets/bib.json
+    - assets/bib_chapter_notes.json
+    - assets/tagged/bib/
     - assets/kjv.json
     - assets/leb.json
     - assets/cuvs-yhwh.json

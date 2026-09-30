@@ -22,6 +22,7 @@ const versionAttributionKeys = <String, String>{
   'net': 'aboutLicenseNet',
   'ogt': 'aboutLicenseOgt',
   'sblgnt': 'aboutLicenseSblgnt',
+  'bib': 'aboutLicenseBib',
   'kjv': 'aboutLicensePublicDomain',
   'leb': 'aboutLicenseLeb',
   'nasb': 'aboutLicenseNasb',

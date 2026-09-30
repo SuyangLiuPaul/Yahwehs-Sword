@@ -37,6 +37,7 @@ void main() {
       'kjvs',
       'net',
       'ogt',
+      'bib',
     };
     const greek = {'lxxwh', 'sblgnt'};
     const hebrew = {'wlc'};

@@ -538,18 +538,33 @@ class _ScripturesTable extends StatelessWidget {
             '© The Lockman Foundation · used under quotation provisions.',
         url: 'https://www.lockman.org/',
       ),
-      _AttribRow(name: uiStrings['aboutVerCnet']?[locale] ?? 'Cnet',
-        licence: uiStrings['aboutLicenseCnet']?[locale] ?? uiStrings['aboutLicenseCnet']!['en']!,
-        url: 'https://bible.org/chinese/'),
-      _AttribRow(name: uiStrings['aboutVerNet']?[locale] ?? 'Net',
-        licence: uiStrings['aboutLicenseNet']?[locale] ?? uiStrings['aboutLicenseNet']!['en']!,
-        url: 'https://netbible.org/'),
-      _AttribRow(name: uiStrings['aboutVerOgt']?[locale] ?? 'Ogt',
-        licence: uiStrings['aboutLicenseOgt']?[locale] ?? uiStrings['aboutLicenseOgt']!['en']!,
-        url: 'https://www.onegodtranslation.com/'),
-      _AttribRow(name: uiStrings['aboutVerSblgnt']?[locale] ?? 'Sblgnt',
-        licence: uiStrings['aboutLicenseSblgnt']?[locale] ?? uiStrings['aboutLicenseSblgnt']!['en']!,
-        url: 'https://sblgnt.com/license/'),
+
+      _AttribRow(
+          name: uiStrings['aboutVerBib']?[locale] ??
+              uiStrings['aboutVerBib']!['en']!,
+          licence: uiStrings['aboutLicenseBib']?[locale] ??
+              uiStrings['aboutLicenseBib']!['en']!,
+          url: 'https://berean.bible/licensing.htm'),
+      _AttribRow(
+          name: uiStrings['aboutVerCnet']?[locale] ?? 'Cnet',
+          licence: uiStrings['aboutLicenseCnet']?[locale] ??
+              uiStrings['aboutLicenseCnet']!['en']!,
+          url: 'https://bible.org/chinese/'),
+      _AttribRow(
+          name: uiStrings['aboutVerNet']?[locale] ?? 'Net',
+          licence: uiStrings['aboutLicenseNet']?[locale] ??
+              uiStrings['aboutLicenseNet']!['en']!,
+          url: 'https://netbible.org/'),
+      _AttribRow(
+          name: uiStrings['aboutVerOgt']?[locale] ?? 'Ogt',
+          licence: uiStrings['aboutLicenseOgt']?[locale] ??
+              uiStrings['aboutLicenseOgt']!['en']!,
+          url: 'https://www.onegodtranslation.com/'),
+      _AttribRow(
+          name: uiStrings['aboutVerSblgnt']?[locale] ?? 'Sblgnt',
+          licence: uiStrings['aboutLicenseSblgnt']?[locale] ??
+              uiStrings['aboutLicenseSblgnt']!['en']!,
+          url: 'https://sblgnt.com/license/'),
       _AttribRow(
         name:
             uiStrings['aboutVerCuvsYhwh']?[locale] ?? 'CUVS-YHWH (和合本雅伟版, 简/繁)',

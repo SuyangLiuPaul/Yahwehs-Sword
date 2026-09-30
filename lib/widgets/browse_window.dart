@@ -52,7 +52,8 @@ import 'package:yahwehs_sword/utils/version_gutter.dart'
     show referenceGutterWidth, versionGutterWidth;
 import 'package:yahwehs_sword/utils/version_diff.dart';
 import 'package:yahwehs_sword/utils/short_book_name.dart';
-import 'package:yahwehs_sword/utils/version_mapper.dart' show localeAwareBookName;
+import 'package:yahwehs_sword/utils/version_mapper.dart'
+    show localeAwareBookName;
 import 'package:yahwehs_sword/widgets/workbench_chrome.dart' show WbVersionTag;
 import 'package:yahwehs_sword/utils/safe_item_scroll.dart' show scrollToSafely;
 import 'package:yahwehs_sword/widgets/verse_notes_block.dart'
@@ -263,7 +264,9 @@ void _markDifferences(
         if (codes.contains(r.code) && r.absence == null) r,
     ];
     if (members.length < 2) continue;
-    final tokens = [for (final r in members) versionDiffTokens(_diffUnitsOf(r))];
+    final tokens = [
+      for (final r in members) versionDiffTokens(_diffUnitsOf(r))
+    ];
     final marks = versionDiffMarks([
       for (final t in tokens) [for (final x in t) x.norm],
     ]);
@@ -538,8 +541,8 @@ class _BrowseWindowState extends State<BrowseWindow> {
     // took ~30s to first paint; in parallel it costs roughly the slowest
     // one. (They are cached process-wide afterwards, so this only bites
     // on the first chapter of a session.)
-    final loaded =
-        await Future.wait(widget.versionCodes.map((c) => _versionVerses(c, mp)));
+    final loaded = await Future.wait(
+        widget.versionCodes.map((c) => _versionVerses(c, mp)));
 
     // version code -> {verse number: text}, plus the chapter's extent.
     final byVersion = <String, Map<int, String>>{};
@@ -674,8 +677,7 @@ class _BrowseWindowState extends State<BrowseWindow> {
         // nor the original's. docs/DATA-INTEGRITY.md check 39.
         var editionMerged = false;
         if (isAbsent) {
-          editionMerged =
-              isEditionMerged(code, widget.book, widget.chapter, n);
+          editionMerged = isEditionMerged(code, widget.book, widget.chapter, n);
           absentHead = rangeHeads[code]?[n] ??
               sharedHeads[code]?[n] ??
               editionMergedHeadVerse(code, widget.book, widget.chapter, n);
@@ -788,8 +790,8 @@ class _BrowseWindowState extends State<BrowseWindow> {
       return uiStrings['wbBrowseLoadingChapter']?[locale] ??
           'Preparing this chapter';
     }
-    final lead = uiStrings['wbBrowseLoadingVersions']?[locale] ??
-        'Loading editions';
+    final lead =
+        uiStrings['wbBrowseLoadingVersions']?[locale] ?? 'Loading editions';
     return '$lead · ${missing.join(" · ")}';
   }
 
@@ -835,8 +837,7 @@ class _BrowseWindowState extends State<BrowseWindow> {
               child: Text(
                 'Could not load this chapter.\n${snap.error}',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: t.text, color: wb.mutedText),
+                style: TextStyle(fontSize: t.text, color: wb.mutedText),
               ),
             ),
           );
@@ -848,8 +849,7 @@ class _BrowseWindowState extends State<BrowseWindow> {
             alignment: Alignment.center,
             child: Text(
               'No text for this chapter.',
-              style: TextStyle(
-                  fontSize: t.text, color: wb.mutedText),
+              style: TextStyle(fontSize: t.text, color: wb.mutedText),
             ),
           );
         }
@@ -886,26 +886,26 @@ class _BrowseWindowState extends State<BrowseWindow> {
                 ]),
               Expanded(
                 child: ScrollablePositionedList.builder(
-                    key: _listKey,
-                    itemScrollController: _scroll,
-                    padding: EdgeInsets.zero,
-                    itemCount: rows.length,
-                    itemBuilder: (context, i) => _RowView(
-                      row: rows[i],
-                      gutterWidth: gutterWidth,
-                      referenceWidth: referenceWidth,
-                      focused: rows[i].verse == widget.focusedVerse,
-                      highlight: widget.highlight,
-                      showDiff: widget.showDiff,
-                      glosses: _glosses,
-                      keyPrefix: browseKeyPrefix(widget.book, widget.chapter),
-                      focus: widget.focus,
-                      onWordTap: widget.onWordTap,
-                      onWordHover: widget.onWordHover,
-                      onTap: widget.onVerseTap == null
-                          ? null
-                          : () => widget.onVerseTap!(rows[i].verse),
-                    ),
+                  key: _listKey,
+                  itemScrollController: _scroll,
+                  padding: EdgeInsets.zero,
+                  itemCount: rows.length,
+                  itemBuilder: (context, i) => _RowView(
+                    row: rows[i],
+                    gutterWidth: gutterWidth,
+                    referenceWidth: referenceWidth,
+                    focused: rows[i].verse == widget.focusedVerse,
+                    highlight: widget.highlight,
+                    showDiff: widget.showDiff,
+                    glosses: _glosses,
+                    keyPrefix: browseKeyPrefix(widget.book, widget.chapter),
+                    focus: widget.focus,
+                    onWordTap: widget.onWordTap,
+                    onWordHover: widget.onWordHover,
+                    onTap: widget.onVerseTap == null
+                        ? null
+                        : () => widget.onVerseTap!(rows[i].verse),
+                  ),
                 ),
               ),
             ],
@@ -1106,7 +1106,8 @@ class _RowView extends StatelessWidget {
         decoration: BoxDecoration(
           color: focused ? wb.selectionBg : null,
           border: row.firstOfVerse
-              ? Border(top: BorderSide(color: wb.border.withValues(alpha: 0.55)))
+              ? Border(
+                  top: BorderSide(color: wb.border.withValues(alpha: 0.55)))
               : null,
         ),
         padding: const EdgeInsets.symmetric(
@@ -1158,8 +1159,7 @@ class _RowView extends StatelessWidget {
                                 glosses: glosses,
                                 keyPrefix: keyPrefix,
                                 focus: focus,
-                                showNumbers:
-                                    settings.showStrongsInOriginals,
+                                showNumbers: settings.showStrongsInOriginals,
                                 onWordTap: onWordTap,
                                 onWordHover: onWordHover,
                               )
@@ -1168,8 +1168,7 @@ class _RowView extends StatelessWidget {
                             // word renders would be a heuristic dressed
                             // as fact.
                             : MouseRegion(
-                                onEnter: (_) =>
-                                    onWordHover?.call(BrowseHover(
+                                onEnter: (_) => onWordHover?.call(BrowseHover(
                                   reference: row.reference,
                                   verse: row.verse,
                                 )),
@@ -1284,8 +1283,7 @@ class _TranslationLine extends StatelessWidget {
                 fontStyle: FontStyle.italic,
               ),
             )
-          else
-            ...[
+          else ...[
             for (final (unit, span) in parseScripture(row.text ?? '').indexed)
               switch (span.kind) {
                 // A plain span is where a text-query hit can live, so it
@@ -1303,10 +1301,10 @@ class _TranslationLine extends StatelessWidget {
                           text: h.text,
                           style: TextStyle(
                             color: wb.text,
-                            backgroundColor:
-                                h.isHit ? wb.selectionBg : null,
+                            backgroundColor: h.isHit ? wb.selectionBg : null,
                             fontWeight: h.isHit ? FontWeight.w700 : null,
-                            decoration: h.diff ? TextDecoration.underline : null,
+                            decoration:
+                                h.diff ? TextDecoration.underline : null,
                             decorationColor: h.diff ? wb.diffMark : null,
                             decorationThickness: h.diff ? 2 : null,
                           ),
@@ -1319,8 +1317,8 @@ class _TranslationLine extends StatelessWidget {
                       fontStyle: FontStyle.italic,
                     ),
                     children: [
-                      for (final p in sliceByMarks(
-                          0, span.text.length, _spansOf(unit)))
+                      for (final p
+                          in sliceByMarks(0, span.text.length, _spansOf(unit)))
                         TextSpan(
                           text: span.text.substring(p.start, p.end),
                           style: p.marked
@@ -1488,7 +1486,8 @@ class _SuperscriptionLine extends StatelessWidget {
                 versificationSpan(span, wb, fontSize: t.text * 0.8),
               ScriptureSpanKind.plain => TextSpan(
                   children: [
-                    for (final h in splitOnTerms(span.text, highlight.textTerms))
+                    for (final h
+                        in splitOnTerms(span.text, highlight.textTerms))
                       TextSpan(
                         text: h.text,
                         style: h.isHit
@@ -1564,13 +1563,16 @@ class _TaggedLine extends StatelessWidget {
               // Reuse the originals hover target: same behaviour,
               // same popup, only the script differs.
               word: OriginalWord(
-                text: r.text,
+                text: r.originalText ?? r.text,
                 strongs: r.strongs,
+                translit: r.transliteration,
                 // Preserve the source scheme in every hovered column, even
                 // when SBLGNT is a comparison rather than the primary Bible.
                 morph: row.code == 'sblgnt' && r.grammar.isNotEmpty
                     ? 'Robinson ${r.grammar.join(' / ')}'
-                    : null,
+                    : row.code == 'bib' && r.grammar.isNotEmpty
+                        ? 'BIB / Robinson ${r.grammar.join(' / ')}'
+                        : null,
               ),
               reference: row.reference,
               verse: row.verse,
@@ -1586,6 +1588,7 @@ class _TaggedLine extends StatelessWidget {
               implied: r.implied,
               showNumbers: showNumbers,
               translation: true,
+              translationText: r.text,
               onTap: onWordTap,
               onHover: onWordHover,
             )
@@ -1596,10 +1599,8 @@ class _TaggedLine extends StatelessWidget {
                   if (span.kind == ScriptureSpanKind.divineName ||
                       span.kind == ScriptureSpanKind.gloss)
                     glossSpan(span, wb)
-                  else if (span.kind ==
-                      ScriptureSpanKind.versification)
-                    versificationSpan(span, wb,
-                        fontSize: t.text * 0.8)
+                  else if (span.kind == ScriptureSpanKind.versification)
+                    versificationSpan(span, wb, fontSize: t.text * 0.8)
                   else
                     TextSpan(
                       text: span.text,
@@ -1624,7 +1625,7 @@ class _TaggedLine extends StatelessWidget {
                 decorationColor: wb.diffMark,
                 decorationThickness: 2,
               ),
-          ),
+            ),
       ],
     );
   }
@@ -1702,6 +1703,7 @@ class _HoverWord extends StatefulWidget {
     this.implied = const [],
     this.showNumbers = false,
     this.translation = false,
+    this.translationText,
     this.hit = false,
     this.diff = false,
     this.onTap,
@@ -1717,6 +1719,9 @@ class _HoverWord extends StatefulWidget {
   final bool diff;
 
   final OriginalWord word;
+
+  /// Visible translation and original form are distinct in BIB.
+  final String? translationText;
   final String reference;
   final int verse;
 
@@ -1797,12 +1802,12 @@ class _HoverWordState extends State<_HoverWord> {
       TextSpan(
         text: widget.word.text,
         // Red, as BibleWorks prints the headword.
-        style: base(const Color(0xFFB3261E),
-            w: FontWeight.w600, size: t.original),
+        style:
+            base(const Color(0xFFB3261E), w: FontWeight.w600, size: t.original),
       ),
-      if ((e?.translit ?? '').isNotEmpty)
+      if ((widget.word.translit ?? e?.translit ?? '').isNotEmpty)
         TextSpan(
-          text: '  (${e!.translit})',
+          text: '  (${widget.word.translit ?? e?.translit})',
           style: base(wb.mutedText).copyWith(fontStyle: FontStyle.italic),
         ),
       if (gloss.isNotEmpty)
@@ -1828,7 +1833,7 @@ class _HoverWordState extends State<_HoverWord> {
       widget.implied.isNotEmpty;
 
   (String, String) get _splitWord =>
-      splitTrailingCjkPunctuation(widget.word.text);
+      splitTrailingCjkPunctuation(widget.translationText ?? widget.word.text);
   String get _wordStem => _splitWord.$1;
   String get _trailingPunctuation => _splitWord.$2;
 
@@ -1856,9 +1861,8 @@ class _HoverWordState extends State<_HoverWord> {
     // or by Shift. Everywhere else the threaded subject stands, which is
     // what stops the mark blinking as the pointer crosses the gap
     // between two words.
-    final focus = _hovering
-        ? widget.focus.withHover(widget.occurrence)
-        : widget.focus;
+    final focus =
+        _hovering ? widget.focus.withHover(widget.occurrence) : widget.focus;
     final mark = focus.markFor(
       widget.occurrence,
       strongs: widget.word.strongs,
@@ -1895,9 +1899,7 @@ class _HoverWordState extends State<_HoverWord> {
           widget.onHover?.call(null);
         },
         child: GestureDetector(
-          onTap: widget.onTap == null
-              ? null
-              : () => widget.onTap!(_asHover()),
+          onTap: widget.onTap == null ? null : () => widget.onTap!(_asHover()),
           behavior: HitTestBehavior.opaque,
           child: Container(
             decoration: wordMarkDecoration(mark, wb, diff: widget.diff),
@@ -1944,12 +1946,14 @@ class _HoverWordState extends State<_HoverWord> {
                     grammar: widget.grammar,
                     implied: widget.implied,
                   ))
-                    _num(t.text, switch (t.kind) {
-                      StrongsNumberKind.lexical => wb.strongsLexical,
-                      StrongsNumberKind.grammar => wb.strongsGrammar,
-                      StrongsNumberKind.implied =>
-                        wb.strongsLexical.withValues(alpha: 0.6),
-                    }),
+                    _num(
+                        t.text,
+                        switch (t.kind) {
+                          StrongsNumberKind.lexical => wb.strongsLexical,
+                          StrongsNumberKind.grammar => wb.strongsGrammar,
+                          StrongsNumberKind.implied =>
+                            wb.strongsLexical.withValues(alpha: 0.6),
+                        }),
                   // Chinese has no inter-word space, so without this the
                   // number collides with the next character: 亚伯拉罕G11的.
                   // The originals line does not need it — its own script
@@ -1981,9 +1985,7 @@ class _HoverWordState extends State<_HoverWord> {
                 // The doc on [translation] promises body size for a
                 // translation run; only the originals line gets the
                 // larger original-script treatment.
-                fontSize: widget.translation
-                    ? t.text
-                    : t.original,
+                fontSize: widget.translation ? t.text : t.original,
                 height: t.lineHeight,
                 // The Ketiv is set in the muted ink so the eye takes the
                 // Qere as the running text — which is what the Masoretes
@@ -1998,8 +2000,7 @@ class _HoverWordState extends State<_HoverWord> {
                 // their pointer happens to be crossing. An echo does
                 // not — see [wordMarkUnderline].
                 decoration: wordMarkUnderline(mark),
-                decorationColor:
-                    mark == WordMark.pinned ? wb.pinMark : wb.link,
+                decorationColor: mark == WordMark.pinned ? wb.pinMark : wb.link,
               ),
             ),
           ),

@@ -58,6 +58,7 @@ void main() {
         'asv-yhwh',
         'lxxwh',
         'cuvs-yhwh',
+        'bib',
         'sblgnt',
       ]);
     });
@@ -100,8 +101,7 @@ void main() {
       expect(choice.source, InterlinearSource.current);
     });
 
-    test('a reader on an untagged Chinese Bible is given the tagged one',
-        () {
+    test('a reader on an untagged Chinese Bible is given the tagged one', () {
       // 梁家铿译本 ships no alignment; 和合本雅伟版(简体) is the tagged
       // edition in the same script.
       final choice = resolveInterlinearEdition(currentVersion: 'biblexg-v3');
@@ -114,8 +114,7 @@ void main() {
       // There is no traditional tagged set and no 简→繁 converter. The
       // wrong answer here is BSB, which is what a strict language match
       // would return.
-      final choice =
-          resolveInterlinearEdition(currentVersion: 'cuvs-yhwh-tr');
+      final choice = resolveInterlinearEdition(currentVersion: 'cuvs-yhwh-tr');
       expect(choice.version, 'cuvs-yhwh');
       expect(choice.source, InterlinearSource.substituted);
     });
@@ -144,14 +143,13 @@ void main() {
     });
 
     test("the reader's own pick beats the Bible they are reading", () {
-      final choice = resolveInterlinearEdition(
-          chosen: 'cuvs-yhwh', currentVersion: 'bsb');
+      final choice =
+          resolveInterlinearEdition(chosen: 'cuvs-yhwh', currentVersion: 'bsb');
       expect(choice.version, 'cuvs-yhwh');
       expect(choice.source, InterlinearSource.chosen);
     });
 
-    test('a stored pick for an edition that has since been hidden lapses',
-        () {
+    test('a stored pick for an edition that has since been hidden lapses', () {
       // `cuvs-plus` was offerable until it was disabled today. A reader
       // who picked it then must not be shown a blank panel now.
       //
@@ -165,8 +163,8 @@ void main() {
       expect(choice.source, InterlinearSource.current);
       // ...and `bsb` is now a second stored pick that has to lapse the
       // same way, for the same reason and by the same one line of code.
-      final afterBsb = resolveInterlinearEdition(
-          chosen: 'bsb', currentVersion: 'bsb-yhwh');
+      final afterBsb =
+          resolveInterlinearEdition(chosen: 'bsb', currentVersion: 'bsb-yhwh');
       expect(afterBsb.version, 'bsb-yhwh');
       expect(afterBsb.source, InterlinearSource.current);
     });
@@ -192,25 +190,25 @@ void main() {
     }) async {
       SharedPreferences.setMockInitialValues(<String, Object>{});
       await tester.pumpWidget(ChangeNotifierProvider(
-        create: (_) => AppSettings(),
-        child: MaterialApp(
-        home: Scaffold(
-          body: Builder(builder: (context) {
-            return InterlinearVerseText(
-              runs: runs,
-              style: WordStudyStyle.resolve(
-                embedded: false,
-                scheme: Theme.of(context).colorScheme,
-                wb: WbColors.of(context),
-                type: WbType.of(context),
-              ),
-              showNumbers: showNumbers,
-              highlightStrongs: highlight,
-              onTapRun: onTapRun,
-            );
-          }),
-        ),
-      )));
+          create: (_) => AppSettings(),
+          child: MaterialApp(
+            home: Scaffold(
+              body: Builder(builder: (context) {
+                return InterlinearVerseText(
+                  runs: runs,
+                  style: WordStudyStyle.resolve(
+                    embedded: false,
+                    scheme: Theme.of(context).colorScheme,
+                    wb: WbColors.of(context),
+                    type: WbType.of(context),
+                  ),
+                  showNumbers: showNumbers,
+                  highlightStrongs: highlight,
+                  onTapRun: onTapRun,
+                );
+              }),
+            ),
+          )));
     }
 
     testWidgets('the twelve runs are the twelve the file records',
@@ -218,12 +216,32 @@ void main() {
       // Read off the asset by hand: 地/是/空虚/混沌，/渊/面/黑暗；/神的/
       // 灵/运行/在水/面上。
       expect(runs.map((r) => r.text).toList(), <String>[
-        '地', '是', '空虚', '混沌，', '渊', '面',
-        '黑暗；', '神的', '灵', '运行', '在水', '面上。',
+        '地',
+        '是',
+        '空虚',
+        '混沌，',
+        '渊',
+        '面',
+        '黑暗；',
+        '神的',
+        '灵',
+        '运行',
+        '在水',
+        '面上。',
       ]);
       expect(runs.map((r) => r.strongs).toList(), <String>[
-        'H776', 'H1961', 'H8414', 'H922', 'H8415', 'H6440',
-        'H2822', 'H430', 'H7307', 'H7363', 'H4325', 'H5921',
+        'H776',
+        'H1961',
+        'H8414',
+        'H922',
+        'H8415',
+        'H6440',
+        'H2822',
+        'H430',
+        'H7307',
+        'H7363',
+        'H4325',
+        'H5921',
       ]);
       await pumpLine(tester);
       expect(tester.takeException(), isNull);
@@ -415,8 +433,8 @@ void main() {
           find.textContaining(fullBibleVersionLabel('biblexg-v3'),
               findRichText: true),
           findsWidgets);
-      expect(find.textContaining('没有原文编号对照', findRichText: true),
-          findsOneWidget);
+      expect(
+          find.textContaining('没有原文编号对照', findRichText: true), findsOneWidget);
     });
 
     testWidgets("the reader's own pick is what the panel opens on",

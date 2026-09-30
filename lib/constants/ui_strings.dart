@@ -10710,8 +10710,24 @@ const uiStrings = {
         'The Greek New Testament: SBL Edition. Copyright © 2010 Society of Biblical Literature and Logos Bible Software. CC BY 4.0 (https://sblgnt.com/license/). Supplied by Yahwehdehua; source notes are mapped to popups and Strong’s/morphology to word runs. Source paragraph and apparatus anchors were already removed upstream. No wording edits in this import.',
   },
   'cmdIssueStrongsTagNoTaggedTextV3': {
-    'zh-Hans': '本译本没有原文编号标记，@ 无从比对。请换到 BSB、BSB-Y、CSB、ASV-Y、KJV+S、LXX+WH、SBLGNT、雅简+ 或 和简+ 再搜索。',
-    'zh-Hant': '本譯本沒有原文編號標記，@ 無從比對。請換到 BSB、BSB-Y、CSB、ASV-Y、KJV+S、LXX+WH、SBLGNT、雅简+ 或 和简+ 再搜尋。',
-    'en': "This edition carries no Strong's tagging, so @ has nothing to match against. Switch to BSB, BSB-Y, CSB, ASV-Y, KJV+S, LXX+WH, SBLGNT, 雅简+ or 和简+ and run it again.",
+    'zh-Hans':
+        '本译本没有原文编号标记，@ 无从比对。请换到 BSB、BSB-Y、CSB、ASV-Y、KJV+S、LXX+WH、BIB、SBLGNT、雅简+ 或 和简+ 再搜索。',
+    'zh-Hant':
+        '本譯本沒有原文編號標記，@ 無從比對。請換到 BSB、BSB-Y、CSB、ASV-Y、KJV+S、LXX+WH、BIB、SBLGNT、雅简+ 或 和简+ 再搜尋。',
+    'en':
+        "This edition carries no Strong's tagging, so @ has nothing to match against. Switch to BSB, BSB-Y, CSB, ASV-Y, KJV+S, LXX+WH, BIB, SBLGNT, 雅简+ or 和简+ and run it again.",
+  },
+  'aboutVerBib': {
+    'en': 'Berean Interlinear Bible (BIB) — New Testament',
+    'zh-Hans': '庇哩亚逐词对照圣经（BIB）— 新约',
+    'zh-Hant': '庇哩亞逐詞對照聖經（BIB）— 新約',
+  },
+  'aboutLicenseBib': {
+    'en':
+        'Berean Interlinear Bible, Bible Hub / Berean Bible. Public domain since April 30, 2023. Official Greek–English text with Strong’s numbers, parsing and transliteration. New Testament only; chapter notes are identified as source notes. One conflicting source Strong’s tag is preserved as untagged text. https://berean.bible/licensing.htm',
+    'zh-Hans':
+        '庇哩亚逐词对照圣经，Bible Hub / Berean Bible。2023 年 4 月 30 日起属于公有领域。官方希腊文与英文逐词对照，含 Strong’s 编号、词形及音译。目前仅新约；章注保留来源标签。一处来源编号冲突保留原文但不加编号。https://berean.bible/licensing.htm',
+    'zh-Hant':
+        '庇哩亞逐詞對照聖經，Bible Hub / Berean Bible。2023 年 4 月 30 日起屬於公有領域。官方希臘文與英文逐詞對照，含 Strong’s 編號、詞形及音譯。目前僅新約；章註保留來源標籤。一處來源編號衝突保留原文但不加編號。https://berean.bible/licensing.htm',
   },
 };

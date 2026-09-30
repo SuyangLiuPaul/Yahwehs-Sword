@@ -992,6 +992,7 @@ const Map<String, Color> kVersionTagColors = {
   'bgt': Color(0xFF9C1F1F), // Greek NT
   'original': Color(0xFF9C1F1F),
   'sblgnt': Color(0xFF944054),
+  'bib': Color(0xFF8A6837),
   'cnet': Color(0xFF80681B),
   'cnet-tr': Color(0xFFA0862A),
   'net': Color(0xFF476F80),

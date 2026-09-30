@@ -36,6 +36,8 @@ class TaggedRun {
     required this.strongs,
     this.implied = const [],
     this.grammar = const [],
+    this.transliteration,
+    this.originalText,
   });
 
   /// The translation text as printed, punctuation included.
@@ -53,10 +55,18 @@ class TaggedRun {
   /// Grammar codes: Hebrew stem/aspect, Greek tense-voice-mood.
   final List<String> grammar;
 
+  /// Source transliteration when the interlinear publisher supplies it.
+  final String? transliteration;
+
+  /// Publisher’s original Greek form paired with an English gloss.
+  final String? originalText;
+
   bool get isTagged => strongs.isNotEmpty;
 
   factory TaggedRun.fromJson(Map<String, dynamic> j) => TaggedRun(
         text: (j['w'] ?? '') as String,
+        transliteration: j['t'] as String?,
+        originalText: j['o'] as String?,
         strongs: (j['s'] ?? '') as String,
         implied: ((j['i'] as List?) ?? const []).cast<String>(),
         grammar: ((j['g'] as List?) ?? const []).cast<String>(),
@@ -72,6 +82,7 @@ class TaggedTextService {
   /// in the Old Testament too — previously only the BSB reached back
   /// past Malachi.
   static const Set<String> taggedVersions = {
+    'bib',
     'sblgnt',
     'cuvs-yhwh',
     'bsb',

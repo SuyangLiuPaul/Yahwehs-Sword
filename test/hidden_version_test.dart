@@ -203,6 +203,7 @@ void main() {
         'asv-yhwh',
         'net',
         'ogt',
+        'bib',
       ]);
     });
 
