@@ -205,10 +205,7 @@ class _WordAnalysisPaneState extends State<WordAnalysisPane> {
     final e = _entry;
     final zh = _zh;
     final th = _thayer;
-    // SBL's supplied Robinson tags are displayed as source codes.
-    final parse = widget.version == 'sblgnt' && widget.grammar.isNotEmpty
-        ? widget.grammar.join(' / ')
-        : describeMorphology(widget.word.morph, locale);
+    final parse = describeMorphology(widget.word.morph, locale);
     final lemmaLine = buildLemmaLine(
       form: widget.word.text,
       lemma: e?.lemma,

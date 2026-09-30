@@ -1563,7 +1563,15 @@ class _TaggedLine extends StatelessWidget {
               diff: showDiff && row.diffUnits.contains(i),
               // Reuse the originals hover target: same behaviour,
               // same popup, only the script differs.
-              word: OriginalWord(text: r.text, strongs: r.strongs),
+              word: OriginalWord(
+                text: r.text,
+                strongs: r.strongs,
+                // Preserve the source scheme in every hovered column, even
+                // when SBLGNT is a comparison rather than the primary Bible.
+                morph: row.code == 'sblgnt' && r.grammar.isNotEmpty
+                    ? 'Robinson ${r.grammar.join(' / ')}'
+                    : null,
+              ),
               reference: row.reference,
               verse: row.verse,
               occurrence: browseWordKey(
