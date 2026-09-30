@@ -1,3 +1,7 @@
+## 2026-09-30 — Mac delivery successful
+
+Transporter verified Delivered for Sword build 1060329, at 17:35 Melbourne time. Corrected category package accepted; THE APP IS PROCESSING. Mac version is not yet submitted for review. After processing, choose the matching build, save and submit (automatic release already selected).
+
 ## 2026-09-30 — Mac category correction and upload
 
 Xcode login restored. Added public.app-category.reference to source and archive Info.plist after Words delivery reported 90242. Re-export with automatic distribution signing succeeded. Corrected Sword package: /Users/pliu0036/Downloads/store-macos/sword-1.6.329-category-export/Yahweh’s Sword.pkg, uploading in Transporter. Do not use older sword-1.6.329-export. Mac listing has professional English copy, automatic release, two verified 1440x900 native screenshots. Add for Review reports only You must choose a build. Wait for delivery/processing, then select 1060329 and submit. Microsoft submission 3 remains in certification; existing daily heartbeat handles next package update once editable.
