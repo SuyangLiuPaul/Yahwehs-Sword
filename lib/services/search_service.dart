@@ -7,6 +7,8 @@ import 'package:yahwehs_sword/services/originals_service.dart';
 import 'package:yahwehs_sword/utils/search_folding.dart' show foldSearchMarks;
 import 'package:yahwehs_sword/utils/ketiv_qere.dart' show KetivQereSearchScope;
 import 'package:yahwehs_sword/utils/plain_search.dart';
+import '../utils/pinyin_search.dart';
+import '../utils/fuzzy_search.dart' show fuzzySearchEnabled;
 import 'package:yahwehs_sword/utils/strongs_boolean_search.dart';
 import 'package:yahwehs_sword/utils/strongs_proximity.dart';
 
@@ -104,6 +106,59 @@ class SearchService {
         localCounts[verse.book] = (localCounts[verse.book] ?? 0) + 1;
       }
     }
+    return _orderedTextResult(matches, localCounts, scanCount, bookOrder);
+  }
+
+  /// Yield between chunks so the initial Chinese romanisation does not
+  /// block painting or keyboard input. Existing synchronous consumers
+  /// retain scanText; both paths use the same matcher and result sorter.
+  static Future<TextSearchResult?> scanTextAsync({
+    required List<Verse> verses,
+    required List<String> searchKeys,
+    required String query,
+    required Map<String, int> bookOrder,
+    bool searchAll = false,
+    String? filterBook,
+    String? currentBook,
+    bool Function()? cancelled,
+  }) async {
+    if (!pinyinSearchEnabled && !fuzzySearchEnabled) {
+      if (cancelled?.call() ?? false) return null;
+      return scanText(
+          verses: verses,
+          searchKeys: searchKeys,
+          query: query,
+          bookOrder: bookOrder,
+          searchAll: searchAll,
+          filterBook: filterBook,
+          currentBook: currentBook);
+    }
+    final matches = <Verse>[];
+    final counts = <String, int>{};
+    var scanned = 0;
+    for (var start = 0; start < verses.length; start += 256) {
+      await Future<void>.delayed(Duration.zero);
+      if (cancelled?.call() ?? false) return null;
+      final end = (start + 256).clamp(0, verses.length);
+      final chunk = scanText(
+          verses: verses.sublist(start, end),
+          searchKeys: searchKeys.sublist(start, end),
+          query: query,
+          bookOrder: bookOrder,
+          searchAll: searchAll,
+          filterBook: filterBook,
+          currentBook: currentBook);
+      matches.addAll(chunk.matches);
+      scanned += chunk.scannedCount;
+      for (final entry in chunk.bookCounts.entries) {
+        counts[entry.key] = (counts[entry.key] ?? 0) + entry.value;
+      }
+    }
+    return _orderedTextResult(matches, counts, scanned, bookOrder);
+  }
+
+  static TextSearchResult _orderedTextResult(List<Verse> matches,
+      Map<String, int> localCounts, int scanCount, Map<String, int> bookOrder) {
     matches.sort((a, b) {
       final orderA = bookOrder[a.book] ?? 9999;
       final orderB = bookOrder[b.book] ?? 9999;

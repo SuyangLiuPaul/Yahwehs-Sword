@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'search_options_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'package:yahwehs_sword/constants/bible_versions.dart'
@@ -212,6 +213,37 @@ class _CommandPaneState extends State<CommandPane> {
   /// about the token that was just inserted, so it expires the moment the
   /// line stops being that.
   String? _tipLineText;
+
+  (bool, bool)? _searchFlags;
+
+  bool get _plainTextQuery {
+    final query = _controller.text.trim();
+    if (query.isEmpty) return true;
+    return !kCommandControls.contains(query[0]) &&
+      !query.contains('*') && !parseCompoundQuery(query).isCompound &&
+      analyseCommandDraft(query).mode != CommandDraftMode.strongs &&
+      !parseCommandVerb(query, _verbContext()).isVerb &&
+      _matchVersion(query) == null && parseReference(query) == null;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final settings = context.watch<AppSettings>();
+    final flags = (settings.fuzzySearch, settings.pinyinSearch);
+    final previous = _searchFlags;
+    _searchFlags = flags;
+    if (previous == null || previous == flags) return;
+    final query = _controller.text.trim();
+    if (query.isEmpty || !_plainTextQuery) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _controller.text.trim() != query) return;
+      final wb = context.read<WorkbenchProvider>();
+      wb.crossVersionMode = settings.crossVersionSearchMode;
+      wb.runSearch(query, locale: settings.locale,
+          ketivQere: settings.ketivQereSearchScope);
+    });
+  }
 
   @override
   void initState() {
@@ -838,6 +870,11 @@ class _CommandPaneState extends State<CommandPane> {
         // nobody can guess. BibleWorks shipped "Code Insertion Buttons"
         // for exactly this reason and they are the only part of its
         // command line that reviewers describe as discoverable.
+        SearchOptionsBar(locale: locale,
+          fuzzy: settings.fuzzySearch, pinyin: settings.pinyinSearch,
+          plainQuery: _plainTextQuery, busy: wb.searching,
+          onFuzzyChanged: settings.setFuzzySearch,
+          onPinyinChanged: settings.setPinyinSearch),
         _operatorStrip(locale),
         // 2026-09-14: `Flexible` + a scroll, because the card is the one
         // child here that can be taller than the pane.
