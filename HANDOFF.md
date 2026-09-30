@@ -1,3 +1,8 @@
+## 2026-09-30 — CI chart appearance repair
+
+- CI run 36695391088 found one failure: the new search book chart introduced a hardcoded 3px radius. The bar now uses WbMetrics.radiusControl from the shared workbench theme. Tests are unchanged.
+- Both Apple public beta builds are Waiting for Review; the latest package links use UpdateService.repo. Production and release tags are still pending.
+
 ## 2026-09-30 — public beta invitations and About installation guide (prepared)
 
 - Created external TestFlight group **Public beta — iPhone, iPad & Mac**.

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/workbench_theme.dart' show WbMetrics;
+
 /// Counts are supplied by the active result set, so a scoped search
 /// cannot accidentally chart a different corpus. Text queries count
 /// matching verses; occurrence maps may only come from an exact index.
@@ -121,7 +123,7 @@ class SearchBookChart extends StatelessWidget {
                                                   e.value / entries.first.value,
                                               minHeight: 12,
                                               borderRadius:
-                                                  BorderRadius.circular(3))),
+                                                  BorderRadius.circular(WbMetrics.radiusControl))),
                                     ])));
                       },
                     )),
