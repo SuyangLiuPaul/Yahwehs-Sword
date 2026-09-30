@@ -538,6 +538,18 @@ class _ScripturesTable extends StatelessWidget {
             '© The Lockman Foundation · used under quotation provisions.',
         url: 'https://www.lockman.org/',
       ),
+      _AttribRow(name: uiStrings['aboutVerCnet']?[locale] ?? 'Cnet',
+        licence: uiStrings['aboutLicenseCnet']?[locale] ?? uiStrings['aboutLicenseCnet']!['en']!,
+        url: 'https://bible.org/chinese/'),
+      _AttribRow(name: uiStrings['aboutVerNet']?[locale] ?? 'Net',
+        licence: uiStrings['aboutLicenseNet']?[locale] ?? uiStrings['aboutLicenseNet']!['en']!,
+        url: 'https://netbible.org/'),
+      _AttribRow(name: uiStrings['aboutVerOgt']?[locale] ?? 'Ogt',
+        licence: uiStrings['aboutLicenseOgt']?[locale] ?? uiStrings['aboutLicenseOgt']!['en']!,
+        url: 'https://www.onegodtranslation.com/'),
+      _AttribRow(name: uiStrings['aboutVerSblgnt']?[locale] ?? 'Sblgnt',
+        licence: uiStrings['aboutLicenseSblgnt']?[locale] ?? uiStrings['aboutLicenseSblgnt']!['en']!,
+        url: 'https://sblgnt.com/license/'),
       _AttribRow(
         name:
             uiStrings['aboutVerCuvsYhwh']?[locale] ?? 'CUVS-YHWH (和合本雅伟版, 简/繁)',
@@ -548,8 +560,7 @@ class _ScripturesTable extends StatelessWidget {
       _AttribRow(
         name: uiStrings['aboutVerLjk']?[locale] ??
             'LJK1 / LJK2 梁家铿译本（2026年第二版，简/繁）',
-        licence: uiStrings['aboutLicenseLjk']?[locale] ??
-            '版权梁家铿所有，经授权使用。',
+        licence: uiStrings['aboutLicenseLjk']?[locale] ?? '版权梁家铿所有，经授权使用。',
         url: 'https://www.biblexg.com/',
       ),
       // The three Eagle's View imports. Each underlying text is public

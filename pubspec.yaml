@@ -96,6 +96,11 @@ flutter:
     # a tablet with no SIM should still be able to read it.
     - assets/changelog.json
     - assets/jesus_teachings.json
+    - assets/cnet.json
+    - assets/cnet-tr.json
+    - assets/net.json
+    - assets/ogt.json
+    - assets/sblgnt.json
     - assets/kjv.json
     - assets/leb.json
     - assets/cuvs-yhwh.json
@@ -168,6 +173,7 @@ flutter:
     - assets/originals/
     - assets/tagged/cuvs-yhwh/
     - assets/tagged/bsb/
+    - assets/tagged/sblgnt/
     - assets/tagged/kjvs/
     - assets/tagged/cuvs-plus/
     - assets/tagged/lxxwh/

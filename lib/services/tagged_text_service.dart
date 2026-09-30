@@ -72,6 +72,7 @@ class TaggedTextService {
   /// in the Old Testament too — previously only the BSB reached back
   /// past Malachi.
   static const Set<String> taggedVersions = {
+    'sblgnt',
     'cuvs-yhwh',
     'bsb',
     'kjvs',
@@ -241,7 +242,8 @@ class TaggedTextService {
           : runs[i].text.substring(carried.length);
       carried = null;
       final open = text.lastIndexOf('[');
-      if (open >= 0 && !text.substring(open).contains(']') &&
+      if (open >= 0 &&
+          !text.substring(open).contains(']') &&
           i + 1 < runs.length) {
         final next = runs[i + 1].text;
         final close = next.indexOf(']');
