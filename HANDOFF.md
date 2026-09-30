@@ -1,3 +1,7 @@
+## 2026-09-30 — Mac category correction and upload
+
+Xcode login restored. Added public.app-category.reference to source and archive Info.plist after Words delivery reported 90242. Re-export with automatic distribution signing succeeded. Corrected Sword package: /Users/pliu0036/Downloads/store-macos/sword-1.6.329-category-export/Yahweh’s Sword.pkg, uploading in Transporter. Do not use older sword-1.6.329-export. Mac listing has professional English copy, automatic release, two verified 1440x900 native screenshots. Add for Review reports only You must choose a build. Wait for delivery/processing, then select 1060329 and submit. Microsoft submission 3 remains in certification; existing daily heartbeat handles next package update once editable.
+
 ## 2026-09-30 — Scoped search chart and Store preparation, 1.6.329
 
 Ordinary text results now have a visible By book chart; the Strong’s strip offers the same labeled chart. Books rank descending with canonical/input ties, the counting unit is explicit and the active search limit is carried through. The source is the already scoped result list or the existing honest SearchDistribution, not a global corpus tally. Targeted Flutter analysis is clean and the shared chart layout was visually inspected in Chrome. Dev release deployed to seeksparks-dev.netlify.app; no production web deployment was requested or performed.
