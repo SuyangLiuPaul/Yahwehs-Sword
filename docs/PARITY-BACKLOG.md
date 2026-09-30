@@ -15,6 +15,14 @@ memory; where a claim could not be verified it says so.
 
 ---
 
+## Dated source/status clarification — 2026-10-01
+
+- **Recent imports are shipped in 1.6.330:** BIB NT (**27 books / 260 chapters / 7,941 verses / 138,129 tagged runs / 226 note chapters**) and newer CNET/NET/OGT/SBLGNT are included. BIB **1 Cor 7:15** has one unresolved source Strong's conflict, preserved unassigned in `berean-interlinear-import.json`. This is not permission to repair the source by guessing.
+- **EV intake has two separate outcomes:** the September 30 re-import of Modern Concordance reproduced **370 existing bundled files**, with the **341-topic browser** already reachable. The first-stage `build/restricted/` path in §4 is historical importer behavior, not evidence that the current concordance is unbundled. The separate theological review records **2 explicit EV / 1 interpretive EV entries** and distinct CBOL findings; see `eaglesview-theology-review.md`. A data/UI verdict of HAVE or CLOSED does not certify every commentary entry or close the owner's editorial decision.
+- **Read the latest per-feature evidence before the old shortlist:** §3.5 already records the synopsis as **HAVE (2026-09-07)** and learned marking/example verse finder as shipped; §8's 1b/1c shortlist must not re-open them merely because it is older. `PROJECT_STATE.md` records **#293 / #296 closed 2026-09-02**; their older BLOCKED wording at the end of §8 is historical. Other entries need their own verification.
+- **Application scope remains distinct:** Sword does not use Firebase. The Windows Firebase repair and car/watch features belong to Words; no Sword CarPlay claim follows from this release. Physical Windows/car/watch behavior remains unverified. Restricted NASB assets remain forbidden to commit/deploy.
+- **Release completion is not parity completion:** GitHub/web **1.6.330** is released; Apple/Google/Microsoft review and tester qualification gates remain open in `OPEN-ITEMS.md`. This update does not declare every bug fixed, every parity item complete or all theology endorsed. Older evidence below is retained with its original scope and date.
+
 ## 1. How to use this
 
 **Pick one entry. Finish it. Ship it.** The entries are sized so that a

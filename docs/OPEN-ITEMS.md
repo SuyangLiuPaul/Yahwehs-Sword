@@ -37,6 +37,20 @@ This file is the complete picture, including things nobody has scheduled.
 
 ---
 
+## Current release gates and source decisions — 2026-10-01
+
+These checks supersede earlier release-preparation statements; the older bug and parity entries remain individually dated and are not closed by a green release.
+
+- **Apple beta approval `[open; checked 2026-10-01]`:** replacement iOS **1.6.330 (1060331)** delivered/complete after **1060330** failed **ITMS-90683**; PR #5 purpose-string repair merged with green CI **36728390165** and one regression test. External Public beta remains **Waiting for Review**. Compliance is complete and internal Sword group has one assigned tester. Mac **1.6.330 (1060330)** delivered with external beta **Waiting for Review** and internal group assigned.
+- **Public App Store review `[open; checked 2026-10-01]`:** existing **iOS 1.6.328 / Mac 1.6.329 Waiting for Review** submissions preserved. Do not cancel them to force the newer beta builds through.
+- **Google review / production qualification `[open; checked 2026-10-01]`:** closed-track **1.6.330 / 2000004 Sent for review**, managed publishing off; **8 opted in**, production access still requires **12 testers / 14 days**.
+- **Microsoft certification / queued update `[open; checked 2026-10-01 00:32 Melbourne]`:** submission **3 In certification**. Keep three languages, copy and screenshots. **1.6.330.0 x64 MSIX** is prepared by green run **36723331684**, with existing identity/publisher, at `/Users/pliu0036/Downloads/store-windows/sword-1.6.330/Yahwehs-Sword-msix/yahwehs_sword.msix`; existing Sword daily heartbeat follows up after current approval. No duplicate submission was made.
+- **BIB source conflict `[open; measured 2026-09-30]`:** **1 Corinthians 7:15** source hyperlink and tooltip disagree on Strong's number; importer leaves it unassigned. Manifest preserves the evidence. No theological or numerical guess is authorized by the corpus validation.
+- **Commentary editorial decision `[open; reviewed 2026-09-30]`:** EV explicit **Thayer G2304 / Strong SCh H7307**, interpretive **Thayer G1504**, and separate CBOL findings are in `eaglesview-theology-review.md` / `.json`. Findings do not establish that all EV material is doctrinally endorsed; originals were not silently rewritten.
+- **Physical verification `[unverified]`:** actual physical Windows, car and watch behavior was not verified. Car/watch features belong to Words; Sword has no Firebase and this release makes no Sword CarPlay claim.
+
+**Completed distribution facts:** tag **v1.6.330**, six GitHub assets, and dev/prod **1.6.330** web deployments are complete; release analysis clean, full suite **5,923 passed / 10 existing skips / 0 failed**. These facts establish the release, not store approval or closure of the entire register. Original shared checkout synchronization preserves dirty work and has backup `Downloads/Yahweh-workspace-sync-backup-20261001/manifest.json`. Full evidence/paths: `release-2026-09-30.md` and newest `HANDOFF.md`.
+
 ## Bugs
 
 ### The reading pane renders no verses when the book's language and the version's corpus disagree `[CLOSED 2026-09-05 — every path walked]`
