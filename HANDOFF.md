@@ -1,3 +1,7 @@
+## 2026-09-30 — Mac App Store submission completed
+
+Sword macOS 1.6.329, build 1060329, submitted successfully. Apple showed 1 Item Submitted, then Waiting for Review. Automatic release selected. Review submission: https://appstoreconnect.apple.com/apps/6817558152/distribution/reviewsubmissions/details/5239d459-a741-4ff0-994a-06418ac1abdf. Standard encryption declaration saved with France excluded, preserving the earlier distribution choice. Words pricing verified 174 countries available and France the one unavailable country. Existing iOS reviews were preserved. This supersedes earlier processing/pending entries below.
+
 ## 2026-09-30 — Mac delivery successful
 
 Transporter verified Delivered for Sword build 1060329, at 17:35 Melbourne time. Corrected category package accepted; THE APP IS PROCESSING. Mac version is not yet submitted for review. After processing, choose the matching build, save and submit (automatic release already selected).
