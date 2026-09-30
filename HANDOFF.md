@@ -1,3 +1,7 @@
+## 2026-09-30 — Sword France scope aligned
+
+Final verification found Sword availability had 175 countries despite earlier request to omit France. Updated Manage Availability, unchecked France only, confirmed change; verified France Not Available. Other 174 countries retained. Both Mac submissions are Waiting for Review and automatic release selected.
+
 ## 2026-09-30 — Mac App Store submission completed
 
 Sword macOS 1.6.329, build 1060329, submitted successfully. Apple showed 1 Item Submitted, then Waiting for Review. Automatic release selected. Review submission: https://appstoreconnect.apple.com/apps/6817558152/distribution/reviewsubmissions/details/5239d459-a741-4ff0-994a-06418ac1abdf. Standard encryption declaration saved with France excluded, preserving the earlier distribution choice. Words pricing verified 174 countries available and France the one unavailable country. Existing iOS reviews were preserved. This supersedes earlier processing/pending entries below.
