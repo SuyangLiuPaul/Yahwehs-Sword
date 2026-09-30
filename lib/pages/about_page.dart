@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yahwehs_sword/widgets/store_links_card.dart';
 import 'package:provider/provider.dart';
 
 import 'package:yahwehs_sword/constants/app_version.dart';
@@ -91,6 +92,8 @@ class AboutPage extends StatelessWidget {
               _DisclaimerCard(scheme: scheme, locale: locale),
               const SizedBox(height: 12),
               _ContactCard(scheme: scheme, locale: locale),
+              const SizedBox(height: 12),
+              StoreLinksCard(locale: locale),
               // 2026-09-07: the BYOK card and everything it configured
               // are gone with the AI subsystem. Historic note: the card
               // (lib/widgets/gemini_key_card)

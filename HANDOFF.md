@@ -1,3 +1,16 @@
+## 2026-09-30 — public beta invitations and About installation guide (prepared)
+
+- Created external TestFlight group **Public beta — iPhone, iPad & Mac**.
+- Public invitation: https://testflight.apple.com/join/KQkzuVeU. Enabled and open to anyone; App Store Connect explicitly says users cannot join until an approved build is present.
+- Submitted iOS **1.6.328 (1060329)** and macOS **1.6.329 (1060329)** to Beta App Review. Both visibly **Waiting for Review**. Existing App Store review submissions were preserved.
+- Added localized store/latest-package links in `lib/widgets/store_links_card.dart` and the About page. These source changes are for the next native update; the binaries already waiting for review do not contain this card.
+- Words hosts a three-language, responsive `web/beta.html` at `/beta`, covering both apps, real Google Play opt-in links and actual TestFlight invitations. About store links route to the corresponding app/platform anchor. Source ready; dev deployment/visual review in progress. Do not claim production or a new tagged release is complete yet.
+- Google tester group https://groups.google.com/g/yahweh-bible-app-testers verified using non-member personal account: direct **Join group** dialog, no approval request. Dialog canceled; no extra member added.
+- EV source keyword audit: **76 readable study/dictionary database tables, 827,195 rows**, excluding Bible `.bbl` files and binaries. **Two matching definition fields**: `Thayer.dct` G2304 (`trinity`) and `Strong SCh.dct` H7307 (`三一神的第三位…同荣, 同尊`). Therefore the supplied EV package is not fully stripped of explicit Trinity commentary.
+- App source audit also found existing CBOL-derived Chinese G2316 commentary in `assets/strongs/greek.json` (Simplified/Traditional) and `assets/strongs/thayer_zh.json`, in both apps. This is a separate source from EV. G4151 wording about personality/depersonalised force merits human theological review; a keyword scan is not proof of doctrinal agreement.
+- Original EV files and application dictionary content preserved while the owner answers the pending question about explicitly marked editorial omission. Do not silently attribute new edits to Pastor Ho or to EV.
+- Full keyword-audit evidence stored locally at `/Users/pliu0036/Downloads/Eagles-View-source-review/theology-keyword-review.json`.
+
 ## 2026-09-30 — Sword France scope aligned
 
 Final verification found Sword availability had 175 countries despite earlier request to omit France. Updated Manage Availability, unchecked France only, confirmed change; verified France Not Available. Other 174 countries retained. Both Mac submissions are Waiting for Review and automatic release selected.
