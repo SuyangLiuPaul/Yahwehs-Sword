@@ -10709,4 +10709,9 @@ const uiStrings = {
     'zh-Hant':
         'The Greek New Testament: SBL Edition. Copyright © 2010 Society of Biblical Literature and Logos Bible Software. CC BY 4.0 (https://sblgnt.com/license/). Supplied by Yahwehdehua; source notes are mapped to popups and Strong’s/morphology to word runs. Source paragraph and apparatus anchors were already removed upstream. No wording edits in this import.',
   },
+  'cmdIssueStrongsTagNoTaggedTextV3': {
+    'zh-Hans': '本译本没有原文编号标记，@ 无从比对。请换到 BSB、BSB-Y、CSB、ASV-Y、KJV+S、LXX+WH、SBLGNT、雅简+ 或 和简+ 再搜索。',
+    'zh-Hant': '本譯本沒有原文編號標記，@ 無從比對。請換到 BSB、BSB-Y、CSB、ASV-Y、KJV+S、LXX+WH、SBLGNT、雅简+ 或 和简+ 再搜尋。',
+    'en': "This edition carries no Strong's tagging, so @ has nothing to match against. Switch to BSB, BSB-Y, CSB, ASV-Y, KJV+S, LXX+WH, SBLGNT, 雅简+ or 和简+ and run it again.",
+  },
 };

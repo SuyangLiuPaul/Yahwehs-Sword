@@ -48,7 +48,7 @@ void main() {
       expect(bibleLanguageOrder, contains('grc'));
       expect(bibleLanguageOrder.last, 'grc',
           reason: 'Greek is a study column, not a default reading language');
-      expect(versionsForLanguage('grc').map((v) => v.value), ['lxxwh']);
+      expect(versionsForLanguage('grc').map((v) => v.value), ['lxxwh', 'sblgnt']);
       expect(bibleVersionLanguage('lxxwh'), 'grc');
     });
 
@@ -62,7 +62,7 @@ void main() {
     });
 
     test('a Greek primary pane gets a non-Greek comparison pane', () {
-      // Only one Greek edition exists, so same-language would duplicate.
+      // Original-language study keeps a translation beside the primary pane.
       final secondary = defaultSecondaryVersion('lxxwh');
       expect(secondary, isNot('lxxwh'));
       expect(bibleVersionLanguage(secondary), isNot('grc'));

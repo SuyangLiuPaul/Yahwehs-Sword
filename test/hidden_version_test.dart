@@ -201,6 +201,8 @@ void main() {
         'kjvs',
         'bsb-yhwh',
         'asv-yhwh',
+        'net',
+        'ogt',
       ]);
     });
 

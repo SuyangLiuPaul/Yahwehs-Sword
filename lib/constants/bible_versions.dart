@@ -649,6 +649,12 @@ String defaultSecondaryVersion(String primaryVersion) {
   if (others.isEmpty) return primaryVersion;
 
   final primaryLang = bibleVersionLanguage(primaryVersion);
+  // Keep a reading translation beside original-language study by default.
+  if (primaryLang == 'grc' || primaryLang == 'he') {
+    return others
+        .firstWhere((v) => v.language == 'en', orElse: () => others.first)
+        .value;
+  }
   for (final v in others) {
     if (v.language == primaryLang) return v.value;
   }

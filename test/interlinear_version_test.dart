@@ -34,7 +34,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('the picker offers the tagged editions that actually ship', () {
-    test('it lists exactly the six, in catalog order', () {
+    test('it lists the seven visible tagged editions, in catalog order', () {
       // 2026-09-08: five became seven. `bsb-yhwh` and `asv-yhwh` are
       // tagged and visible, so `interlinearEditions` — which is
       // `availableVersions` intersected with
@@ -58,6 +58,7 @@ void main() {
         'asv-yhwh',
         'lxxwh',
         'cuvs-yhwh',
+        'sblgnt',
       ]);
     });
 
