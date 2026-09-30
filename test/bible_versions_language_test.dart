@@ -35,8 +35,11 @@ void main() {
       'csb',
       'asv-yhwh',
       'kjvs',
+      'net',
+      'ogt',
+      'bib',
     };
-    const greek = {'lxxwh'};
+    const greek = {'lxxwh', 'sblgnt'};
     const hebrew = {'wlc'};
     for (final v in bibleVersions) {
       if (greek.contains(v.value)) {

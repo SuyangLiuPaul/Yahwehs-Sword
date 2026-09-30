@@ -1,3 +1,70 @@
+## 2026-09-30 — BIB integration, robustness review and release preparation
+
+- Imported official Berean Interlinear NT, preserved Greek occurrence + English gloss/transliteration/source grammar, left the conflicting 1 Cor 7:15 tag unassigned, and added corpus integrity regression coverage. Manifest: `docs/berean-interlinear-import.json`.
+- Static analysis has no issues; complete suite: 5923 passed, 10 existing skips, zero failures. Fixed newly exposed BIB attribution/picker/note/font and Words version-copy/worktree test defects.
+- Theology findings and source SHA inventory are in `docs/eaglesview-theology-review.md` / `.json`; two explicit EV entries, one interpretive entry, distinct CBOL app findings. No silent theological rewrite.
+- Release record: `docs/release-2026-09-30.md`. New source must pass current CI before tagging. Store review and CarPlay approval remain separate gates.
+
+## 2026-09-30 — newer Yahwehdehua reading editions
+
+- Imported Chinese NET (Simplified / Traditional), English NET text only, One God Translation NT and SBLGNT from the read-only exported database. Exact source SHA, canonical gaps and counts are in `docs/yahwehdehua-edition-import.json`; regeneration script rejects unknown markup or changed source shape. Existing Scripture assets unchanged.
+- CNET has 31,099 records / 26,835 publisher notes per script; NET 31,085 records / no paid notes; OGT 7,945 records / 1,621 notes; SBLGNT 7,957 records / 6,901 apparatus notes. Chinese book names follow the existing simplified/traditional asset spellings.
+- Credits, copy attribution and NT-only daily-verse fallbacks are wired. Words keeps Greek hidden per owner confirmation; Sword offers SBLGNT with its source Strong’s and Robinson morphology. Existing divine-name display/search/copy cleanup still applies; no new restoration pass edited the stored text. No version bump or store upload yet.
+- Static analysis and dev UI inspection recorded in the PR after completion. No local tests added or run.
+
+## 2026-09-30 — searchable fuzzy/pinyin controls
+
+- Added independent, persisted fuzzy and pinyin chips beside the search field. Switching either option re-runs the plain query with its existing scope; previously a settings rebuild changed labels without updating the results. Both remain off for new users; Words migrates the old combined setting for existing pinyin users.
+- Pinyin now reaches Sword's plain matcher and its prefilter. Shared offline matcher supports full romanisation, spaces, tone marks, tone numbers, initials and mixed Han/Latin input. Chinese-only queries retain their meaning. Results explicitly label pinyin hits.
+- First pinyin scans yield every 256 verses. New queries, clearing and disposal cancel obsolete batched work. Strong's numbers, explicit operators and navigation commands retain their exact parser path; chips explain that boundary.
+- Both projects pass Flutter static analysis. No local tests were added or run for this fix. Dev builds/deployments started with no version bump; UI inspection results will be recorded in the PR. Existing store-review binaries do not contain this update, and production is unchanged.
+
+## 2026-09-30 — CI chart appearance repair
+
+- CI run 36695391088 found one failure: the new search book chart introduced a hardcoded 3px radius. The bar now uses WbMetrics.radiusControl from the shared workbench theme. Tests are unchanged.
+- Both Apple public beta builds are Waiting for Review; the latest package links use UpdateService.repo. Production and release tags are still pending.
+
+## 2026-09-30 — public beta invitations and About installation guide (prepared)
+
+- Created external TestFlight group **Public beta — iPhone, iPad & Mac**.
+- Public invitation: https://testflight.apple.com/join/KQkzuVeU. Enabled and open to anyone; App Store Connect explicitly says users cannot join until an approved build is present.
+- Submitted iOS **1.6.328 (1060329)** and macOS **1.6.329 (1060329)** to Beta App Review. Both visibly **Waiting for Review**. Existing App Store review submissions were preserved.
+- Added localized store/latest-package links in `lib/widgets/store_links_card.dart` and the About page. These source changes are for the next native update; the binaries already waiting for review do not contain this card.
+- Words hosts a three-language, responsive `web/beta.html` at `/beta`, covering both apps, real Google Play opt-in links and actual TestFlight invitations. About store links route to the corresponding app/platform anchor. Source ready; dev deployment/visual review in progress. Do not claim production or a new tagged release is complete yet.
+- Google tester group https://groups.google.com/g/yahweh-bible-app-testers verified using non-member personal account: direct **Join group** dialog, no approval request. Dialog canceled; no extra member added.
+- EV source keyword audit: **76 readable study/dictionary database tables, 827,195 rows**, excluding Bible `.bbl` files and binaries. **Two matching definition fields**: `Thayer.dct` G2304 (`trinity`) and `Strong SCh.dct` H7307 (`三一神的第三位…同荣, 同尊`). Therefore the supplied EV package is not fully stripped of explicit Trinity commentary.
+- App source audit also found existing CBOL-derived Chinese G2316 commentary in `assets/strongs/greek.json` (Simplified/Traditional) and `assets/strongs/thayer_zh.json`, in both apps. This is a separate source from EV. G4151 wording about personality/depersonalised force merits human theological review; a keyword scan is not proof of doctrinal agreement.
+- Original EV files and application dictionary content preserved while the owner answers the pending question about explicitly marked editorial omission. Do not silently attribute new edits to Pastor Ho or to EV.
+- Full keyword-audit evidence stored locally at `/Users/pliu0036/Downloads/Eagles-View-source-review/theology-keyword-review.json`.
+
+## 2026-09-30 — Sword France scope aligned
+
+Final verification found Sword availability had 175 countries despite earlier request to omit France. Updated Manage Availability, unchecked France only, confirmed change; verified France Not Available. Other 174 countries retained. Both Mac submissions are Waiting for Review and automatic release selected.
+
+## 2026-09-30 — Mac App Store submission completed
+
+Sword macOS 1.6.329, build 1060329, submitted successfully. Apple showed 1 Item Submitted, then Waiting for Review. Automatic release selected. Review submission: https://appstoreconnect.apple.com/apps/6817558152/distribution/reviewsubmissions/details/5239d459-a741-4ff0-994a-06418ac1abdf. Standard encryption declaration saved with France excluded, preserving the earlier distribution choice. Words pricing verified 174 countries available and France the one unavailable country. Existing iOS reviews were preserved. This supersedes earlier processing/pending entries below.
+
+## 2026-09-30 — Mac delivery successful
+
+Transporter verified Delivered for Sword build 1060329, at 17:35 Melbourne time. Corrected category package accepted; THE APP IS PROCESSING. Mac version is not yet submitted for review. After processing, choose the matching build, save and submit (automatic release already selected).
+
+## 2026-09-30 — Mac category correction and upload
+
+Xcode login restored. Added public.app-category.reference to source and archive Info.plist after Words delivery reported 90242. Re-export with automatic distribution signing succeeded. Corrected Sword package: /Users/pliu0036/Downloads/store-macos/sword-1.6.329-category-export/Yahweh’s Sword.pkg, uploading in Transporter. Do not use older sword-1.6.329-export. Mac listing has professional English copy, automatic release, two verified 1440x900 native screenshots. Add for Review reports only You must choose a build. Wait for delivery/processing, then select 1060329 and submit. Microsoft submission 3 remains in certification; existing daily heartbeat handles next package update once editable.
+
+## 2026-09-30 — Scoped search chart and Store preparation, 1.6.329
+
+Ordinary text results now have a visible By book chart; the Strong’s strip offers the same labeled chart. Books rank descending with canonical/input ties, the counting unit is explicit and the active search limit is carried through. The source is the already scoped result list or the existing honest SearchDistribution, not a global corpus tally. Targeted Flutter analysis is clean and the shared chart layout was visually inspected in Chrome. Dev release deployed to seeksparks-dev.netlify.app; no production web deployment was requested or performed.
+
+Windows MSIX: /Users/pliu0036/Downloads/store-msix/sword-1.6.329/yahwehs_sword.msix; Actions 36678652032 succeeded from branch fix/store-search-book-chart. Manifest verified identity YahwehsPeople.YahwehsSword, version 1.6.329.0, existing publisher CN=C4997401-2CEE-44B6-9803-4775768C89A5, x64. Restricted NASB files absent. This source no longer uses Firebase; the reported initialization fix belongs to Words. PR https://github.com/SuyangLiuPaul/Yahwehs-Sword/pull/1 is attached to the chat.
+
+Microsoft submission 3 (professional listing) remains In certification, currently Certification in progress. Do not cancel it. The existing daily heartbeat check-yahweh-s-sword-certification was updated to submit the new verified 1.6.329 MSIX once the current listing submission is published and a new submission can be edited, preserve all approved copy/screenshots/languages and stay quiet while unchanged.
+
+Mac archive: /Users/pliu0036/Downloads/store-macos/Sword-1.6.329.xcarchive, from the shared checkout with the current chart and prior authorized Apple project changes; STORE_BUILD=true and APP_VERSION=1.6.329, build 1060329. Archive succeeded with DEBUG_INFORMATION_FORMAT=dwarf. Export remains dependent on restoring Xcode’s Apple account login, requested from the owner. Export options: /Users/pliu0036/Downloads/store-macos/ExportOptions-AppStore.plist. The Mac App Store English professional promo/description and version 1.6.329 were saved, automatic release remains selected. Screenshot upload encountered a Chrome Go to Folder modal that the owner was asked to close. Two suitable existing Mac screenshots live in store-assets/macos. No new Mac build uploaded/submitted yet. iOS 1.6.328 is Waiting for Review; preserve it.
+
+Eagle’s View intake: owner provided EV_2_0_Setup_EN.zip and two PDF manuals and explicitly confirmed reuse permission. Installer extracted as data only under /Users/pliu0036/Downloads/Eagles-View-source-review; no EXE executed. MSI/cabinet yielded 45 named files, including Strong Eng/SCh, Thayer, MC.dct and tagged Bible modules. Re-importing Modern Concordance from this installer and rebuilding its split assets produced 370 JSON files identical to the current bundled assets. Existing 341-topic browser and source/permission attribution therefore remain correct. The legacy first-stage importer/docs saying it is unbundled are stale; do not duplicate/overwrite the shipped set. English Thayer data was ported into Words with attribution. No Scripture text changed. Owner was asked whether the requested Yahweh version means additional Eagle’s View editions or adding tools to the current edition; answer pending.
+
 # HANDOFF
 
 Running log of what each autonomous iteration shipped. Newest entry on

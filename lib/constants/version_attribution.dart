@@ -17,6 +17,12 @@ import 'package:yahwehs_sword/utils/imported_version.dart'
     show isImportedVersion, kImportedAttributionKey;
 
 const versionAttributionKeys = <String, String>{
+  'cnet': 'aboutLicenseCnet',
+  'cnet-tr': 'aboutLicenseCnet',
+  'net': 'aboutLicenseNet',
+  'ogt': 'aboutLicenseOgt',
+  'sblgnt': 'aboutLicenseSblgnt',
+  'bib': 'aboutLicenseBib',
   'kjv': 'aboutLicensePublicDomain',
   'leb': 'aboutLicenseLeb',
   'nasb': 'aboutLicenseNasb',
@@ -67,6 +73,8 @@ String? attributionKeyFor(String versionCode) {
 /// them is the electronic edition and its Strong's alignment, neither of
 /// which travels on the clipboard — copying KJV+S copies the 1769 KJV.
 const unrestrictedCopyVersions = <String>{
+  // CC BY 4.0 permits full copying with attribution.
+  'sblgnt',
   'kjv',
   // 2026-09-08: `bsb` STAYS, and `bsb-yhwh` is deliberately NOT added
   // beside it. Hiding `bsb` from the picker that day (「bsbs 不用，就 bsb

@@ -16,6 +16,7 @@ import 'package:yahwehs_sword/utils/cross_version_search.dart'
 // unqualified call inside it would recurse into itself rather than
 // reach the switch.
 import 'package:yahwehs_sword/utils/fuzzy_search.dart' as fuzzy;
+import '../utils/pinyin_search.dart' as pinyin;
 import 'package:yahwehs_sword/utils/search_folding.dart' as folding;
 import 'package:yahwehs_sword/models/notification_category.dart';
 import 'package:yahwehs_sword/services/app_icon_service.dart';
@@ -141,6 +142,7 @@ const _kCrossVersionSearchMode = 'crossVersionSearchMode';
 // ordinary one.
 const _kSearchIgnoresPointing = 'searchIgnoresPointing';
 const _kFuzzySearch = 'fuzzySearch';
+const _kPinyinSearch = 'pinyinSearch';
 const _kExcludeKetivFromSearch = 'excludeKetivFromSearch';
 const _kExcludeQereFromSearch = 'excludeQereFromSearch';
 const _kShowSectionTitles = 'showSectionTitles';
@@ -433,6 +435,7 @@ class AppSettings extends ChangeNotifier {
       CrossVersionSearchMode.currentOnly;
   bool _searchIgnoresPointing = true;
   bool _fuzzySearch = false;
+  bool _pinyinSearch = false;
   bool _excludeKetivFromSearch = false;
   bool _excludeQereFromSearch = false;
   bool _showSectionTitles = true;
@@ -511,6 +514,7 @@ class AppSettings extends ChangeNotifier {
   /// [searchIgnoresPointing] has with `search_folding.dart`: that file
   /// is where the call sites read it, this is the persisted half.
   bool get fuzzySearch => _fuzzySearch;
+  bool get pinyinSearch => _pinyinSearch;
   bool get excludeKetivFromSearch => _excludeKetivFromSearch;
   bool get excludeQereFromSearch => _excludeQereFromSearch;
 
@@ -974,6 +978,15 @@ class AppSettings extends ChangeNotifier {
     await prefs.setBool(_kFuzzySearch, enabled);
   }
 
+  Future<void> setPinyinSearch(bool enabled) async {
+    if (_pinyinSearch == enabled) return;
+    _pinyinSearch = enabled;
+    pinyin.setPinyinSearchEnabled(enabled);
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kPinyinSearch, enabled);
+  }
+
   Future<void> setExcludeKetivFromSearch(bool enabled) async {
     if (_excludeKetivFromSearch == enabled) return;
     _excludeKetivFromSearch = enabled;
@@ -1122,6 +1135,8 @@ class AppSettings extends ChangeNotifier {
     folding.setSearchIgnoresPointing(true);
     _fuzzySearch = false;
     fuzzy.setFuzzySearchEnabled(false);
+    _pinyinSearch = false;
+    pinyin.setPinyinSearchEnabled(false);
     _excludeKetivFromSearch = false;
     _excludeQereFromSearch = false;
     _notificationsEnabled = false;
@@ -1191,6 +1206,7 @@ class AppSettings extends ChangeNotifier {
       _kCrossVersionSearchMode,
       _kSearchIgnoresPointing,
       _kFuzzySearch,
+      _kPinyinSearch,
       _kExcludeKetivFromSearch,
       _kExcludeQereFromSearch,
       _kNotificationCategories,
@@ -1353,6 +1369,8 @@ class AppSettings extends ChangeNotifier {
     folding.setSearchIgnoresPointing(_searchIgnoresPointing);
     _fuzzySearch = prefs.getBool(_kFuzzySearch) ?? false;
     fuzzy.setFuzzySearchEnabled(_fuzzySearch);
+    _pinyinSearch = prefs.getBool(_kPinyinSearch) ?? false;
+    pinyin.setPinyinSearchEnabled(_pinyinSearch);
     _excludeKetivFromSearch = prefs.getBool(_kExcludeKetivFromSearch) ?? false;
     _excludeQereFromSearch = prefs.getBool(_kExcludeQereFromSearch) ?? false;
     _notificationsEnabled = prefs.getBool(_kNotificationsEnabled) ?? false;

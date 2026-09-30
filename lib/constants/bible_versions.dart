@@ -369,6 +369,44 @@ const bibleVersions = <BibleVersionInfo>[
   //
   // tools/import_yahwehdehua_export.py is kept, and its two decoding bugs
   // are fixed, so the set can be rebuilt if the source ever diverges.
+  // 2026-09-30: new editions in the Yahwehdehua export. Append so
+  // existing defaults and the first same-language comparison stay stable.
+  BibleVersionInfo(
+      value: 'cnet',
+      shortLabel: '网简',
+      menuLabel: '中文 NET（简体）',
+      language: 'zh-Hans',
+      editionYear: '含译者注'),
+  BibleVersionInfo(
+      value: 'cnet-tr',
+      shortLabel: '網繁',
+      menuLabel: '中文 NET（繁體）',
+      language: 'zh-Hant',
+      editionYear: '含譯者註'),
+  BibleVersionInfo(
+      value: 'net',
+      shortLabel: 'NET',
+      menuLabel: 'NET Bible',
+      language: 'en',
+      editionYear: 'English / text only'),
+  BibleVersionInfo(
+      value: 'ogt',
+      shortLabel: 'OGT',
+      menuLabel: 'One God Translation',
+      language: 'en',
+      editionYear: 'New Testament / with notes'),
+  BibleVersionInfo(
+      value: 'bib',
+      shortLabel: 'BIB',
+      menuLabel: 'Berean Interlinear Bible',
+      language: 'en',
+      editionYear: 'New Testament / Greek–English, Strong’s'),
+  BibleVersionInfo(
+      value: 'sblgnt',
+      shortLabel: 'SBLGNT',
+      menuLabel: 'SBL Greek New Testament',
+      language: 'grc',
+      editionYear: '2010 / NT, Strong’s and critical apparatus'),
 ];
 
 /// Versions hidden from every surface a reader picks from, while their
@@ -476,9 +514,8 @@ List<BibleVersionInfo> get importedVersions => [
       for (final e in importedVersionLabels.entries)
         BibleVersionInfo(
           value: e.key,
-          shortLabel: e.value.length <= 6
-              ? e.value
-              : '${e.value.substring(0, 5)}…',
+          shortLabel:
+              e.value.length <= 6 ? e.value : '${e.value.substring(0, 5)}…',
           menuLabel: e.value,
           language: importedVersionScripts[e.key] ?? 'en',
           editionYear: '',
@@ -580,12 +617,16 @@ String menuBibleVersionLabel(String version) {
 /// already has full OT+NT coverage.
 String? bibleVersionFullCanonFallback(String version) {
   switch (version) {
-    case 'biblexg-v3':    // LJK (Simplified Chinese, NT only)
+    case 'bib':
+    case 'ogt':
+    case 'sblgnt':
+      return 'bsb-yhwh';
+    case 'biblexg-v3': // LJK (Simplified Chinese, NT only)
     case 'biblexg-v2':
-      return 'cuvs-yhwh';      // 和合本雅伟版 (Simplified, full canon)
+      return 'cuvs-yhwh'; // 和合本雅伟版 (Simplified, full canon)
     case 'biblexg-v3-tr': // LJK (Traditional Chinese, NT only)
     case 'biblexg-v2-tr':
-      return 'cuvs-yhwh-tr';   // 和合本雅伟版 (Traditional, full canon)
+      return 'cuvs-yhwh-tr'; // 和合本雅伟版 (Traditional, full canon)
   }
   return null;
 }
@@ -615,6 +656,12 @@ String defaultSecondaryVersion(String primaryVersion) {
   if (others.isEmpty) return primaryVersion;
 
   final primaryLang = bibleVersionLanguage(primaryVersion);
+  // Keep a reading translation beside original-language study by default.
+  if (primaryLang == 'grc' || primaryLang == 'he') {
+    return others
+        .firstWhere((v) => v.language == 'en', orElse: () => others.first)
+        .value;
+  }
   for (final v in others) {
     if (v.language == primaryLang) return v.value;
   }

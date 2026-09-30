@@ -2,7 +2,8 @@ import 'dart:async' show unawaited;
 
 import 'package:flutter/foundation.dart';
 
-import 'package:yahwehs_sword/constants/bible_versions.dart' show loadableVersions;
+import 'package:yahwehs_sword/constants/bible_versions.dart'
+    show loadableVersions;
 import 'package:yahwehs_sword/models/verse.dart';
 import 'package:yahwehs_sword/models/wb_centre_mode.dart';
 import 'package:yahwehs_sword/providers/main_provider.dart';
@@ -61,6 +62,7 @@ class WorkbenchProvider extends ChangeNotifier {
   /// the same way the reader's own search did.
   String _lastLocale = 'en';
 
+  int _searchGeneration = 0;
   bool searching = false;
   bool searchPerformed = false;
 
@@ -463,6 +465,7 @@ class WorkbenchProvider extends ChangeNotifier {
     String locale = 'en',
     KetivQereSearchScope ketivQere = KetivQereSearchScope.both,
   }) async {
+    final generation = ++_searchGeneration;
     final query = raw.trim();
     lastQuery = query;
     _lastLocale = locale;
@@ -630,7 +633,7 @@ class WorkbenchProvider extends ChangeNotifier {
           textResults = _runCommand(promoted.query!);
           return;
         }
-        final scan = SearchService.scanText(
+        final scan = await SearchService.scanTextAsync(
           verses: mainProvider.verses,
           searchKeys: mainProvider.searchKeys,
           query: query,
@@ -640,7 +643,9 @@ class WorkbenchProvider extends ChangeNotifier {
           // below, so a limit can be a chapter range and not just a
           // book.
           searchAll: true,
+          cancelled: () => _disposed || generation != _searchGeneration,
         );
+        if (scan == null) return;
         textResults = applySearchLimit(
           scan.matches,
           searchLimit,
@@ -648,21 +653,23 @@ class WorkbenchProvider extends ChangeNotifier {
         );
       }
     } finally {
-      // Only the text shapes have a rung below them. A Strong's number
-      // is not a word order, and a grammar error is not a thin result.
-      if (strongsRefs == null && commandIssue == null) _measureBroadening();
-      searching = false;
-      searchPerformed = true;
-      _notify();
-      // Deliberately after the page is on screen, and deliberately not
-      // awaited: the romanised index needs the concordance and both
-      // lexicons, several MB the reader has not necessarily paid for
-      // yet, and none of it can change the result that was just shown.
-      unawaited(_measureLemmaOffer(query, locale));
-      // Same reasoning, one step further out: every other edition is a
-      // separate asset load, and none of them can change the result the
-      // reader is already reading.
-      unawaited(_measureCrossVersion());
+      if (!_disposed && generation == _searchGeneration) {
+        // Only the text shapes have a rung below them. A Strong's number
+        // is not a word order, and a grammar error is not a thin result.
+        if (strongsRefs == null && commandIssue == null) _measureBroadening();
+        searching = false;
+        searchPerformed = true;
+        _notify();
+        // Deliberately after the page is on screen, and deliberately not
+        // awaited: the romanised index needs the concordance and both
+        // lexicons, several MB the reader has not necessarily paid for
+        // yet, and none of it can change the result that was just shown.
+        unawaited(_measureLemmaOffer(query, locale));
+        // Same reasoning, one step further out: every other edition is a
+        // separate asset load, and none of them can change the result the
+        // reader is already reading.
+        unawaited(_measureCrossVersion());
+      }
     }
   }
 
@@ -1129,6 +1136,7 @@ class WorkbenchProvider extends ChangeNotifier {
       );
 
   void clearResults() {
+    _searchGeneration++;
     searching = false;
     searchPerformed = false;
     crossVersionHits = null;
@@ -1205,6 +1213,7 @@ class WorkbenchProvider extends ChangeNotifier {
   @override
   void dispose() {
     _disposed = true;
+    _searchGeneration++;
     mainProvider.removeListener(_onMainChanged);
     super.dispose();
   }

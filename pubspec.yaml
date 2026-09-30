@@ -1,7 +1,7 @@
 name: yahwehs_sword
 description: "Yahweh's Sword / 雅伟之剑 — a desktop/tablet-first bilingual Bible exegesis tool with structured original-language search, forked from Yahweh's Words."
 publish_to: 'none'
-version: 1.6.328+1060328
+version: 1.6.330+1060330
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   get: ^4.6.6
   provider: ^6.1.1
+  # Offline Chinese romanisation for the independent search option.
+  pinyin: ^3.3.0
   scroll_to_index: ^3.0.1
   scrollable_positioned_list: ^0.3.8
   shared_preferences: ^2.5.3
@@ -94,6 +96,14 @@ flutter:
     # a tablet with no SIM should still be able to read it.
     - assets/changelog.json
     - assets/jesus_teachings.json
+    - assets/cnet.json
+    - assets/cnet-tr.json
+    - assets/net.json
+    - assets/ogt.json
+    - assets/sblgnt.json
+    - assets/bib.json
+    - assets/bib_chapter_notes.json
+    - assets/tagged/bib/
     - assets/kjv.json
     - assets/leb.json
     - assets/cuvs-yhwh.json
@@ -166,6 +176,7 @@ flutter:
     - assets/originals/
     - assets/tagged/cuvs-yhwh/
     - assets/tagged/bsb/
+    - assets/tagged/sblgnt/
     - assets/tagged/kjvs/
     - assets/tagged/cuvs-plus/
     - assets/tagged/lxxwh/

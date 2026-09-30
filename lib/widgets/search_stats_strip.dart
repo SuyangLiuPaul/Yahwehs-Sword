@@ -20,11 +20,13 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'search_book_chart.dart';
 
 import 'package:yahwehs_sword/constants/ui_strings.dart';
 import 'package:yahwehs_sword/constants/workbench_theme.dart';
 import 'package:yahwehs_sword/utils/search_stats.dart';
-import 'package:yahwehs_sword/utils/version_mapper.dart' show localeAwareBookName;
+import 'package:yahwehs_sword/utils/version_mapper.dart'
+    show localeAwareBookName;
 
 class SearchStatsStrip extends StatelessWidget {
   const SearchStatsStrip({
@@ -33,15 +35,16 @@ class SearchStatsStrip extends StatelessWidget {
     required this.locale,
     required this.version,
     this.onBookTap,
+    this.scope,
   });
 
   final SearchDistribution distribution;
   final String locale;
   final String version;
+  final String? scope;
   final void Function(String englishBook)? onBookTap;
 
-  String _s(String key, String fallback) =>
-      uiStrings[key]?[locale] ?? fallback;
+  String _s(String key, String fallback) => uiStrings[key]?[locale] ?? fallback;
 
   /// The name of [unit], for the one place per strip that says it.
   String _unitName(HitUnit unit) => unit == HitUnit.verses
@@ -99,6 +102,15 @@ class SearchStatsStrip extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SearchBookChart(
+            counts: {
+              for (final b in distribution.books) b.englishBook: b.count
+            },
+            locale: locale,
+            occurrences: distribution.unit == HitUnit.occurrences,
+            scope: scope,
+            bookLabel: (book) => localeAwareBookName(book, locale, version),
+          ),
           // Testament split. Only meaningful when both sides have hits;
           // a solid single-colour bar says nothing worth the pixels.
           if (distribution.oldTestament > 0 && distribution.newTestament > 0)
@@ -117,8 +129,7 @@ class SearchStatsStrip extends StatelessWidget {
                         ),
                         Expanded(
                           flex: distribution.newTestament,
-                          child: Container(
-                              height: 4, color: wb.strongsLexical),
+                          child: Container(height: 4, color: wb.strongsLexical),
                         ),
                       ],
                     ),
@@ -133,8 +144,7 @@ class SearchStatsStrip extends StatelessWidget {
                     '${distribution.oldTestament} · '
                     '${s['newTestamentShort']?[locale] ?? 'Greek'} '
                     '${distribution.newTestament}',
-                    style: TextStyle(
-                        fontSize: t.chrome, color: wb.mutedText),
+                    style: TextStyle(fontSize: t.chrome, color: wb.mutedText),
                   ),
                 ],
               ),
@@ -192,11 +202,12 @@ class SearchStatsStrip extends StatelessWidget {
             // the distinction — and because on a tablet the tooltips
             // that carry it elsewhere never appear (there is no hover).
             '${_s('searchStatsTopIn', 'Most in ({unit})').replaceAll('{unit}', _unitName(distribution.unit))}: '
-            '${[for (final (i, b) in top.indexed) _topEntry(b, leading: i == 0)].join(' · ')}'
+            '${[
+              for (final (i, b) in top.indexed) _topEntry(b, leading: i == 0)
+            ].join(' · ')}'
             '  ·  ${distribution.bookCount} '
             '${s['searchStatsBooks']?[locale] ?? 'books'}',
-            style:
-                TextStyle(fontSize: t.chrome, color: wb.mutedText),
+            style: TextStyle(fontSize: t.chrome, color: wb.mutedText),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),

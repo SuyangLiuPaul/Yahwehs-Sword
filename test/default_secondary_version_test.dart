@@ -23,10 +23,14 @@ void main() {
       }
     });
 
-    test('prefers a sibling in the same language', () {
+    test('pairs reading siblings and keeps a translation beside originals', () {
       for (final v in availableVersions) {
         final siblings =
             versionsForLanguage(v.language).where((c) => c.value != v.value);
+        if (v.language == 'grc' || v.language == 'he') {
+          expect(bibleVersionLanguage(defaultSecondaryVersion(v.value)), 'en');
+          continue;
+        }
         if (siblings.isEmpty) continue;
         expect(bibleVersionLanguage(defaultSecondaryVersion(v.value)),
             v.language,

@@ -373,3 +373,41 @@ No document on file for these; their licence strings live in
 The NASB row is the one to be careful with: that text is frozen in this
 repo, and `assets/nasb-ev.json` and `assets/nsn-plus.json` are neither
 committed nor deployed. A defect in it gets reported, not corrected.
+
+
+## 2026-09-30 — newer Yahwehdehua editions
+
+Owner requested importing editions absent from Words and Sword. Source is
+`Yahwehdehua/app/build/bible.db`, read-only; importer and exact manifest are
+`tools/import_ydh_new_editions.py` and `docs/yahwehdehua-edition-import.json`.
+Existing Scripture assets are unchanged. Canonical IDs come from each app's
+KJV; publisher notes become `<note: …>` apparatus. Empty source slots are
+omitted, preserving source versification rather than inventing text. Some
+CNET and OGT empty slots are printed with preceding verses; NET 2 Cor 13:14
+is printed in 13:13.
+
+- Chinese NET (both scripts): source permission index records permission,
+  without a written notice on file. Credit source and permission without
+  inventing a rights holder. Preserve all 26,835 notes per script.
+- OGT: Anthony Buzzard permission relayed by Paul on 2026-09-13, recorded
+  in Yahwehdehua's permission index. Preserve 1,621 notes and NT-only scope.
+- English NET: text only, no paid translator notes; carry the official
+  NET designation, acknowledgement and https://netbible.org/ link. Source
+  record documents Paul's 2026-09-09 decision to bundle text after the
+  quotation-versus-bundling issue was explained. This is a relayed decision,
+  not a new written publisher grant. https://netbible.com/copyright/
+- SBLGNT: Holmes 2010, SBL / Logos, CC BY 4.0. Preserve 6,901 apparatus
+  notes and source Strong's/morphology. Prior source modifications include
+  removing paragraph/anchor markers; this import maps footnotes and word
+  tags into the existing app formats without editing wording.
+  https://sblgnt.com/license/
+
+The stored text is not given a new Yahweh name-restoration pass. The apps'
+existing render/search/copy divine-name cleanup still applies; therefore
+the raw source and displayed text should not be described as byte-identical.
+Words keeps Greek hidden, explicitly reconfirmed by the owner; Sword offers
+SBLGNT. Existing hidden editions and locale defaults stay as selected.
+
+## 2026-09-30 — Berean Interlinear Bible NT
+
+Official source: https://interlinearbible.com/bib.docx via https://berean.bible/downloads.htm. The publisher states Berean Bible texts have been public domain since 2023-04-30 (https://berean.bible/licensing.htm). This import contains the available New Testament only, not a completed OT interlinear. Source attribution and SHA-256 are retained in `docs/berean-interlinear-import.json`. One contradictory source tag at 1 Corinthians 7:15 is left untagged rather than guessed.

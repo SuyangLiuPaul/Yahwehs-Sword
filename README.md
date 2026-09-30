@@ -1,4 +1,4 @@
-<h1 align="center">SeekSparks</h1>
+<h1 align="center">Yahweh’s Sword · 雅伟之剑</h1>
 
 <p align="center">
   <img src="brand/favicon-512.png" alt="SeekSparks App Icon" width="80"/>
@@ -44,6 +44,12 @@ among the additions since the fork, and none of them are in YsWords.
 
 ---
 
+## Latest additions
+
+- Scoped search charts compare matching verses by book; fuzzy and Chinese pinyin switches rerun the active text query without resetting its scope.
+- Berean Interlinear NT: Greek source forms, English glosses, transliteration, Strong’s numbers and source grammar. [Import provenance](docs/berean-interlinear-import.json).
+- [Eagle’s View commentary review](docs/eaglesview-theology-review.md): source-specific findings and explicit distinctions from CBOL app definitions.
+
 ## Quick start
 
 ### For users — nothing to install
@@ -55,11 +61,7 @@ analysis panel on the right that follows your verse taps. At tablet width (600�
 classic reader opens in Split View with the sidebar already out; its word study docks to the
 right at desktop widths and sheets up from the bottom below them.
 
-Native iOS/Android builds also exist (see `tools/release_native.sh` below) but are **not**
-published anywhere a stranger could install them — no App Store or Play Store listing, no
-public link. They're sideloaded to the maintainer's own iPhone, iPad, and Android tablet with
-a free-tier Apple developer profile that expires every seven days. The web build is the only
-way anyone else runs this app.
+Installation and current store/beta routes are in the [installation guide](https://yahwehword.com/beta#sword). Desktop and Android downloads are also available in [GitHub Releases](https://github.com/SuyangLiuPaul/Yahwehs-Sword/releases/latest). Microsoft Store has a listing; Google Play closed testing and Apple review availability depend on the relevant approved build. A source update is not evidence of store approval.
 
 ### For developers — clone, run, ship
 ```bash
@@ -76,14 +78,13 @@ machine. (On the maintainer's own Mac, `flutter` is not on `PATH` — the SDK li
 `~/flutter/bin/flutter`. That's a fact about that one machine, not the project; adjust if your
 own install isn't on `PATH` either.)
 
-Before sending a change anywhere, `flutter analyze` should report no issues and
-`flutter test` should pass — **4,298 tests**, across 286 files in `test/`, ~70 seconds
-(both measured on v1.6.236; re-measure rather than trust that number as it ages).
+Validation on 2026-09-30: `flutter analyze` reports no issues; the complete Flutter suite passes **5,923 tests**, with 10 pre-existing skips. Native packaging and store approvals are recorded separately in [the release report](docs/release-2026-09-30.md).
 
 Shipping is scripted, not manual:
 
 ```bash
-tools/release_web.sh                          # bump patch version, build, deploy to dev
+tools/release_web.sh                          # build and deploy dev; no version bump
+tools/release_web.sh --bump                   # start an authorized version cycle
 tools/release_web.sh --no-bump                 # build with the current pubspec version
 tools/release_web.sh --include-prod            # ALSO deploy to prod — ask the owner first
 tools/release_native.sh                        # build iOS + Android, install to all 3 devices
@@ -98,7 +99,32 @@ version before (see `AGENTS.md`).
 
 ---
 
-## What SeekSparks ships
+## App screenshots
+
+Ten distinct screenshots captured from the app. They show the existing study/reader interfaces; watch and CarPlay are not pictured.
+
+<table>
+<tr>
+<td align="center"><a href="docs/screenshots/01-hebrew-word-study.png"><img src="docs/screenshots/01-hebrew-word-study.png" width="210" alt="Hebrew Word Study"/></a><br/>Hebrew Word Study</td>
+<td align="center"><a href="docs/screenshots/02-strongs-search.png"><img src="docs/screenshots/02-strongs-search.png" width="210" alt="Strongs Search"/></a><br/>Strongs Search</td>
+<td align="center"><a href="docs/screenshots/03-parallel-bible.png"><img src="docs/screenshots/03-parallel-bible.png" width="210" alt="Parallel Bible"/></a><br/>Parallel Bible</td>
+</tr>
+<tr>
+<td align="center"><a href="docs/screenshots/04-word-study.png"><img src="docs/screenshots/04-word-study.png" width="210" alt="Word Study"/></a><br/>Word Study</td>
+<td align="center"><a href="docs/screenshots/05-search.png"><img src="docs/screenshots/05-search.png" width="210" alt="Search"/></a><br/>Search</td>
+<td align="center"><a href="docs/screenshots/06-bible-evidence.png"><img src="docs/screenshots/06-bible-evidence.png" width="210" alt="Bible Evidence"/></a><br/>Bible Evidence</td>
+</tr>
+<tr>
+<td align="center"><a href="docs/screenshots/07-bible-timeline.png"><img src="docs/screenshots/07-bible-timeline.png" width="210" alt="Bible Timeline"/></a><br/>Bible Timeline</td>
+<td align="center"><a href="docs/screenshots/08-family-tree.png"><img src="docs/screenshots/08-family-tree.png" width="210" alt="Family Tree"/></a><br/>Family Tree</td>
+<td align="center"><a href="docs/screenshots/09-bible-trivia.png"><img src="docs/screenshots/09-bible-trivia.png" width="210" alt="Bible Trivia"/></a><br/>Bible Trivia</td>
+</tr>
+<tr>
+<td align="center"><a href="docs/screenshots/10-book-chapter-picker.png"><img src="docs/screenshots/10-book-chapter-picker.png" width="210" alt="Book Chapter Picker"/></a><br/>Book Chapter Picker</td>
+</tr>
+</table>
+
+## What Yahweh’s Sword ships
 
 | Category | Details |
 | --- | --- |
@@ -106,7 +132,7 @@ version before (see `AGENTS.md`).
 | Workbench (3-pane workspace) | On pad-landscape/desktop (≥1024px) the reader is a BibleWorks-style workspace: command line + results verse list (left), Bible text (center), live original-language analysis that follows verse taps (right). Panes resize by drag, collapse by double-tap / fling / header button, widths persist. A "Classic Reader" menu entry leads back to the single-pane reader (and its Split View). |
 | Wide-screen layout | Split View and the sidebar are open by default in the classic reader at tablet width (600–1023px) — no extra tap needed on a bigger screen. |
 | Docked side panels | The Original-language word study opens as a persistent right-hand panel at desktop widths (≥1024px) instead of covering the text with a bottom sheet; falls back to the familiar bottom sheet below that width. |
-| Reading | 11 Bible editions ship in the build — 5 English (one, NASB, hidden from the picker; see licensing below), 3 Simplified Chinese, 2 Traditional Chinese, 1 unaccented Greek (LXX). Light / Dark / System theme; adjustable font, size, line spacing; paragraph or verse-by-verse mode. |
+| Reading | English and Chinese reading editions, Chinese NET notes, One God Translation NT, tagged SBL Greek NT and Berean Interlinear NT. Restricted NASB modules are excluded from this repository and deployment. Light / Dark / System theme; adjustable font, size, line spacing; paragraph or verse-by-verse mode. |
 | Unified command line | One box, BibleWorks' defining interaction: type a reference (`Gen 1:1`, `John 3`, `约翰福音 3:16`) and it navigates; type anything else and it searches. Navigating focuses the verse, so the Browse and Analysis panes follow. |
 | Morphology (parsing) | Every original-language word carries a real parse — `Qal perfect 3rd person masculine singular`, `verb · aorist active indicative · 3rd person singular` — in the word-study card, with the part of speech inline on each word chip. 437,952 of 438,821 words (99.8%) carry a morphology code across all 66 books, in EN / 简体 / 繁體 (`tools/audit_data_integrity.py`, check 2a). |
 | Analysis window (tabbed) | The right pane is tabbed: **Word Study**, **X-Refs** (TSK + OpenBible cross-references, 29,319 source verses indexed, shown with their text, tappable), **KWIC** (every occurrence of a tapped word, aligned on the word, across the whole Bible), **Related** (verses sharing weighted words with the current one), **Stats** (whole-Bible frequency of the verse's original words, rarest first). The chosen tab persists. |

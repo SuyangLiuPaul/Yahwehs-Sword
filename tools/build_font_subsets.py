@@ -104,6 +104,7 @@ EXT = (
     | rng(0x1D00, 0x1D7F)  # phonetic extensions: superscript ᵃ ᵉ
     | rng(0x1E00, 0x1EFF)  # Latin Ext Additional: ḥ ḫ ṣ ṭ ṯ ḵ ḇ
     | rng(0x1F00, 0x1FFF)  # GREEK EXTENDED — polytonic
+    | {0x203F}  # undertie used in the official BIB transliteration
 )
 
 # By list, not by range. These are text-presentation glyphs that carry

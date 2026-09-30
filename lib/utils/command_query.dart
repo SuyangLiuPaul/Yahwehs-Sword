@@ -2109,10 +2109,10 @@ String? describeCommandIssue(CommandIssue issue, String locale) {
     // unread. The V2 entry's own doc comment says what to do if that
     // rule is ever lifted.
     CommandIssue.strongsTagNoTaggedText => s(
-        'cmdIssueStrongsTagNoTaggedTextV2',
+        'cmdIssueStrongsTagNoTaggedTextV3',
         "This edition carries no Strong's tagging, so @ has nothing to "
             'match against. Switch to BSB, BSB-Y, CSB, ASV-Y, KJV+S, '
-            'LXX+WH, 雅简+ or 和简+ and run it again.'),
+            'LXX+WH, SBLGNT, 雅简+ or 和简+ and run it again.'),
     CommandIssue.strongsTagUnsupportedHere => s(
         'cmdIssueStrongsTagHere',
         "Strong's tags (@) work in a plain . / ' ; search only — not "

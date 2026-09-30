@@ -32,9 +32,11 @@
 library;
 
 import 'package:yahwehs_sword/constants/fuzzy_search_strings.dart';
-import 'package:yahwehs_sword/constants/text_patterns.dart' show searchCorpusKey;
+import 'package:yahwehs_sword/constants/text_patterns.dart'
+    show searchCorpusKey, normalizeDivineNamesInQuery;
 import 'package:yahwehs_sword/utils/command_query.dart' show kCommandControls;
 import 'package:yahwehs_sword/utils/fuzzy_search.dart';
+import 'pinyin_search.dart';
 import 'package:yahwehs_sword/utils/plain_search.dart';
 import 'package:yahwehs_sword/utils/search_folding.dart' show foldSearchMarks;
 
@@ -81,7 +83,7 @@ String fuzzyLabelledReference(
   required String scriptureText,
   required String locale,
 }) {
-  if (!fuzzySearchEnabled) return reference;
+  if (!fuzzySearchEnabled && !pinyinSearchEnabled) return reference;
   final trimmed = query.trim();
   if (trimmed.isEmpty) return reference;
   // A line with a control character was answered by the command
@@ -91,14 +93,19 @@ String fuzzyLabelledReference(
   // Han fragments are 爱 and 神, and the loosest rung would then label a
   // command result with a reading it never ran.
   if (kCommandControls.contains(trimmed[0])) return reference;
-  final segments = plainSearchSegments(foldSearchMarks(query).toLowerCase());
+  final segments = plainSearchSegments(
+      foldSearchMarks(normalizeDivineNamesInQuery(query)).toLowerCase());
   if (segments.isEmpty) return reference;
   final kind = plainSearchMatchKind(searchCorpusKey(scriptureText), segments);
-  final key = fuzzyMatchStringKey(kind);
+  final key = fuzzyMatchStringKey(kind) ??
+      (kind == FuzzyMatch.none &&
+              pinyinSearchEnabled &&
+              pinyinMatches(searchCorpusKey(scriptureText), segments.join())
+          ? 'fuzzyLabelPinyin'
+          : null);
   if (key == null) return reference;
-  final label = fuzzySearchStrings[key]?[locale] ??
-      fuzzySearchStrings[key]?['en'] ??
-      '';
+  final label =
+      fuzzySearchStrings[key]?[locale] ?? fuzzySearchStrings[key]?['en'] ?? '';
   if (label.isEmpty) return reference;
   return '$reference · $label';
 }

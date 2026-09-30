@@ -101,6 +101,7 @@
 library;
 
 import 'package:yahwehs_sword/utils/fuzzy_search.dart';
+import 'pinyin_search.dart';
 import 'package:yahwehs_sword/utils/related_verses.dart' show isCjkChar;
 
 /// Whether [c] separates words rather than belonging to one.
@@ -114,7 +115,12 @@ import 'package:yahwehs_sword/utils/related_verses.dart' show isCjkChar;
 /// ideographic space, which is whitespace a Chinese edition can actually
 /// contain.
 bool isSearchSpace(int c) =>
-    c == 0x20 || c == 0x09 || c == 0x0A || c == 0x0D || c == 0xA0 || c == 0x3000;
+    c == 0x20 ||
+    c == 0x09 ||
+    c == 0x0A ||
+    c == 0x0D ||
+    c == 0xA0 ||
+    c == 0x3000;
 
 /// Normalize whitespace for the plain-search comparison.
 ///
@@ -150,7 +156,8 @@ String collapseSearchSpaces(String text) {
     // The seam is Han-only when the character before the run and the
     // character after it are both Han. `i > 0` holds because leading
     // whitespace was already skipped.
-    final han = isCjkChar(text.codeUnitAt(i - 1)) && isCjkChar(text.codeUnitAt(j));
+    final han =
+        isCjkChar(text.codeUnitAt(i - 1)) && isCjkChar(text.codeUnitAt(j));
     if (!han) buf.writeCharCode(0x20);
     i = j;
   }
@@ -188,7 +195,7 @@ List<String> plainSearchSegments(String foldedLowerQuery) {
 /// keep working and simply stop skipping. What that costs is recorded on
 /// [plainSearchMatchKind].
 String plainSearchPrefilter(List<String> segments) {
-  if (fuzzySearchEnabled) return '';
+  if (fuzzySearchEnabled || pinyinSearchEnabled) return '';
   var best = '';
   for (final s in segments) {
     if (s.length > best.length) best = s;
@@ -235,7 +242,6 @@ bool plainSearchMatchesLiteral(String key, List<String> segments) {
     from = start + 1;
   }
 }
-
 
 // — The looser reading ---------------------------------------------
 
@@ -327,4 +333,5 @@ FuzzyMatch plainSearchMatchKind(String key, List<String> segments) {
 /// [plainSearchMatchesLiteral] while the fuzzy switch is off — which is
 /// the shipped default and the state every existing test runs in.
 bool plainSearchMatches(String key, List<String> segments) =>
-    plainSearchMatchKind(key, segments) != FuzzyMatch.none;
+    plainSearchMatchKind(key, segments) != FuzzyMatch.none ||
+    (pinyinSearchEnabled && pinyinMatches(key, segments.join()));

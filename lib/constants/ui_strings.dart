@@ -1644,8 +1644,10 @@ const uiStrings = {
   // shape. The sentence is Words' own, word for word — it already had to
   // say this, and two apps describing one corpus should say it alike.
   'onboardSermonsBody': {
-    'zh-Hans': '429 篇解经讲道，其中 289 篇有英／简／繁三语，另 140 篇为简／繁双语。讲道中的经文引用可弹出小窗预览，无需离开。主页有「继续讲道」卡片显示上次进度。',
-    'zh-Hant': '429 篇解經講道，其中 289 篇有英／簡／繁三語，另 140 篇為簡／繁雙語。講道中的經文引用可彈出小窗預覽，無需離開。主頁有「繼續講道」卡片顯示上次進度。',
+    'zh-Hans':
+        '429 篇解经讲道，其中 289 篇有英／简／繁三语，另 140 篇为简／繁双语。讲道中的经文引用可弹出小窗预览，无需离开。主页有「继续讲道」卡片显示上次进度。',
+    'zh-Hant':
+        '429 篇解經講道，其中 289 篇有英／簡／繁三語，另 140 篇為簡／繁雙語。講道中的經文引用可彈出小窗預覽，無需離開。主頁有「繼續講道」卡片顯示上次進度。',
     'en':
         '429 expository sermons — 289 in EN / 简 / 繁, plus 140 more in 简 / 繁 only. Verse refs in the body open a popup so you can peek at scripture without leaving. Home shows a "Resume sermon" card with your progress.',
   },
@@ -2386,7 +2388,8 @@ const uiStrings = {
   'notificationsHint': {
     'zh-Hans': '每日经文、圣经考证与今日讲道的轻提醒。',
     'zh-Hant': '每日經文、聖經考證與今日講道的輕提醒。',
-    'en': 'Gentle daily reminders: a verse, a piece of Bible evidence, a sermon.',
+    'en':
+        'Gentle daily reminders: a verse, a piece of Bible evidence, a sermon.',
   },
   'notificationsUnsupported': {
     'zh-Hans': '此浏览器不支持通知。',
@@ -4511,7 +4514,8 @@ const uiStrings = {
   'aboutVerLjk': {
     'zh-Hans': '梁简 / 梁繁 梁家铿译本（2026年第二版，简 / 繁）',
     'zh-Hant': '梁简 / 梁繁 梁家鏗譯本（2026年第二版，簡 / 繁）',
-    'en': '梁简 / 梁繁 — LJK Chinese translation (2026, 2nd edition, simplified / traditional)',
+    'en':
+        '梁简 / 梁繁 — LJK Chinese translation (2026, 2nd edition, simplified / traditional)',
   },
   // 2026-09-18: the translator's own copyright line, verbatim (his
   // web app's footer, commits "update copyright info" / "fix copyright
@@ -10195,6 +10199,7 @@ const uiStrings = {
         'wildcard yourself — .faith* work* — or turn on "Broaden a search '
         'that finds nothing" in Settings.',
   },
+
   /// The `?` card's line for `~`, added when the operator shipped.
   ///
   /// The example follows the text being searched (`exampleLocaleFor`),
@@ -10650,5 +10655,79 @@ const uiStrings = {
     'zh-Hans': '找到 {n} 项',
     'zh-Hant': '找到 {n} 項',
     'en': '{n} found',
+  },
+
+  // Newly imported Yahwehdehua texts; notices travel with copies.
+  'aboutVerCnet': {
+    'en': 'Chinese NET · Simplified and Traditional, with publisher notes',
+    'zh-Hans': '中文 NET · 简繁两版，含译者注',
+    'zh-Hant': '中文 NET · 簡繁兩版，含譯者注',
+  },
+  'aboutLicenseCnet': {
+    'en':
+        'Chinese NET from bible.org/chinese · supplied by Yahwehdehua and used by permission. Notes and wording retained from the supplied edition.',
+    'zh-Hans': '中文 NET，来自 bible.org/chinese · 雅伟的话提供，经授权使用。保留所提供版本的译文和注释。',
+    'zh-Hant': '中文 NET，來自 bible.org/chinese · 雅偉的話提供，經授權使用。保留所提供版本的譯文和註釋。',
+  },
+  'aboutVerNet': {
+    'en': 'NET Bible · English, text only',
+    'zh-Hans': 'NET Bible · 英文，仅正文',
+    'zh-Hant': 'NET Bible · 英文，僅正文',
+  },
+  'aboutLicenseNet': {
+    'en':
+        'Scripture quoted by permission. Quotations designated (NET) are from the NET Bible® copyright ©1996, 2019 by Biblical Studies Press, L.L.C. https://netbible.com/ All rights reserved.',
+    'zh-Hans':
+        'Scripture quoted by permission. Quotations designated (NET) are from the NET Bible® copyright ©1996, 2019 by Biblical Studies Press, L.L.C. https://netbible.com/ All rights reserved.',
+    'zh-Hant':
+        'Scripture quoted by permission. Quotations designated (NET) are from the NET Bible® copyright ©1996, 2019 by Biblical Studies Press, L.L.C. https://netbible.com/ All rights reserved.',
+  },
+  'aboutVerOgt': {
+    'en': 'One God Translation · Anthony Buzzard, New Testament with notes',
+    'zh-Hans': 'One God Translation · Anthony Buzzard，新约及译者注',
+    'zh-Hant': 'One God Translation · Anthony Buzzard，新約及譯者注',
+  },
+  'aboutLicenseOgt': {
+    'en':
+        'Anthony Buzzard’s One God Translation · supplied by Yahwehdehua and used by permission, relayed by Paul on 2026-09-13. Publisher wording and notes retained.',
+    'zh-Hans':
+        'Anthony Buzzard 的 One God Translation · 雅伟的话提供，经授权使用（Paul 于2026-09-13转达）。保留所提供版本的译文和注释。',
+    'zh-Hant':
+        'Anthony Buzzard 的 One God Translation · 雅偉的話提供，經授權使用（Paul 於2026-09-13轉達）。保留所提供版本的譯文和註釋。',
+  },
+  'aboutVerSblgnt': {
+    'en':
+        'SBL Greek New Testament · 2010, with Strong’s and critical apparatus',
+    'zh-Hans': 'SBL 希腊文新约 · 2010，含 Strong’s 编号及异文校勘',
+    'zh-Hant': 'SBL 希臘文新約 · 2010，含 Strong’s 編號及異文校勘',
+  },
+  'aboutLicenseSblgnt': {
+    'en':
+        'The Greek New Testament: SBL Edition. Copyright © 2010 Society of Biblical Literature and Logos Bible Software. CC BY 4.0 (https://sblgnt.com/license/). Supplied by Yahwehdehua; source notes are mapped to popups and Strong’s/morphology to word runs. Source paragraph and apparatus anchors were already removed upstream. No wording edits in this import.',
+    'zh-Hans':
+        'The Greek New Testament: SBL Edition. Copyright © 2010 Society of Biblical Literature and Logos Bible Software. CC BY 4.0 (https://sblgnt.com/license/). Supplied by Yahwehdehua; source notes are mapped to popups and Strong’s/morphology to word runs. Source paragraph and apparatus anchors were already removed upstream. No wording edits in this import.',
+    'zh-Hant':
+        'The Greek New Testament: SBL Edition. Copyright © 2010 Society of Biblical Literature and Logos Bible Software. CC BY 4.0 (https://sblgnt.com/license/). Supplied by Yahwehdehua; source notes are mapped to popups and Strong’s/morphology to word runs. Source paragraph and apparatus anchors were already removed upstream. No wording edits in this import.',
+  },
+  'cmdIssueStrongsTagNoTaggedTextV3': {
+    'zh-Hans':
+        '本译本没有原文编号标记，@ 无从比对。请换到 BSB、BSB-Y、CSB、ASV-Y、KJV+S、LXX+WH、BIB、SBLGNT、雅简+ 或 和简+ 再搜索。',
+    'zh-Hant':
+        '本譯本沒有原文編號標記，@ 無從比對。請換到 BSB、BSB-Y、CSB、ASV-Y、KJV+S、LXX+WH、BIB、SBLGNT、雅简+ 或 和简+ 再搜尋。',
+    'en':
+        "This edition carries no Strong's tagging, so @ has nothing to match against. Switch to BSB, BSB-Y, CSB, ASV-Y, KJV+S, LXX+WH, BIB, SBLGNT, 雅简+ or 和简+ and run it again.",
+  },
+  'aboutVerBib': {
+    'en': 'Berean Interlinear Bible (BIB) — New Testament',
+    'zh-Hans': '庇哩亚逐词对照圣经（BIB）— 新约',
+    'zh-Hant': '庇哩亞逐詞對照聖經（BIB）— 新約',
+  },
+  'aboutLicenseBib': {
+    'en':
+        'Berean Interlinear Bible, Bible Hub / Berean Bible. Public domain since April 30, 2023. Official Greek–English text with Strong’s numbers, parsing and transliteration. New Testament only; chapter notes are identified as source notes. One conflicting source Strong’s tag is preserved as untagged text. https://berean.bible/licensing.htm',
+    'zh-Hans':
+        '庇哩亚逐词对照圣经，Bible Hub / Berean Bible。2023 年 4 月 30 日起属于公有领域。官方希腊文与英文逐词对照，含 Strong’s 编号、词形及音译。目前仅新约；章注保留来源标签。一处来源编号冲突保留原文但不加编号。https://berean.bible/licensing.htm',
+    'zh-Hant':
+        '庇哩亞逐詞對照聖經，Bible Hub / Berean Bible。2023 年 4 月 30 日起屬於公有領域。官方希臘文與英文逐詞對照，含 Strong’s 編號、詞形及音譯。目前僅新約；章註保留來源標籤。一處來源編號衝突保留原文但不加編號。https://berean.bible/licensing.htm',
   },
 };
