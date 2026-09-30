@@ -59,6 +59,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<!-- Linked audio SDKs reference microphone APIs even though Sword
+	     only plays recordings. Apple requires this declaration (ITMS-90683). -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Yahweh's Sword uses system audio services to play sermon recordings. The app does not record from the microphone.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
