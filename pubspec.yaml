@@ -88,6 +88,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/passion_wheel.json
+    - assets/images/passion-reference-clock.jpeg
     - assets/bible_principles.json
     - assets/chart_icons/
     - assets/chronology/history-symbols.png
