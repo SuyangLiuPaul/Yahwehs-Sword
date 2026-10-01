@@ -1,3 +1,7 @@
+## Verified platform delivery — 1.7.3, 2026-10-01
+
+GitHub releases, all eight websites, four processed signed Apple builds, Google phone review submissions and Words Wear internal publication are recorded in [the delivery checkpoint](docs/delivery-1.7.3-2026-10-01.md). Mac external beta and Sword iOS external beta are Waiting for Review; Words iOS external beta needs the daily limit to reset. Preserve public Apple reviews and Microsoft submission4 certification. Physical pairing and Google production qualification remain open. Verified1.7.3 Microsoft packages are queued, not certified. Older dated checkpoints below remain historical.
+
 ## External and multi-reference repair — 2026-10-01
 
 Prepare **1.7.3** through the canonical web wrapper for the owner's Cairo Genizah report: localized Sirach labels, working external-source explanation, independent reader targets for each semicolon/comma reference, and no dead direct-reader affordance on evidence cards. Original study styling and the complete visible Passion timetable are retained. The immutable 1.7.2 delivery remains available on websites/GitHub, and Google closed-test **1.7.2** is **Available to selected testers**. Apple initial public review and Microsoft certification remain preserved. See `docs/release-reference-usability-1.7.3-2026-10-01.md`; current-head full CI, native delivery and production fingerprints are still required.
