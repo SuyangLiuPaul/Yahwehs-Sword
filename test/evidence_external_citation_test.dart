@@ -97,7 +97,9 @@ void main() {
     final missing = <String>[];
     for (final entry in entries) {
       for (final part in splitCitation(entry['scriptureReference'] as String)) {
-        if (part.target == null) missing.add(part.text);
+        if (part.target == null) {
+          missing.add(part.text);
+        }
       }
     }
     expect(missing, ['Ecclesiasticus (Sirach) 39:1', 'Various NT references']);
