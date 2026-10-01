@@ -1,3 +1,12 @@
+## Delivery and screenshot checkpoint — 2026-10-01
+
+- Functional head `b95b147820da647d6a3ee8e4c0c15e6bf6a0b87e`; PR #17 merged to `86edc426d0c5dc5a03bd914bd7dd66d74cf1ac5a`. Updated branch CI `36836958720` passed 5,994 tests with 16 existing skips; main CI `36838523033` succeeded. Earlier failures below are preparation history, not current failures.
+- Immutable [v1.7.2](https://github.com/SuyangLiuPaul/Yahwehs-Sword/releases/tag/v1.7.2): all five platform workflows succeeded and six assets are available. Unsigned GitHub IPA is not an installable App Store build.
+- Both websites served the verified 1.7.2 version and matching bundle. Signed iOS and macOS build1070002 delivered and processed; compliance saved, internal group assigned, both external Public beta reviews submitted. Existing public App Store reviews are preserved and still pending.
+- Google closed-test 1.7.2 / 2000009 submitted with three localized release notes. Production still needs genuine tester qualification. Microsoft submission4 remains in certification; [verified latest-package queue](microsoft-followup-1.7.2.md) replaces the older queue.
+- [Ten genuine macOS screenshots](screenshots/2026-10-01/macos-1.7.2/README.md), original 1440×900 JPEGs with version/source/hash manifest. Older phone captures remain labelled with their actual versions.
+- Older 1.7.0 and 1.7.1 native archives were backed up to T7 and all regular-file hashes verified before local removal. Latest signed archives, exports, dSYMs, source and original simulator data retained.
+
 ## Owner timetable correction and login follow-up — 2026-10-01
 
 The Passion entry is now visible in both apps as **The Passion of Jesus / 主耶稣受难日时间表 / 主耶穌受難日時間表**. The 14 source diagram placements include fully translated event descriptions, with both events at 08:00; the unchanged original image remains attached. Passion and principles have visible language controls and localized Gospel names. Principles stay hidden; Words history stays hidden and Sword retains its existing history tools. This supersedes the earlier hidden Passion policy below. First 1.7.2 PR CI attempts were red; image decode/failure handling and Sword type scaling have been corrected. Full updated CI and native store delivery are still pending at this checkpoint.
