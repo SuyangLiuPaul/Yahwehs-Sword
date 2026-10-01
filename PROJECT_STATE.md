@@ -1,3 +1,12 @@
+## Delivery and screenshot checkpoint — 2026-10-01
+
+- Functional head `b95b147820da647d6a3ee8e4c0c15e6bf6a0b87e`; PR #17 merged to `86edc426d0c5dc5a03bd914bd7dd66d74cf1ac5a`. Updated branch CI `36836958720` passed 5,994 tests with 16 existing skips; main CI `36838523033` succeeded. Earlier failures below are preparation history, not current failures.
+- Immutable [v1.7.2](https://github.com/SuyangLiuPaul/Yahwehs-Sword/releases/tag/v1.7.2): all five platform workflows succeeded and six assets are available. Unsigned GitHub IPA is not an installable App Store build.
+- Both websites served the verified 1.7.2 version and matching bundle. Signed iOS and macOS build1070002 delivered and processed; compliance saved, internal group assigned, both external Public beta reviews submitted. Existing public App Store reviews are preserved and still pending.
+- Google closed-test 1.7.2 / 2000009 submitted with three localized release notes. Production still needs genuine tester qualification. Microsoft submission4 remains in certification; [verified latest-package queue](microsoft-followup-1.7.2.md) replaces the older queue.
+- [Ten genuine macOS screenshots](screenshots/2026-10-01/macos-1.7.2/README.md), original 1440×900 JPEGs with version/source/hash manifest. Older phone captures remain labelled with their actual versions.
+- Older 1.7.0 and 1.7.1 native archives were backed up to T7 and all regular-file hashes verified before local removal. Latest signed archives, exports, dSYMs, source and original simulator data retained.
+
 ## Complete source captions and further Gospel scenes — 2026-10-01
 
 All 14 diagram placements retain their complete source commentary in three locales, including the two distinct 08:00 scenes, source-attributed 14 Abib dating and the temple-offering interpretation. The three translated color legends and 18:00–00:00 evening band are included. The complete list now has 23 scenes: footwashing, Judas returning the silver and Jesus’ thirst are additionally linked to verified Gospel passages, with no assigned clock or diagram hour. Focused learning/image/visibility checks passed (Words combined with bridge:55; Sword with type ratchet:49). Full current-head CI, live browser sign-in and new native deliveries remain gates.

@@ -1,0 +1,69 @@
+{
+  "app": "Yahweh\u2019s Sword",
+  "version": "1.7.2",
+  "build": "1070002",
+  "sourceCommit": "b95b147820da647d6a3ee8e4c0c15e6bf6a0b87e",
+  "capture": "Native macOS signed archive, CUA window screenshot, original JPEG; no resizing or simulated UI",
+  "screenshots": [
+    {
+      "file": "01-parallel-strong-reader.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "c72f6045a5524103e4dba56cdd8b4d4e8251ff2a9e677e5e1629b50f04597967"
+    },
+    {
+      "file": "02-hebrew-word-analysis.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "7e3a73884b72c4d740413c5a73925044671d64820a3a76898a8cbea3bc1905c8"
+    },
+    {
+      "file": "03-original-clock-attachment.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "94c2fcddaf0b7da407ccaf734b6dd5f1c504c1f26ada44bc3013ef0c1fe4f310"
+    },
+    {
+      "file": "04-modern-concordance.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "2f24102f7854e22dcf59f4e7a361e4caaf7357e6c3c58074c0a7080fdc4c55ff"
+    },
+    {
+      "file": "05-concordance-word-links.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "2142331aed87b29fae03db524a850eb65868ebd8a682da58d05df446722d2cbd"
+    },
+    {
+      "file": "06-world-history-strip.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "acd5fe28347255b67414b579b0bd9fa1033ffc47a4d9d49026f81a8e545d1e5f"
+    },
+    {
+      "file": "07-atlas-journey-references.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "3f062903f68d935a2b1806ef074e154b4085db2a1d4cd2fa7ce65c14414fd04c"
+    },
+    {
+      "file": "08-scripture-chronology.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "61bce22c8976e5d24362f71a8c4bbcc7a73812d2bfaa7cfc83600c76b534d060"
+    },
+    {
+      "file": "09-search-with-explicit-verse-units.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "d1c4346f088c46c912adb43e4a26eeb4ebbbb6d9390cef17ba27401c1e32b26f"
+    },
+    {
+      "file": "10-ranked-book-search-chart.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "4f4e5be4192d9176457cfe53d31bda39c2ade029ecbac15bf759e5bbaecc2670"
+    }
+  ]
+}
