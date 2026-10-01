@@ -19,3 +19,5 @@ The owner requested replacing the existing Passion clock with the supplied compl
 Additional cleanup reclaimed cache space and moved older compressed backups, byte-verified, to T7. Original path links preserve access while T7 is connected. Latest signed archives, exports, source and original simulator data remain local. Current free space is a measurement, not the sum of gross cache deletion figures.
 
 The first PR CI attempts failed the image audit (both apps) and Sword font-size ratchet. These were repaired with image failure handling, original-size decode bounds and scaled Sword badge/clock labels. Focused regression checks cover translations, language switching at 320px, both 08:00 descriptions, source image checksum, unchanged Gospel time semantics and owner visibility policy. Full CI must pass the updated source before public delivery.
+
+Full CI on 09cc0701 completed 5,993 tests plus 16 existing skips with one design-ratchet failure: a newly introduced radius on a small color-legend swatch. The swatch now has the flat square legend geometry, avoiding an off-scale chrome override. The ratchet itself is unchanged; current-head full CI remains required.

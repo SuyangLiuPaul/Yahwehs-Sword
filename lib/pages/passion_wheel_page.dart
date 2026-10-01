@@ -383,10 +383,7 @@ class _PassionWheelPageState extends State<PassionWheelPage> {
   Widget _bandLegend(Color color, String label) =>
       Row(mainAxisSize: MainAxisSize.min, children: [
         Container(
-            width: 12,
-            height: 12,
-            decoration: BoxDecoration(
-                color: color, borderRadius: BorderRadius.circular(3))),
+            width: 12, height: 12, decoration: BoxDecoration(color: color)),
         const SizedBox(width: 6),
         Flexible(child: Text(label)),
       ]);
