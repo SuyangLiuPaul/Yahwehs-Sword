@@ -1,3 +1,7 @@
+## Complete source captions and further Gospel scenes — 2026-10-01
+
+All 14 diagram placements retain their complete source commentary in three locales, including the two distinct 08:00 scenes, source-attributed 14 Abib dating and the temple-offering interpretation. The three translated color legends and 18:00–00:00 evening band are included. The complete list now has 23 scenes: footwashing, Judas returning the silver and Jesus’ thirst are additionally linked to verified Gospel passages, with no assigned clock or diagram hour. Focused learning/image/visibility checks passed (Words combined with bridge:55; Sword with type ratchet:49). Full current-head CI, live browser sign-in and new native deliveries remain gates.
+
 ## Owner timetable correction and login follow-up — 2026-10-01
 
 The Passion entry is now visible in both apps as **The Passion of Jesus / 主耶稣受难日时间表 / 主耶穌受難日時間表**. The 14 source diagram placements include fully translated event descriptions, with both events at 08:00; the unchanged original image remains attached. Passion and principles have visible language controls and localized Gospel names. Principles stay hidden; Words history stays hidden and Sword retains its existing history tools. This supersedes the earlier hidden Passion policy below. First 1.7.2 PR CI attempts were red; image decode/failure handling and Sword type scaling have been corrected. Full updated CI and native store delivery are still pending at this checkpoint.
