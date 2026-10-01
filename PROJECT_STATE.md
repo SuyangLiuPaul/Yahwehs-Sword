@@ -15,6 +15,15 @@ Last updated: 2026-10-01 (1.6.330 released; store reviews and production-access 
 
 ---
 
+## Search mode release preparation — 2026-10-01
+
+- Latest owner requirement: fuzzy OR pinyin OR neither; selecting either clears the other, and selecting the active mode turns both off. Legacy both-on preferences migrate to fuzzy-only. Serialized preference writes preserve the final choice during rapid taps and reset.
+- Functional source merged as `543a7121af8290e1f52ae5800595bc7e7f11f0ae`. [CI 36801904495](https://github.com/SuyangLiuPaul/Yahwehs-Sword/actions/runs/36801904495) passed: **5959 tests / 16 existing skips / zero failures**, analysis and secret scan green. Independent refuter found no substantive blocker. Widget coverage includes 320/402/1024px with 1.8x text scaling.
+- Canonical wrapper is preparing **1.6.332**. A later immutable tag/package is required; already delivered **1.6.331** does not include this newer requirement. Do not relabel, retag or cancel pending store reviews. See `docs/search-modes.md`.
+- Previous1.6.331 is verified on both websites and GitHub with six assets. Signed iOS/Mac1060332 processing/compliance complete, internal group assigned, both external Beta reviews submitted. Microsoft submission4/1.6.331.0 is in certification with automatic publication; Google closed1.6.331/2000005 was sent for review, managed publishing off. Sword has no Firebase or car/watch companion.
+- Preserve initial public Apple reviews and approved store listings. Ten actual phone screenshots per app are committed; matching store device size is required. Words Watch Now Playing 03 is held, Android companion capture and physical Windows/car/watch validation remain open. Google production qualification still requires actual testers.
+- Regenerable cache cleanup removed 33.49 GiB gross; approximately 15 GiB free after measured cleanup, with sources, signed archives, packages and simulator user data preserved. Measurements and delivery proofs are in the local publication asset folder.
+
 ## Quality follow-up — 2026-10-01
 
 - Functional PR8 merged as `33286e71e1983e9e4421852e17d1a4283f81702d`; narrow book-picker repair and authentic ten-image gallery PR9 merged as `5bad5bbaab168a3d2d01479c9f19e049b1e0d270`. Latest full CI [36795797916](https://github.com/SuyangLiuPaul/Yahwehs-Sword/actions/runs/36795797916) passed: **5,946 tests / 16 existing skips**, static analysis and fail-closed secret scan succeeded.
