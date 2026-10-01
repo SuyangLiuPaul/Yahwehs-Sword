@@ -75,6 +75,7 @@ dependencies:
   # in lib/ or test/ fifteen months on, so they went too.
 
 dev_dependencies:
+  crypto: ^3.0.5
   flutter_test:
     sdk: flutter
   # Microsoft Store packaging only (`dart run msix:create --store`, see
@@ -86,6 +87,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/passion_wheel.json
+    - assets/bible_principles.json
     - assets/chart_icons/
     - assets/chronology/history-symbols.png
     # 2026-09-09: the changelog the app shows, generated from the

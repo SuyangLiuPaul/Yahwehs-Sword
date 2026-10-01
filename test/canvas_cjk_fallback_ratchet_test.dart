@@ -79,6 +79,9 @@ void main() {
         {
           'lib/pages/bible_timeline_page.dart': 1,
           'lib/pages/chronology_page.dart': 3,
+          // The Gospel hour dial scales through WbType and explicitly carries
+          // the bundled CJK fallback, including on standalone web routes.
+          'lib/pages/passion_wheel_page.dart': 1,
           'lib/pages/lexicon_page.dart': 1,
           // The redesigned wheel measures and paints through its bounded
           // cache. The strip uses Paragraphs (tested against TextPainter in
@@ -163,8 +166,7 @@ void main() {
         File('lib/pages/radial_chronology_page.dart').readAsStringSync();
     final count = 'canvasTextStyle('.allMatches(src).length;
     expect(count, 8,
-        reason:
-            'expected 8 canvasTextStyle( call sites (measure, band name, '
+        reason: 'expected 8 canvasTextStyle( call sites (measure, band name, '
             'REPEATED band name, spoke title, spoke ref, spoke badge, arc '
             'text, shared painter) '
             '— a genuine new canvas label should raise this number in the '

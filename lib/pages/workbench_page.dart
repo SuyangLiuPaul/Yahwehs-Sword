@@ -1,3 +1,5 @@
+import 'package:yahwehs_sword/pages/passion_wheel_page.dart';
+import 'package:yahwehs_sword/pages/bible_principles_page.dart';
 import 'dart:async' show unawaited;
 import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform;
@@ -946,6 +948,8 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         // Each now goes where it says. The remembered-form door still
         // exists for the toolbar icon on the Bible Chronology page,
         // which has no room to name two.
+        WbMenuItem(kPassionTitle[locale] ?? kPassionTitle['en']!, () => pushPage(const PassionWheelPage(), routeName: kPassionWheelPath)),
+        WbMenuItem(kPrinciplesTitle[locale] ?? kPrinciplesTitle['en']!, () => pushPage(const BiblePrinciplesPage(), routeName: kPrinciplesPath)),
         WbMenuItem(s('wheelTitle', 'World History Wheel'),
             () => _go(HelpDestination.wheel)),
         WbMenuItem(kStripPageTitle[locale] ?? kStripPageTitle['en']!,

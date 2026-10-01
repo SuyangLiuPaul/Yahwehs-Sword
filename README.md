@@ -20,6 +20,10 @@
 
 ---
 
+## Learning guides
+
+Interactive Gospel Passion hours and a source-linked selection of Pastor Eric H. H. Chang’s biblical principles are documented in [Learning features](docs/learning-features-2026-10-01.md). Scripture dates and approximate modern hours are distinguished; principle explanations are editorial guides with original sermon links.
+
 ## What this is
 
 SeekSparks is a sibling of [YsWords](https://github.com/SuyangLiuPaul/Yahwehs-Words), forked to
