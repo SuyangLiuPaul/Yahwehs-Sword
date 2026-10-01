@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:yahwehs_sword/models/app_settings.dart';
 
 import 'package:yahwehs_sword/constants/ui_strings.dart';
+import 'package:yahwehs_sword/constants/book_groups.dart';
 import 'package:yahwehs_sword/models/verse.dart';
 import 'package:yahwehs_sword/widgets/browse_nav_strip.dart';
 
@@ -27,36 +28,80 @@ void main() {
           Verse(book: b, chapter: 1, verse: 1, text: '$b 1:1'),
       ];
 
-  Future<void> open(WidgetTester tester, List<String> books) async {
-    tester.view.physicalSize = const Size(1400, 900);
+  Future<void> open(WidgetTester tester, List<String> books,
+      {Size size = const Size(1400, 900),
+      String lang = locale,
+      double textScale = 1}) async {
+    tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(ChangeNotifierProvider<AppSettings>.value(
-      value: AppSettings(),
-      child: MaterialApp(
-      home: Scaffold(
-        body: BrowseNavStrip(
-          corpus: corpus(books),
-          version: 'kjv',
-          localBook: books.first,
-          chapter: 1,
-          verse: 1,
-          bookLabel: (b) => b,
-          locale: locale,
-          onVersion: (_) {},
-          onBook: (_) {},
-          onChapter: (_) {},
-          onVerse: (_) {},
-        ),
-      ),
-    )));
+        value: AppSettings(),
+        child: MaterialApp(
+          builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: TextScaler.linear(textScale)),
+              child: child!),
+          home: Scaffold(
+            body: BrowseNavStrip(
+              corpus: corpus(books),
+              version: 'kjv',
+              localBook: books.isEmpty ? null : books.first,
+              chapter: 1,
+              verse: 1,
+              bookLabel: (b) => b,
+              locale: lang,
+              onVersion: (_) {},
+              onBook: (_) {},
+              onChapter: (_) {},
+              onVerse: (_) {},
+            ),
+          ),
+        )));
     await tester.pumpAndSettle();
+    if (books.isEmpty) return;
     // The book dropdown is the second one in the strip.
     await tester.tap(find.text(books.first).first);
     await tester.pumpAndSettle();
   }
 
   String label(String id) => uiStrings[id]![locale]!;
+
+  testWidgets('empty corpus can render before books finish loading',
+      (tester) async {
+    await open(tester, const [], size: const Size(402, 874), lang: 'en');
+    expect(tester.takeException(), isNull);
+  });
+
+  for (final width in [320.0, 375.0, 402.0, 1024.0]) {
+    for (final scale in [1.0, 1.8]) {
+      testWidgets('all 66 books fit popup width $width at scale $scale',
+          (tester) async {
+        final books = kBibleDivisions.expand((d) => d.books).toList();
+        expect(books.length, 66);
+        await open(tester, books,
+            size: Size(width, 874), lang: 'en', textScale: scale);
+        expect(tester.takeException(), isNull);
+        for (final book in books) {
+          final row = find
+              .ancestor(
+                  of: find.text(book).last, matching: find.byType(InkWell))
+              .first;
+          final rect = tester.getRect(row);
+          expect(rect.left, greaterThanOrEqualTo(0), reason: book);
+          expect(rect.right, lessThanOrEqualTo(width), reason: book);
+        }
+        // A phone keeps Hebrew and Greek side by side. Books below the
+        // viewport remain reachable through the popup's vertical scroll.
+        await tester.ensureVisible(find.text('Revelation').last);
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Revelation').last);
+        await tester.pumpAndSettle();
+        expect(find.text('Revelation'), findsNothing);
+        expect(tester.takeException(), isNull);
+      });
+    }
+  }
 
   testWidgets('the menu is divided, not 66 rows in a row', (tester) async {
     await open(tester, const [
@@ -141,8 +186,7 @@ void main() {
       expect(left(tester, '马太福音'), greaterThan(left(tester, '创世纪')));
     });
 
-    testWidgets('each column is headed by the corpus it holds',
-        (tester) async {
+    testWidgets('each column is headed by the corpus it holds', (tester) async {
       await open(tester, const ['创世纪', '马太福音']);
       // 希伯来 / 希腊, not 旧约 / 新约 — the #280 ruling, which is
       // terminological and not per-screen.
@@ -196,8 +240,7 @@ void main() {
 
       expect(tester.getSize(find.text('马太福音').last).height, lessThan(24));
       final row = find
-          .ancestor(
-              of: find.text('马太福音').last, matching: find.byType(InkWell))
+          .ancestor(of: find.text('马太福音').last, matching: find.byType(InkWell))
           .first;
       expect(tester.getSize(row).height, greaterThanOrEqualTo(24));
 

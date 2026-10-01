@@ -262,12 +262,22 @@ class _BookMenu extends StatelessWidget {
     // An NT-only edition (梁家铿译本) has nothing in the left column, and
     // a two-column menu with one empty column is worse than one column.
     final live = columns.where((c) => c.books.isNotEmpty).toList();
+    final menuWidth = MediaQuery.sizeOf(context).width - 32;
+    // A short screen may need more sub-columns than a phone can hold.
+    // Keep the two corpus columns; let the popup scroll vertically
+    // rather than place books outside its visible right edge.
+    final maxParts = live.isEmpty
+        ? 1
+        : (((menuWidth - (live.length - 1)) / live.length - 8) / 112)
+            .floor()
+            .clamp(1, 4);
 
     return _menu<String>(
       // Tall enough for the longer column — 39 books and their five
       // division headers — and it scrolls when the window is shorter
       // than that, which is the case the single list was ALWAYS in.
-      constraints: BoxConstraints(maxHeight: room.clamp(240, 900)),
+      constraints:
+          BoxConstraints(maxHeight: room.clamp(240, 900), maxWidth: menuWidth),
       onSelected: onChanged,
       itemBuilder: (context) => [
         PopupMenuItem<String>(
@@ -291,6 +301,7 @@ class _BookMenu extends StatelessWidget {
                   bookLabel: bookLabel,
                   locale: locale,
                   maxHeight: room.clamp(240, 900),
+                  maxParts: maxParts,
                   onPick: (book) {
                     Navigator.pop(context);
                     onChanged(book);
@@ -368,6 +379,7 @@ class _CanonColumnView extends StatelessWidget {
     required this.bookLabel,
     required this.locale,
     required this.maxHeight,
+    required this.maxParts,
     required this.onPick,
   });
 
@@ -379,6 +391,7 @@ class _CanonColumnView extends StatelessWidget {
   /// How tall the menu is allowed to be. A group taller than this is
   /// laid out in as many equal sub-columns as it takes to fit.
   final double maxHeight;
+  final int maxParts;
 
   final ValueChanged<String> onPick;
 
@@ -408,52 +421,54 @@ class _CanonColumnView extends StatelessWidget {
     final headers = column.books.where(column.headerBefore.containsKey).length;
     final tall = _kHeading + rows * _kRow + headers * _kHeader;
     final room = (maxHeight - 16).clamp(_kRow * 4, double.infinity);
-    final parts = (tall / room).ceil().clamp(1, 4);
+    final parts = (tall / room).ceil().clamp(1, maxParts);
     final perPart = (rows / parts).ceil();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, 6, 4, 6),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
-            child: Text(
-              uiStrings[column.headingId]?[locale] ?? column.headingId,
-              style: TextStyle(
-                fontSize: t.chrome,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.6,
-                color: wb.text,
+      child: SizedBox(
+        width: parts * 112,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
+              child: Text(
+                uiStrings[column.headingId]?[locale] ?? column.headingId,
+                style: TextStyle(
+                  fontSize: t.chrome,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.6,
+                  color: wb.text,
+                ),
               ),
             ),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < parts; i++)
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    for (final book in column.books
-                        .skip(i * perPart)
-                        .take(perPart)) ...[
-                      if (column.headerBefore[book] case final id?)
-                        _DivisionHeader(id: id, locale: locale),
-                      _BookRow(
-                        label: bookLabel(book),
-                        selected: book == current,
-                        onTap: () => onPick(book),
-                      ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (var i = 0; i < parts; i++)
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (final book
+                          in column.books.skip(i * perPart).take(perPart)) ...[
+                        if (column.headerBefore[book] case final id?)
+                          _DivisionHeader(id: id, locale: locale),
+                        _BookRow(
+                          label: bookLabel(book),
+                          selected: book == current,
+                          onTap: () => onPick(book),
+                        ),
+                      ],
                     ],
-                  ],
-                ),
-            ],
-          ),
-        ],
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -470,15 +485,18 @@ class _DivisionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final wb = WbColors.of(context);
     final t = WbType.of(context);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 5, 8, 1),
-      child: Text(
-        uiStrings[id]?[locale] ?? id,
-        style: TextStyle(
-          fontSize: t.chrome * 0.85,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 0.4,
-          color: wb.mutedText,
+    return SizedBox(
+      width: 112,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8, 5, 8, 1),
+        child: Text(
+          uiStrings[id]?[locale] ?? id,
+          style: TextStyle(
+            fontSize: t.chrome * 0.85,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.4,
+            color: wb.mutedText,
+          ),
         ),
       ),
     );
@@ -610,8 +628,7 @@ class _Dropdown<T> extends StatelessWidget {
     final label = items
         .where((e) => e.$1 == value)
         .map((e) => e.$2)
-        .followedBy(const [''])
-        .first;
+        .followedBy(const ['']).first;
 
     return _menu<T>(
       // Long lists (150 Psalms) need to scroll rather than run off the
@@ -698,8 +715,8 @@ class _StepButton extends StatelessWidget {
         child: minTarget == 0
             ? glyph
             : ConstrainedBox(
-                constraints: BoxConstraints(
-                    minWidth: minTarget, minHeight: minTarget),
+                constraints:
+                    BoxConstraints(minWidth: minTarget, minHeight: minTarget),
                 child: Align(widthFactor: 1, heightFactor: 1, child: glyph),
               ),
       ),

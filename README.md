@@ -101,26 +101,26 @@ version before (see `AGENTS.md`).
 
 ## App screenshots
 
-Ten distinct screenshots captured from the app. They show the existing study/reader interfaces; watch and CarPlay are not pictured.
+Ten distinct, unedited captures from the actual iOS simulator app, prepared on 1 October 2026. These are product previews; they do not indicate that a pending store review has approved the new build. Capture metadata and hashes are in [the screenshot manifest](docs/screenshots/2026-10-01/manifest.json).
 
 <table>
 <tr>
-<td align="center"><a href="docs/screenshots/01-hebrew-word-study.png"><img src="docs/screenshots/01-hebrew-word-study.png" width="210" alt="Hebrew Word Study"/></a><br/>Hebrew Word Study</td>
-<td align="center"><a href="docs/screenshots/02-strongs-search.png"><img src="docs/screenshots/02-strongs-search.png" width="210" alt="Strongs Search"/></a><br/>Strongs Search</td>
-<td align="center"><a href="docs/screenshots/03-parallel-bible.png"><img src="docs/screenshots/03-parallel-bible.png" width="210" alt="Parallel Bible"/></a><br/>Parallel Bible</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/01-parallel-workspace.png"><img src="docs/screenshots/2026-10-01/iphone/01-parallel-workspace.png" width="210" alt="Parallel workspace"/></a><br/>Parallel workspace</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/02-search-results.png"><img src="docs/screenshots/2026-10-01/iphone/02-search-results.png" width="210" alt="Pauline search results"/></a><br/>Pauline search results</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/03-search-chart.png"><img src="docs/screenshots/2026-10-01/iphone/03-search-chart.png" width="210" alt="Scoped search chart"/></a><br/>Scoped search chart</td>
 </tr>
 <tr>
-<td align="center"><a href="docs/screenshots/04-word-study.png"><img src="docs/screenshots/04-word-study.png" width="210" alt="Word Study"/></a><br/>Word Study</td>
-<td align="center"><a href="docs/screenshots/05-search.png"><img src="docs/screenshots/05-search.png" width="210" alt="Search"/></a><br/>Search</td>
-<td align="center"><a href="docs/screenshots/06-bible-evidence.png"><img src="docs/screenshots/06-bible-evidence.png" width="210" alt="Bible Evidence"/></a><br/>Bible Evidence</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/04-word-frequency.png"><img src="docs/screenshots/2026-10-01/iphone/04-word-frequency.png" width="210" alt="Hebrew word frequency"/></a><br/>Hebrew word frequency</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/05-hebrew-lexicon.png"><img src="docs/screenshots/2026-10-01/iphone/05-hebrew-lexicon.png" width="210" alt="Hebrew lexicon"/></a><br/>Hebrew lexicon</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/06-bible-editions.png"><img src="docs/screenshots/2026-10-01/iphone/06-bible-editions.png" width="210" alt="Bible editions"/></a><br/>Bible editions</td>
 </tr>
 <tr>
-<td align="center"><a href="docs/screenshots/07-bible-timeline.png"><img src="docs/screenshots/07-bible-timeline.png" width="210" alt="Bible Timeline"/></a><br/>Bible Timeline</td>
-<td align="center"><a href="docs/screenshots/08-family-tree.png"><img src="docs/screenshots/08-family-tree.png" width="210" alt="Family Tree"/></a><br/>Family Tree</td>
-<td align="center"><a href="docs/screenshots/09-bible-trivia.png"><img src="docs/screenshots/09-bible-trivia.png" width="210" alt="Bible Trivia"/></a><br/>Bible Trivia</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/07-modern-concordance.png"><img src="docs/screenshots/2026-10-01/iphone/07-modern-concordance.png" width="210" alt="Modern concordance"/></a><br/>Modern concordance</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/08-bible-atlas.png"><img src="docs/screenshots/2026-10-01/iphone/08-bible-atlas.png" width="210" alt="Bible atlas"/></a><br/>Bible atlas</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/09-bible-chronology.png"><img src="docs/screenshots/2026-10-01/iphone/09-bible-chronology.png" width="210" alt="Bible chronology"/></a><br/>Bible chronology</td>
 </tr>
 <tr>
-<td align="center"><a href="docs/screenshots/10-book-chapter-picker.png"><img src="docs/screenshots/10-book-chapter-picker.png" width="210" alt="Book Chapter Picker"/></a><br/>Book Chapter Picker</td>
+<td align="center"><a href="docs/screenshots/2026-10-01/iphone/10-berean-interlinear.png"><img src="docs/screenshots/2026-10-01/iphone/10-berean-interlinear.png" width="210" alt="Berean interlinear"/></a><br/>Berean interlinear</td>
 </tr>
 </table>
 

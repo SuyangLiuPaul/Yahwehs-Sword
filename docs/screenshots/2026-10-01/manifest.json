@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-01",
+  "app": "Sword",
+  "screenshots": [
+    {
+      "path": "iphone/01-parallel-workspace.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "7afc0b6f8b11d2b9ab7c3d1bd3c72ae0e7373c7a054550ea5e2f0cbd5845ae39",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "notes": "Actual Sword UI.",
+      "source_commit": "866f761f"
+    },
+    {
+      "path": "iphone/02-search-results.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "55849bbf292ad648d3b57e1c07d1f39a1566d9fada24637f2f29bf32230ce9d2",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "notes": "Actual Sword UI.",
+      "source_commit": "866f761f"
+    },
+    {
+      "path": "iphone/03-search-chart.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "e0c9d17af645dc458027eeb3ce2d27ef404f916b230aea14616729118cb50d92",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "notes": "Actual Sword UI.",
+      "source_commit": "866f761f"
+    },
+    {
+      "path": "iphone/04-word-frequency.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "2f19ffe57b95b8c11c46ed9dae8bc63dd424dc08c49c97f81e5a8ac16cb56e32",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "source_commit": "866f761f",
+      "notes": "Actual Sword UI."
+    },
+    {
+      "path": "iphone/05-hebrew-lexicon.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "844f2c48f8010351080bf26b42e1c029d222d766d7e262feb30ddece3a651bdc",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "source_commit": "866f761f",
+      "notes": "Actual Sword UI."
+    },
+    {
+      "path": "iphone/06-bible-editions.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "bd1bb372ce47aa8284fcfcd398fe5c96e0c7793c98cb54a740f8e7e4a7147d02",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "source_commit": "6a01b8225b8c025b8aa82f7a8f47b0247f5f21b8",
+      "notes": "Actual Sword UI."
+    },
+    {
+      "path": "iphone/07-modern-concordance.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "70a83476a4e42d6baa9450286c6eb29e31b097cb91be3190f4703ad0466ac0a3",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "source_commit": "6a01b8225b8c025b8aa82f7a8f47b0247f5f21b8",
+      "notes": "Actual Sword UI."
+    },
+    {
+      "path": "iphone/08-bible-atlas.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "abb67e62d97fc80477c66bf7d900439b55133091c47a4b23c7f2e83d8d1a3eed",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "source_commit": "6a01b8225b8c025b8aa82f7a8f47b0247f5f21b8",
+      "notes": "Actual Sword UI."
+    },
+    {
+      "path": "iphone/09-bible-chronology.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "b43b0dcd3587892ab42c81fd61ca45c6c78bfd500f66dc9a5b4e28f8d1ea3420",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "source_commit": "6a01b8225b8c025b8aa82f7a8f47b0247f5f21b8",
+      "notes": "Actual Sword UI."
+    },
+    {
+      "path": "iphone/10-berean-interlinear.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "2a106a2f66013ce0388eb97d42f20ebbd75a852e943910549db5b83fd858635d",
+      "capture": "native Simulator File > Save Screen; genuine app UI; no device frame",
+      "app_version": "1.6.330",
+      "build": "1060331",
+      "status": "prepared; platform upload pending",
+      "source_commit": "6a01b8225b8c025b8aa82f7a8f47b0247f5f21b8",
+      "notes": "Actual Sword UI. BIB capture shows runtime cleaned glosses; source Bible assets unchanged."
+    }
+  ]
+}
