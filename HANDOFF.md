@@ -1,3 +1,7 @@
+## External and multi-reference repair — 2026-10-01
+
+Prepare **1.7.3** through the canonical web wrapper for the owner's Cairo Genizah report: localized Sirach labels, working external-source explanation, independent reader targets for each semicolon/comma reference, and no dead direct-reader affordance on evidence cards. Original study styling and the complete visible Passion timetable are retained. The immutable 1.7.2 delivery remains available on websites/GitHub, and Google closed-test **1.7.2** is **Available to selected testers**. Apple initial public review and Microsoft certification remain preserved. See `docs/release-reference-usability-1.7.3-2026-10-01.md`; current-head full CI, native delivery and production fingerprints are still required.
+
 ## Delivery and screenshot checkpoint — 2026-10-01
 
 - Functional head `b95b147820da647d6a3ee8e4c0c15e6bf6a0b87e`; PR #17 merged to `86edc426d0c5dc5a03bd914bd7dd66d74cf1ac5a`. Updated branch CI `36836958720` passed 5,994 tests with 16 existing skips; main CI `36838523033` succeeded. Earlier failures below are preparation history, not current failures.

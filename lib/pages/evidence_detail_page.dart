@@ -419,7 +419,8 @@ class _EvidenceDetailPageState extends State<EvidenceDetailPage> {
                       _ReferenceChip(
                         reference: evidence.scriptureReference,
                         locale: locale,
-                        onTap: () => _openReference(context),
+                        onOpen: (segment) =>
+                            _openReference(context, selected: segment.target),
                       ),
                   ],
                 ),
@@ -491,12 +492,13 @@ class _EvidenceDetailPageState extends State<EvidenceDetailPage> {
   /// reload verses, retry the lookup, then navigate. A SnackBar tells
   /// the user we switched so they're not confused when the version
   /// label changes in the reader header.
-  Future<void> _openReference(BuildContext context) async {
+  Future<void> _openReference(BuildContext context,
+      {BibleReference? selected}) async {
     // Handle multi-reference strings like "Isaiah 53; Psalm 22; Micah 5:2"
     // by trying the first semicolon-separated segment first, then the full
     // string, then each remaining segment until one parses.
     final raw = evidence.scriptureReference;
-    BibleReference? ref = parseReference(raw);
+    BibleReference? ref = selected ?? parseReference(raw);
     if (ref == null && raw.contains(';')) {
       for (final part in raw.split(';')) {
         ref = parseReference(part.trim());
@@ -654,9 +656,28 @@ class _Section extends StatelessWidget {
 class _ReferenceChip extends StatelessWidget {
   final String reference;
   final String locale;
-  final VoidCallback onTap;
+  final void Function(CitationSegment) onOpen;
+  const _ReferenceChip(
+      {required this.reference, required this.locale, required this.onOpen});
+  @override
+  Widget build(BuildContext context) {
+    final parts = splitCitation(reference);
+    return Wrap(spacing: 8, runSpacing: 8, children: [
+      for (final part in parts)
+        _SingleReferenceChip(
+            reference: part.text,
+            locale: locale,
+            onTap: part.target == null ? null : () => onOpen(part))
+    ]);
+  }
+}
 
-  const _ReferenceChip({
+class _SingleReferenceChip extends StatelessWidget {
+  final String reference;
+  final String locale;
+  final VoidCallback? onTap;
+
+  const _SingleReferenceChip({
     required this.reference,
     required this.locale,
     required this.onTap,
@@ -670,6 +691,16 @@ class _ReferenceChip extends StatelessWidget {
     final t = settings.wbType;
     final currentVersion =
         context.select<MainProvider, String>((m) => m.currentVersion);
+    final label = Text(
+        localizedReferenceLabel(reference, locale, currentVersion),
+        style: TextStyle(
+            fontFamily: settings.fontFamily,
+            fontFamilyFallback: kCjkFontFallback,
+            fontSize: settings.fontSize,
+            color: scheme.primary));
+    if (onTap == null) {
+      return _UnavailableReference(label: label, locale: locale);
+    }
     return Material(
       color: wb.paneAltBg,
       shape: RoundedRectangleBorder(
@@ -730,6 +761,46 @@ class _ReferenceChip extends StatelessWidget {
       ),
     );
   }
+}
+
+/// External sources remain citations; they must never open a different Bible book.
+class _UnavailableReference extends StatelessWidget {
+  final Widget label;
+  final String locale;
+  const _UnavailableReference({required this.label, required this.locale});
+  String choose(String en, String hans, String hant) => locale == 'zh-Hant'
+      ? hant
+      : locale.startsWith('zh')
+          ? hans
+          : en;
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: label),
+          TextButton.icon(
+            icon: const Icon(Icons.info_outline),
+            label: Text(choose('About this citation', '关于这项引用', '關於這項引用')),
+            onPressed: () => showDialog<void>(
+                context: context,
+                builder: (context) => AlertDialog(
+                      title: Text(choose('Reference outside the reader',
+                          '阅读器未收录此文献', '閱讀器未收錄此文獻')),
+                      content: Text(choose(
+                          'This entry cites an external source or a general group of passages. It is not a passage available in the installed Bible editions. The quotation and academic sources remain on this page; no unrelated Bible book will be opened.',
+                          '这项引用属于外部文献，或概括多处经文；当前圣经译本未收录可直接打开的段落。请阅读本页的引文和学术来源。应用不会跳到名称相近但内容不同的书卷。',
+                          '這項引用屬於外部文獻，或概括多處經文；目前聖經譯本未收錄可直接開啟的段落。請閱讀本頁的引文和學術來源。應用不會跳到名稱相近但內容不同的書卷。')),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(choose('Close', '关闭', '關閉')))
+                      ],
+                    )),
+          ),
+        ],
+      );
 }
 
 class _SourceTile extends StatelessWidget {

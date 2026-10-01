@@ -599,7 +599,10 @@ class _EvidenceCard extends StatelessWidget {
                       // detail page exposed a tappable chip, so the
                       // direct connection to scripture was buried.
                       InkWell(
-                        onTap: () => _openReferenceFromCard(context, evidence),
+                        onTap: splitCitation(evidence.scriptureReference)
+                                .any((part) => part.target != null)
+                            ? () => _openReferenceFromCard(context, evidence)
+                            : null,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 4, vertical: 4),
@@ -627,17 +630,23 @@ class _EvidenceCard extends StatelessWidget {
                                     fontSize: t.scaledSmall(14),
                                     fontWeight: FontWeight.w700,
                                     color: scheme.primary,
-                                    decoration: TextDecoration.underline,
+                                    decoration: splitCitation(
+                                                evidence.scriptureReference)
+                                            .any((part) => part.target != null)
+                                        ? TextDecoration.underline
+                                        : TextDecoration.none,
                                     decorationColor:
                                         scheme.primary.withValues(alpha: 0.4),
                                     decorationStyle: TextDecorationStyle.dotted,
                                   ),
                                 ),
                               ),
-                              Icon(Icons.arrow_forward_rounded,
-                                  size: 12,
-                                  color:
-                                      scheme.primary.withValues(alpha: 0.65)),
+                              if (splitCitation(evidence.scriptureReference)
+                                  .any((part) => part.target != null))
+                                Icon(Icons.arrow_forward_rounded,
+                                    size: 12,
+                                    color:
+                                        scheme.primary.withValues(alpha: 0.65)),
                             ],
                           ),
                         ),

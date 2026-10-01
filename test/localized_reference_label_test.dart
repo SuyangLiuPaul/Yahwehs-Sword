@@ -6,23 +6,33 @@ import 'package:yahwehs_sword/utils/version_mapper.dart';
 
 void main() {
   group('localizedReferenceLabel', () {
+    test(
+        'external Sirach citation has three language labels without inventing a canonical book',
+        () {
+      expect(localizedReferenceLabel('Ecclesiasticus (Sirach) 39:1', 'zh-Hans'),
+          '德训篇（便西拉智训） 39:1');
+      expect(localizedReferenceLabel('Ecclesiasticus (Sirach) 39:1', 'zh-Hant'),
+          '德訓篇（便西拉智訓） 39:1');
+      expect(localizedReferenceLabel('Ecclesiasticus (Sirach) 39:1', 'en'),
+          'Ecclesiasticus (Sirach) 39:1');
+      expect(localizedReferenceLabel('Various NT references', 'zh-Hans'),
+          '多处新约经文');
+    });
+
     test('single verse, English locale passes through unchanged', () {
       expect(localizedReferenceLabel('2 Samuel 5:9', 'en'), '2 Samuel 5:9');
     });
 
     test('single verse, Simplified Chinese locale translates the book', () {
-      expect(localizedReferenceLabel('2 Samuel 5:9', 'zh-Hans'),
-          '撒母耳记下 5:9');
+      expect(localizedReferenceLabel('2 Samuel 5:9', 'zh-Hans'), '撒母耳记下 5:9');
     });
 
     test('single verse, Traditional Chinese locale translates the book', () {
-      expect(localizedReferenceLabel('2 Samuel 5:9', 'zh-Hant'),
-          '撒母耳記下 5:9');
+      expect(localizedReferenceLabel('2 Samuel 5:9', 'zh-Hant'), '撒母耳記下 5:9');
     });
 
     test('verse range is preserved after localization', () {
-      expect(localizedReferenceLabel('Genesis 1:1-3', 'zh-Hans'),
-          '创世纪 1:1-3');
+      expect(localizedReferenceLabel('Genesis 1:1-3', 'zh-Hans'), '创世纪 1:1-3');
     });
 
     test('whole-chapter reference (no verse) is preserved', () {
@@ -33,15 +43,12 @@ void main() {
       // Traditional-script version name should win even under a
       // Simplified locale, matching localeAwareBookName's own
       // currentVersion precedence.
-      expect(
-          localizedReferenceLabel('Genesis 1:1', 'zh-Hans', 'cuvs-tr'),
+      expect(localizedReferenceLabel('Genesis 1:1', 'zh-Hans', 'cuvs-tr'),
           '創世紀 1:1');
     });
 
     test('multi-book reference localizes each segment', () {
-      expect(
-          localizedReferenceLabel(
-              'Matthew 5:3-12; Luke 6:20-23', 'zh-Hans'),
+      expect(localizedReferenceLabel('Matthew 5:3-12; Luke 6:20-23', 'zh-Hans'),
           '马太福音 5:3-12; 路加福音 6:20-23');
     });
 
@@ -50,7 +57,9 @@ void main() {
           'Multiple Books');
     });
 
-    test('empty locale-independent default (no locale-specific mapping) keeps English', () {
+    test(
+        'empty locale-independent default (no locale-specific mapping) keeps English',
+        () {
       expect(localizedReferenceLabel('Genesis 1:1', 'fr'), 'Genesis 1:1');
     });
   });
@@ -103,8 +112,7 @@ void main() {
     // Every reference in every shipped asset must print an extent with
     // the same digits it was written with, except where a one-chapter
     // book supplies the chapter.
-    test('no shipped reference is printed narrower than it was written',
-        () {
+    test('no shipped reference is printed narrower than it was written', () {
       const oneChapter = {'Jude', 'Obadiah', 'Philemon', '2 John', '3 John'};
       final tail = RegExp(r'[\d:,–\-\s]+$');
       final offenders = <String>[];
@@ -129,7 +137,9 @@ Iterable<String> _shippedReferences() sync* {
       for (final e in node.entries) {
         if (keys.contains(e.key)) {
           if (e.value is String) out.add(e.value as String);
-          if (e.value is List) out.addAll((e.value as List).whereType<String>());
+          if (e.value is List) {
+            out.addAll((e.value as List).whereType<String>());
+          }
         } else {
           walk(e.value);
         }

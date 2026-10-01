@@ -22,7 +22,7 @@
 
 ## Current learning visibility
 
-The new Passion wheel and Bible principles are hidden from the Sword Resources menu at the owner’s request. The established World History Wheel and strip remain available. Original page URLs are retained for compatibility. See [visibility and release notes](docs/release-visibility-1.7.1-2026-10-01.md).
+The translated Passion timetable is visible in the Sword Resources menu, including the complete source captions and original illustration. Bible principles remain hidden at the owner’s request. The established World History Wheel and strip remain available. Original page URLs are retained for compatibility. See [visibility and release notes](docs/release-visibility-1.7.1-2026-10-01.md).
 
 ## What this is
 
@@ -347,6 +347,6 @@ on any rights-holder request.
 
 ### Reference clock maintenance
 
-The existing hidden Passion page now follows the supplied reference image, with selectable day/night hours, Gospel citations and the original zoomable attachment. See [implementation and verification](docs/passion-reference-clock.md). Store approval and real paired-device checks remain separate release gates.
+The visible Passion timetable follows the supplied reference image, with selectable day/night hours, Gospel citations and the original zoomable attachment. See [implementation and verification](docs/passion-reference-clock.md). Store approval and real paired-device checks remain separate release gates.
 
 The Passion timetable is visible in both apps, with English, 简体中文 and 繁體中文 content and language switching. It includes all 14 source-diagram placements (both 08:00 events) and the original zoomable attachment. Exact Gospel markers and estimated diagram times are identified separately.

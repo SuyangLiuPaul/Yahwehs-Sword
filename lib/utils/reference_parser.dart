@@ -10,9 +10,11 @@ class BibleReference {
   /// `localeAwareBookName` when displaying.
   final String englishBook;
   final int chapter;
+
   /// First verse in the range. Null when the user typed only a
   /// chapter (e.g. "John 3" → whole chapter).
   final int? verseStart;
+
   /// Last verse in the range. Equal to [verseStart] for single-verse
   /// references; greater for ranges like "John 3:16-18".
   final int? verseEnd;
@@ -209,7 +211,11 @@ BibleReference? parseReference(String input) {
 /// is parsed as chapter 14 (because the chapter-range regex fires), the
 /// chapter number actually refers to a verse in chapter 1.
 const _singleChapterBooks = {
-  'Obadiah', 'Philemon', '2 John', '3 John', 'Jude',
+  'Obadiah',
+  'Philemon',
+  '2 John',
+  '3 John',
+  'Jude',
 };
 
 BibleReference? _buildRef(
@@ -243,7 +249,8 @@ BibleReference? _buildRef(
         ? verseEnd
         : verseStart,
     // An end chapter that does not run forwards is not a span.
-    endChapter: (endChapter != null && endChapter > chapter) ? endChapter : null,
+    endChapter:
+        (endChapter != null && endChapter > chapter) ? endChapter : null,
     endVerse: (endChapter != null && endChapter > chapter) ? endVerse : null,
   );
 }
@@ -352,20 +359,72 @@ String _normalize(String s) {
 }
 
 const List<String> _englishCanonical = [
-  'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
-  'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel',
-  '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles',
-  'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs',
-  'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah',
-  'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos',
-  'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk',
-  'Zephaniah', 'Haggai', 'Zechariah', 'Malachi',
-  'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans',
-  '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians',
-  'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians',
-  '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews',
-  'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John',
-  'Jude', 'Revelation',
+  'Genesis',
+  'Exodus',
+  'Leviticus',
+  'Numbers',
+  'Deuteronomy',
+  'Joshua',
+  'Judges',
+  'Ruth',
+  '1 Samuel',
+  '2 Samuel',
+  '1 Kings',
+  '2 Kings',
+  '1 Chronicles',
+  '2 Chronicles',
+  'Ezra',
+  'Nehemiah',
+  'Esther',
+  'Job',
+  'Psalms',
+  'Proverbs',
+  'Ecclesiastes',
+  'Song of Solomon',
+  'Isaiah',
+  'Jeremiah',
+  'Lamentations',
+  'Ezekiel',
+  'Daniel',
+  'Hosea',
+  'Joel',
+  'Amos',
+  'Obadiah',
+  'Jonah',
+  'Micah',
+  'Nahum',
+  'Habakkuk',
+  'Zephaniah',
+  'Haggai',
+  'Zechariah',
+  'Malachi',
+  'Matthew',
+  'Mark',
+  'Luke',
+  'John',
+  'Acts',
+  'Romans',
+  '1 Corinthians',
+  '2 Corinthians',
+  'Galatians',
+  'Ephesians',
+  'Philippians',
+  'Colossians',
+  '1 Thessalonians',
+  '2 Thessalonians',
+  '1 Timothy',
+  '2 Timothy',
+  'Titus',
+  'Philemon',
+  'Hebrews',
+  'James',
+  '1 Peter',
+  '2 Peter',
+  '1 John',
+  '2 John',
+  '3 John',
+  'Jude',
+  'Revelation',
 ];
 
 /// Common English abbreviations used by Bible-study tools, lexica,
@@ -393,7 +452,14 @@ const Map<String, List<String>> _englishAliases = {
   'Psalms': ['Ps', 'Psa', 'Psalm'],
   'Proverbs': ['Prv', 'Prov', 'Pr'],
   'Ecclesiastes': ['Ecc', 'Eccl', 'Ec'],
-  'Song of Solomon': ['Song', 'SoS', 'Sg', 'Cant', 'Canticles', 'Song of Songs'],
+  'Song of Solomon': [
+    'Song',
+    'SoS',
+    'Sg',
+    'Cant',
+    'Canticles',
+    'Song of Songs'
+  ],
   'Isaiah': ['Isa', 'Is'],
   'Jeremiah': ['Jer', 'Je'],
   'Lamentations': ['Lam', 'La'],
@@ -418,21 +484,29 @@ const Map<String, List<String>> _englishAliases = {
   'Acts': ['Act', 'Ac'],
   'Romans': ['Rom', 'Ro'],
   '1 Corinthians': [
-    '1Cor', '1 Cor', '1Co', '1 Co', 'I Cor', 'ICor', '1 Corinth',
+    '1Cor',
+    '1 Cor',
+    '1Co',
+    '1 Co',
+    'I Cor',
+    'ICor',
+    '1 Corinth',
   ],
   '2 Corinthians': [
-    '2Cor', '2 Cor', '2Co', '2 Co', 'II Cor', 'IICor', '2 Corinth',
+    '2Cor',
+    '2 Cor',
+    '2Co',
+    '2 Co',
+    'II Cor',
+    'IICor',
+    '2 Corinth',
   ],
   'Galatians': ['Gal', 'Ga'],
   'Ephesians': ['Eph', 'Ep'],
   'Philippians': ['Phil', 'Php', 'Pp'],
   'Colossians': ['Col', 'Cl'],
-  '1 Thessalonians': [
-    '1Thess', '1 Thess', '1Th', '1 Th', 'I Thes', 'IThess'
-  ],
-  '2 Thessalonians': [
-    '2Thess', '2 Thess', '2Th', '2 Th', 'II Thes', 'IIThess'
-  ],
+  '1 Thessalonians': ['1Thess', '1 Thess', '1Th', '1 Th', 'I Thes', 'IThess'],
+  '2 Thessalonians': ['2Thess', '2 Thess', '2Th', '2 Th', 'II Thes', 'IIThess'],
   '1 Timothy': ['1Tim', '1 Tim', '1Ti', '1 Ti', 'I Tim', 'ITim'],
   '2 Timothy': ['2Tim', '2 Tim', '2Ti', '2 Ti', 'II Tim', 'IITim'],
   'Titus': ['Tit', 'Ti'],
@@ -511,3 +585,93 @@ const Map<String, String> _chineseShortAliases = {
   // 约伯 must beat 约: "约伯 10:22" is Job, not John.
   '约伯': 'Job', '約伯': 'Job',
 };
+
+/// One `;`-separated part of a citation, paired with the reference a
+/// tap on it should navigate to.
+class CitationSegment {
+  /// The part exactly as the source wrote it, trimmed — never
+  /// re-rendered, so the citation on screen stays the cited one.
+  final String text;
+
+  /// Where a tap goes, or null when nothing navigable resolves.
+  final BibleReference? target;
+
+  const CitationSegment(this.text, this.target);
+}
+
+/// Split a citation like `Isaiah 44:28; Ezra 1:1-4` into its parts and
+/// resolve each one, so a UI can offer every cited passage instead of
+/// only the first. [parseReference] deliberately truncates at the first
+/// `;` — it answers "where does ONE tap go" — which is why the callers
+/// that want all of them need this.
+///
+/// A part with no book name of its own inherits the book of the part
+/// before it, which is what the citation convention means: the one
+/// entry in `assets/bible_evidence.json` with a bookless `;` part,
+/// `peter_raises_tabitha_joppa`, cites `Acts 9:36-43; 10:5-6` and the
+/// second half is Acts 10. Two guards keep that from misattributing a
+/// passage, and both were added because an adversarial read found a
+/// string that broke the rule without them:
+///
+///   * inheritance requires a leading digit, so prose like
+///     `Multiple Books` stays unresolved instead of being attached to
+///     the previous book;
+///   * the book carries forward only from the part IMMEDIATELY before,
+///     so it cannot leak across a part that resolved to nothing.
+///     `Exodus 14:21-22; Ecclesiasticus (Sirach) 44:1; 45:1` would
+///     otherwise hand the deuterocanonical part's `45:1` to Exodus — a
+///     chapter Exodus does not have, offered as if it were the cited
+///     verse. `Ecclesiasticus (Sirach) 39:1` is a real reference value
+///     in that asset (`cairo_genizah`), so the unresolvable middle part
+///     is not a hypothetical shape.
+///
+/// Commas are split too, and they mean something different from `;`.
+/// `John 18:31-33, 37-38` means VERSES of chapter 18 while
+/// `Daniel 2, 7, 8, 11` means CHAPTERS, and nothing in the bare part
+/// says which — so the shape is decided by what the part BEFORE it
+/// resolved to: a preceding part that named a verse makes the next bare
+/// number a verse of that same chapter, a chapter-only one makes it a
+/// chapter.
+///
+/// It has to be structural, because asking whether the candidate exists
+/// does not settle it. `Daniel 2, 7, 8, 11` is the case that proves it:
+/// Daniel has 12 chapters AND Daniel 2 has 49 verses, so chapters 7, 8,
+/// 11 and verses 2:7, 2:8, 2:11 are all real scripture. A rule that
+/// preferred verses would send the reader to Daniel 2:7 — a verse that
+/// exists, is not what the card cites, and looks entirely plausible on
+/// arrival.
+List<CitationSegment> splitCitation(String raw) {
+  final out = <CitationSegment>[];
+  BibleReference? previous;
+  for (final chunk in raw.split(';')) {
+    var first = true;
+    for (final part in chunk.split(',')) {
+      final text = part.trim();
+      if (text.isEmpty) continue;
+      var ref = parseReference(text);
+      if (ref == null && previous != null && RegExp(r'^\d').hasMatch(text)) {
+        ref = _inheritReference(text, previous, sameChapter: !first);
+      }
+      previous = ref;
+      out.add(CitationSegment(text, ref));
+      first = false;
+    }
+  }
+  return out;
+}
+
+/// Resolve a citation part that carries no book of its own against the
+/// part immediately before it.
+///
+/// [sameChapter] is true only for a `,` continuation, where a bare
+/// number continues the previous passage; a `;` starts a new one, so
+/// there it inherits the book alone. A part that spells its own
+/// `chapter:verse` inherits the book alone either way.
+BibleReference? _inheritReference(String text, BibleReference previous,
+    {required bool sameChapter}) {
+  final spellsChapter = text.contains(RegExp(r'[:：.]'));
+  if (sameChapter && !spellsChapter && previous.verseStart != null) {
+    return parseReference('${previous.englishBook} ${previous.chapter}:$text');
+  }
+  return parseReference('${previous.englishBook} $text');
+}
