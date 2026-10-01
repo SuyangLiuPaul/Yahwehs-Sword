@@ -97,6 +97,13 @@ List<String> _shownOrder(WidgetTester tester) {
 }
 
 void main() {
+  testWidgets('Hebrew versions have their own localized language heading', (tester) async {
+    await _openSheet(tester, locale: 'en');
+    expect(find.text('Hebrew'), findsOneWidget);
+    expect(find.text('简体中文'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('dismissing is a CANCEL — the stack is untouched',
       (tester) async {
     final outcome =

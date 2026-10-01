@@ -288,34 +288,34 @@ class _EvidenceDetailPageState extends State<EvidenceDetailPage> {
                 ),
               const SizedBox(height: 16),
 
-              // Title + confidence badge row.
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              // Flow the full title and badge onto separate lines when the
+              // phone width or accessibility text size cannot fit both.
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(
-                      evidence.localizedTitle(locale),
-                      style: TextStyle(
-                        fontFamily: settings.fontFamily,
-                        fontFamilyFallback: kCjkFontFallback,
-                        // 2026-08-25 (#315): was
-                        // `(fs + 6).clamp(20.0, 32.0)`, which saturated
-                        // at 26 pt and left the artefact's own name
-                        // SMALLER than the summary, description and
-                        // correlation beneath it from 33 pt on. 26 is
-                        // what the old expression rendered at the
-                        // default, so a reader who never moved the
-                        // slider sees no change; expressing it as a
-                        // factor also holds the 1.3x it was designed
-                        // at, which `fs + 6` never did — that offset
-                        // was 1.5x at 12 pt and 1.15x at 40.
-                        fontSize: t.scaled(26),
-                        fontWeight: FontWeight.w700,
-                        color: scheme.onSurface,
-                      ),
+                  Text(
+                    evidence.localizedTitle(locale),
+                    style: TextStyle(
+                      fontFamily: settings.fontFamily,
+                      fontFamilyFallback: kCjkFontFallback,
+                      // 2026-08-25 (#315): was
+                      // `(fs + 6).clamp(20.0, 32.0)`, which saturated
+                      // at 26 pt and left the artefact's own name
+                      // SMALLER than the summary, description and
+                      // correlation beneath it from 33 pt on. 26 is
+                      // what the old expression rendered at the
+                      // default, so a reader who never moved the
+                      // slider sees no change; expressing it as a
+                      // factor also holds the 1.3x it was designed
+                      // at, which `fs + 6` never did — that offset
+                      // was 1.5x at 12 pt and 1.15x at 40.
+                      fontSize: t.scaled(26),
+                      fontWeight: FontWeight.w700,
+                      color: scheme.onSurface,
                     ),
                   ),
-                  const SizedBox(width: 8),
                   ConfidenceBadge(
                     level: evidence.confidenceLevel,
                     color: evidence.confidenceColor(scheme),
@@ -605,20 +605,15 @@ class _Meta extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, size: 14, color: scheme.onSurfaceVariant),
           const SizedBox(width: 6),
-          // 2026-08-08 (#279): unbounded, this ran off the right edge
-          // at 320px — the location chip is a museum's full postal
-          // name. It always did; a soft tinted pill just faded off
-          // screen, where a hairline box that crosses the edge reads
-          // as broken. Making the chrome honest made the layout bug
-          // visible, so it gets fixed in the same pass.
+          // Keep the complete museum location readable at phone widths.
           Flexible(
             child: Text(
               label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              softWrap: true,
               style: TextStyle(
                 fontFamily: settings.fontFamily,
                 fontFamilyFallback: kCjkFontFallback,
@@ -686,18 +681,23 @@ class _ReferenceChip extends StatelessWidget {
         hoverColor: wb.hoverBg,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.menu_book_outlined, size: 16, color: scheme.primary),
-              const SizedBox(width: 6),
-              Text(
-                // This widget has taken a `locale` since it was
-                // written and never used it: the single most important
-                // control on the page — the one that takes you back to
-                // the text — printed `Genesis 1:1` to a reader on a
-                // Chinese version. Same defect class as #283.
-                localizedReferenceLabel(reference, locale, currentVersion),
+          // Icons and labels share a text stream, so long references
+          // wrap before the Read affordance instead of overflowing a Row.
+          child: Text.rich(
+            TextSpan(children: [
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 6),
+                  child: Icon(Icons.menu_book_outlined,
+                      size: 16, color: scheme.primary),
+                ),
+              ),
+              TextSpan(
+                // Keep the reading-version book name localized; the UI locale
+                // alone would print Genesis to a reader on a Chinese version.
+                text:
+                    localizedReferenceLabel(reference, locale, currentVersion),
                 style: TextStyle(
                   fontFamily: settings.fontFamily,
                   fontFamilyFallback: kCjkFontFallback,
@@ -706,11 +706,16 @@ class _ReferenceChip extends StatelessWidget {
                   color: scheme.primary,
                 ),
               ),
-              const SizedBox(width: 6),
-              Icon(Icons.arrow_forward, size: 14, color: scheme.primary),
-              const SizedBox(width: 2),
-              Text(
-                uiStrings['readInBible']?[locale] ?? 'Read',
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Icon(Icons.arrow_forward,
+                      size: 14, color: scheme.primary),
+                ),
+              ),
+              TextSpan(
+                text: uiStrings['readInBible']?[locale] ?? 'Read',
                 style: TextStyle(
                   fontFamily: settings.fontFamily,
                   fontFamilyFallback: kCjkFontFallback,
@@ -719,7 +724,7 @@ class _ReferenceChip extends StatelessWidget {
                   color: scheme.primary,
                 ),
               ),
-            ],
+            ]),
           ),
         ),
       ),

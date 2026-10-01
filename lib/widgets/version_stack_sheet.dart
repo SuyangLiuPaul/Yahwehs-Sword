@@ -108,6 +108,7 @@ class _VersionStackSheetState extends State<VersionStackSheet> {
   String _langLabel(String lang) => switch (lang) {
         'en' => _s('versionLangEnglish', 'English'),
         'zh-Hant' => _s('versionLangTraditional', 'Traditional'),
+        'he' => _s('versionLangHebrew', 'Hebrew'),
         'grc' => _s('versionLangGreek', 'Greek'),
         _ => _s('versionLangSimplified', 'Simplified'),
       };

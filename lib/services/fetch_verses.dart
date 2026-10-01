@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:yahwehs_sword/utils/berean_interlinear_display.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:yahwehs_sword/services/local_version_store.dart';
-import 'package:yahwehs_sword/utils/imported_version.dart' show isImportedVersion;
+import 'package:yahwehs_sword/utils/imported_version.dart'
+    show isImportedVersion;
 import 'package:yahwehs_sword/models/verse.dart';
 import 'package:yahwehs_sword/providers/main_provider.dart';
 import 'package:yahwehs_sword/services/error_reporter.dart';
@@ -233,8 +236,7 @@ class FetchVerses {
           final backoffMs = 600 * (1 << (attempt - 2));
           await Future<void>.delayed(Duration(milliseconds: backoffMs));
         }
-        final paraMap =
-            await _loadParagraphMap().timeout(attemptTimeout);
+        final paraMap = await _loadParagraphMap().timeout(attemptTimeout);
         final verses = await _loadAndParse(path, paraMap,
                 suppliedJson: await _importedJson(version))
             .timeout(attemptTimeout);
@@ -277,7 +279,8 @@ class FetchVerses {
         // healed.
         if (attempt == maxAttempts) {
           ErrorReporter.report(e, st,
-              source: 'FetchVerses', extra: 'path=$path attempt=$attempt/$maxAttempts');
+              source: 'FetchVerses',
+              extra: 'path=$path attempt=$attempt/$maxAttempts');
           // Round 56: rethrow instead of swallowing. The previous
           // "log + return" pattern made the Retry button on the
           // loading page useless — it would call execute(),
@@ -388,7 +391,11 @@ class FetchVerses {
     final verses = <Verse>[];
     for (final m in rawList) {
       try {
-        verses.add(Verse.fromJson(m));
+        final verse = Verse.fromJson(m);
+        verses.add(path == 'assets/bib.json'
+            ? verse.copyWith(
+                text: formatBereanInterlinearText(verse.text, version: 'bib'))
+            : verse);
       } catch (_) {}
     }
 
