@@ -1,3 +1,7 @@
+## Current follow-up supersession — 1.7.3, 2026-10-01
+
+The latest verified package is **1.7.3.0 x64**; follow [the 1.7.3 queue and localized notes](microsoft-followup-1.7.3.md). This supersedes every older package queue below. Submission 4 remains in certification and must not be cancelled. Do not create a duplicate update if 1.7.3 or newer is already submitted or published. The immutable v1.7.3 tag and all five GitHub platform workflows succeeded. Apple and Google delivery is tracked independently; this queue does not claim store approval.
+
 # Sword Microsoft follow-up 1.7.2
 
 Preserve pending certification. Read Partner Center status first; only create a new submission after certification publishes and editing is available. Skip if 1.7.2 or newer has already been submitted/published. Retain approved descriptions, genuine screenshots and all three languages. Upload and wait for validation before submission; use automatic publication after approval.
