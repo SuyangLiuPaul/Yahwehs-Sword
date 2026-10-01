@@ -950,11 +950,13 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         // Each now goes where it says. The remembered-form door still
         // exists for the toolbar icon on the Bible Chronology page,
         // which has no room to name two.
-        if (kShowNewLearningPages) ...[
+        if (kShowPassionTimeline) ...[
           WbMenuItem(
               kPassionTitle[locale] ?? kPassionTitle['en']!,
               () => pushPage(const PassionWheelPage(),
                   routeName: kPassionWheelPath)),
+        ],
+        if (kShowNewLearningPages) ...[
           WbMenuItem(
               kPrinciplesTitle[locale] ?? kPrinciplesTitle['en']!,
               () => pushPage(const BiblePrinciplesPage(),
