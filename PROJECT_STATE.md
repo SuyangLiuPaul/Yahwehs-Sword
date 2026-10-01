@@ -1,5 +1,12 @@
 # PROJECT_STATE.md — SeekSparks, the state of the work
 
+## Learning feature preparation — 2026-10-01
+
+- New source-linked Passion wheel and 18 selected Pastor Eric sermon principles are implemented in both apps. Scripture links, sermon anchors and source hashes are covered by regression tests.
+- Targeted repairs pass; full regression suites and independent source review are in progress. These features are not in the previous public release and have not been submitted as new store binaries. See `docs/learning-features-2026-10-01.md`.
+- An additional 6.42 GiB net was reclaimed from regenerable Xcode/Flutter caches; immediately after cleanup 8.30 GiB was free. New test/build output consumes some of that space. Signed archives, dSYMs, exported packages, source and screenshots were retained.
+
+
 ## Exclusive search release delivered — 2026-10-01
 
 - **Sword 1.6.332** contains fuzzy OR pinyin OR neither. Selecting either clears the other; selecting the active option turns both off. Old both-on settings migrate to fuzzy-only; serialized writes preserve the final rapid-tap/reset choice. Thirteen new regression cases per app cover model, persistence and responsive widgets.
