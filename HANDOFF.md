@@ -1,8 +1,10 @@
-## Learning feature preparation — 2026-10-01
+## Learning release 1.7.0 — 2026-10-01
 
-- New source-linked Passion wheel and 18 selected Pastor Eric sermon principles are implemented in both apps. Scripture links, sermon anchors and source hashes are covered by regression tests.
-- Targeted repairs pass; full regression suites and independent source review are in progress. These features are not in the previous public release and have not been submitted as new store binaries. See `docs/learning-features-2026-10-01.md`.
-- An additional 6.42 GiB net was reclaimed from regenerable Xcode/Flutter caches; immediately after cleanup 8.30 GiB was free. New test/build output consumes some of that space. Signed archives, dSYMs, exported packages, source and screenshots were retained.
+- Both apps include the source-linked Passion wheel and 18 selected Bible principles. Words additionally includes the world-history wheel, saved-sermon return flow and all six paired Mandarin/Cantonese Jesus’s Disciples videos. Scripture assets are unchanged.
+- Corrected functional source `bf789ba75cd776d49dc55816c207eed50ca98cc1` passed [CI 36813961368](https://github.com/SuyangLiuPaul/Yahwehs-Sword/actions/runs/36813961368): **5970 passed / 16 platform skips**, zero failures; analysis and secret scan succeeded. Two independent source-review rounds found no remaining blocker.
+- Canonical web release deployed **1.7.0** and verified served versions/bundles on dev and production. GitHub release, newly signed Apple deliveries and latest store packages are being prepared; this checkpoint does not claim their completion.
+- Existing Microsoft certification, Google review and initial public Apple review remain preserved. New binaries must be verified before replacing editable drafts; do not cancel certification. Physical Windows/car/watch validation and Google production tester qualification remain open. Sword has no Firebase or car/watch companion.
+- Additional storage cleanup reclaimed about **8.78 GiB net**, preserving signed archives, dSYMs, exports, source and screenshots. Builds consume some reclaimed space; consult the final measured free-space record.
 
 ## Exclusive search release delivered — 2026-10-01
 

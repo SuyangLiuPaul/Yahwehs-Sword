@@ -1,0 +1,16 @@
+{
+  "kind": "actual browser capture",
+  "viewport": {
+    "width": 402,
+    "height": 874
+  },
+  "source": "bf789ba75cd776d49dc55816c207eed50ca98cc1",
+  "site": "seeksparks-dev.netlify.app",
+  "storeScreenshot": false,
+  "images": [
+    {
+      "file": "sword-passion-402-reviewed.jpg",
+      "sha256": "5dc9620193d073fe5af074ec0a31697cb353b5f3eba8bf4a708ff22d192bdac7"
+    }
+  ]
+}
