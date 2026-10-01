@@ -1,6 +1,7 @@
 import 'package:yahwehs_sword/constants/book_name_mapping.dart'
     show zhToEn, toLocale, bookNameInScript, bookScriptFor;
-import 'package:yahwehs_sword/utils/reference_parser.dart' show BibleReference, parseReference;
+import 'package:yahwehs_sword/utils/reference_parser.dart'
+    show BibleReference, parseReference;
 
 String translateBookName(String? book, String version) {
   if (book == null) return '';
@@ -20,8 +21,8 @@ String translateBookName(String? book, String version) {
 /// that list will be misclassified as Chinese — add new ones there.
 ///
 /// Falls back to locale-driven naming when no version is provided.
-String localeAwareBookName(
-    String englishBook, String locale, [String? currentVersion]) {
+String localeAwareBookName(String englishBook, String locale,
+    [String? currentVersion]) {
   final en = zhToEn(englishBook) ?? englishBook;
   return bookNameInScript(en, bookScriptFor(locale, currentVersion));
 }
@@ -71,11 +72,27 @@ String _localizedRefPart(
 /// Luke 6:20-23") by localizing each segment independently. Segments
 /// that fail to parse (e.g. "Multiple Books") are passed through
 /// unchanged rather than dropped, so the label never loses content.
-String localizedReferenceLabel(
-    String raw, String locale, [String? currentVersion]) {
+String localizedReferenceLabel(String raw, String locale,
+    [String? currentVersion]) {
   final segments = raw.contains(';') ? raw.split(';') : [raw];
   return segments.map((segment) {
     final trimmed = segment.trim();
+    final external = RegExp(
+            r'^(?:Ecclesiasticus\s*\(Sirach\)|Ecclesiasticus|Sirach)\s*',
+            caseSensitive: false)
+        .firstMatch(trimmed);
+    if (external != null && locale.startsWith('zh')) {
+      final name = locale == 'zh-Hant' ? '德訓篇（便西拉智訓）' : '德训篇（便西拉智训）';
+      return '$name ${trimmed.substring(external.end)}';
+    }
+    if (trimmed == 'Various NT references') {
+      return locale == 'zh-Hant'
+          ? '多處新約經文'
+          : locale.startsWith('zh')
+              ? '多处新约经文'
+              : trimmed;
+    }
+
     final ref = parseReference(trimmed);
     if (ref == null) return trimmed;
     final rendered = _localizedRefPart(ref, locale, currentVersion);
