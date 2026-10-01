@@ -1,3 +1,12 @@
+## 2026-10-01 — quality release preparation, 1.6.331
+
+- Functional PR8 merged as `33286e71e1983e9e4421852e17d1a4283f81702d`; narrow book-picker repair and authentic ten-image gallery PR9 merged as `5bad5bbaab168a3d2d01479c9f19e049b1e0d270`. Latest full CI [36795797916](https://github.com/SuyangLiuPaul/Yahwehs-Sword/actions/runs/36795797916) passed: **5,946 tests / 16 existing skips**, static analysis and fail-closed secret scan succeeded.
+- The reported79px popup overflow is repaired. A fresh native arm64 simulator build from `5eb1a79897c519abfbd8a9684c2077bca7e09b3d` succeeded; the full66-book menu was captured at402x874 and visually confirmed without the overflow. This supersedes the earlier statement that a fresh visual build was still required. Seventeen focused picker tests passed, preserving corpus groups, order and scrolling selection.
+- The canonical release wrapper deployed **1.6.331** to dev and production; both served-version checks passed. The release tag and rebuilt store binaries remain pending at this point. BIB presentation, evidence wrapping and Hebrew group-title fixes are included.
+- Microsoft submission3 professional listing is now published. The daily follow-up was updated to wait for a verified package containing these newer fixes; the old1.6.330 MSIX must not be submitted as though it contained them. Preserve all three approved listing languages.
+- Ten genuine Sword phone captures and hashes are in `docs/screenshots/2026-10-01/manifest.json`. Car/watch companions belong to Words. Existing public Apple reviews remain preserved; physical Windows/car/watch verification and Google production qualification remain open.
+- The two pre-existing dirty files (changelog and Mac project) were backed up before the release wrapper regenerated the changelog. The Mac project changes remain outside the release commit. Restricted NASB assets remain excluded.
+
 ## 2026-10-01 — 1.6.330 released; signed Apple replacement delivered and store gates open
 
 - PR #4 merged from feature head `84d425ae01545253e64b7b79dc4e30f3b414fb5e`; release main `f6b6d258`, tag **v1.6.330**, CI **36719800455 / 36721362970 green**. Release wrapper deployed both dev and prod **1.6.330**. GitHub has six assets: phone APK, unsigned iOS IPA, Linux TGZ, Mac ZIP, Windows EXE and Windows ZIP.
