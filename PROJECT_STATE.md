@@ -1,5 +1,16 @@
 # PROJECT_STATE.md — SeekSparks, the state of the work
 
+## Exclusive search release delivered — 2026-10-01
+
+- **Sword 1.6.332** contains fuzzy OR pinyin OR neither. Selecting either clears the other; selecting the active option turns both off. Old both-on settings migrate to fuzzy-only; serialized writes preserve the final rapid-tap/reset choice. Thirteen new regression cases per app cover model, persistence and responsive widgets.
+- [Release CI 36803141921](https://github.com/SuyangLiuPaul/Yahwehs-Sword/actions/runs/36803141921) succeeded: **5959 passed / 16 existing skips**, zero failures, analysis and secret scan green. Independent source/release refuter found no substantive blocker.
+- Immutable **v1.6.332** published with **six GitHub assets**; all five platform release workflows succeeded. Canonical web wrapper deployed **dev and production**; served versions/bundles verified, and actual browser UI confirmed mode switching and both-off behavior.
+- Signed **iOS and macOS 1.6.332/1060333** delivered and processed. Compliance and test details saved; existing internal group assigned and both external Public beta reviews submitted. Initial public App Store reviews remain pending and preserved; this is not public App Store approval.
+- Microsoft Sword submission4/1.6.331.0 is still in certification with automatic publication; verified1.6.332.0 is queued after approval. Google1.6.331/2000005 remains in review;1.6.332 release4 is a saved metadata-only draft. AAB upload remains blocked by the native file picker; owner browser upload-permission request is pending. Fully successful [MSIX run 36806934866](https://github.com/SuyangLiuPaul/Yahwehs-Sword/actions/runs/36806934866) provides the verified x64 follow-up package. Existing daily automation now targets these latest packages, retaining approved descriptions, screenshots and all three languages.
+- Ten genuine phone screenshots per app remain committed. Device-size matching, held Words Watch Now Playing capture, Android companion captures, physical Windows/car/watch verification and Google production tester qualification remain open. Sword has no Firebase or car/watch companion.
+- Current disk measurement is about **9.3 GiB available** after new archives/exports and cache cleanup; gross cache deletions are not the remaining free space. Signed archives, dSYMs, exported packages, source and simulator user data retained. Exact package hashes and store proofs are kept in the local publication evidence folder.
+
+
 The single compact answer to "where is this project right now". Written for
 whoever picks the work up next: the unattended loop, another Claude session,
 or the owner after a week away.
@@ -11,15 +22,15 @@ ticket briefs belong in the loop's `prompt.md` and, once closed, in
 `prompt-archive.md`. If this file grows past ~150 lines it has stopped
 doing its job.
 
-Last updated: 2026-10-01 (1.6.330 released; store reviews and production-access gates remain open)
+Last updated: 2026-10-01 (1.6.332 released; store reviews and production-access gates remain open)
 
 ---
 
-## Search mode release preparation — 2026-10-01
+## Earlier search mode preparation — 2026-10-01
 
 - Latest owner requirement: fuzzy OR pinyin OR neither; selecting either clears the other, and selecting the active mode turns both off. Legacy both-on preferences migrate to fuzzy-only. Serialized preference writes preserve the final choice during rapid taps and reset.
 - Functional source merged as `543a7121af8290e1f52ae5800595bc7e7f11f0ae`. [CI 36801904495](https://github.com/SuyangLiuPaul/Yahwehs-Sword/actions/runs/36801904495) passed: **5959 tests / 16 existing skips / zero failures**, analysis and secret scan green. Independent refuter found no substantive blocker. Widget coverage includes 320/402/1024px with 1.8x text scaling.
-- Canonical wrapper is preparing **1.6.332**. A later immutable tag/package is required; already delivered **1.6.331** does not include this newer requirement. Do not relabel, retag or cancel pending store reviews. See `docs/search-modes.md`.
+- At this earlier snapshot, the canonical wrapper was preparing **1.6.332**. A later immutable tag/package is required; already delivered **1.6.331** does not include this newer requirement. Do not relabel, retag or cancel pending store reviews. See `docs/search-modes.md`.
 - Previous1.6.331 is verified on both websites and GitHub with six assets. Signed iOS/Mac1060332 processing/compliance complete, internal group assigned, both external Beta reviews submitted. Microsoft submission4/1.6.331.0 is in certification with automatic publication; Google closed1.6.331/2000005 was sent for review, managed publishing off. Sword has no Firebase or car/watch companion.
 - Preserve initial public Apple reviews and approved store listings. Ten actual phone screenshots per app are committed; matching store device size is required. Words Watch Now Playing 03 is held, Android companion capture and physical Windows/car/watch validation remain open. Google production qualification still requires actual testers.
 - Regenerable cache cleanup removed 33.49 GiB gross; approximately 15 GiB free after measured cleanup, with sources, signed archives, packages and simulator user data preserved. Measurements and delivery proofs are in the local publication asset folder.
