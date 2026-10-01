@@ -1,5 +1,10 @@
 ## Learning release 1.7.0 — 2026-10-01
 
+## Owner visibility correction — 2026-10-01
+
+Sword hides the new Passion and principles entries; the established world-history wheel and strip stay visible. Code and existing URLs are retained. This supersedes the visible-feature claims below; v1.7.0 stays immutable and the correction is prepared as 1.7.1. See `docs/release-visibility-1.7.1-2026-10-01.md`.
+
+
 - Both apps include the source-linked Passion wheel and 18 selected Bible principles. Words additionally includes the world-history wheel, saved-sermon return flow and all six paired Mandarin/Cantonese Jesus’s Disciples videos. Scripture assets are unchanged.
 - Corrected functional source `bf789ba75cd776d49dc55816c207eed50ca98cc1` passed [CI 36813961368](https://github.com/SuyangLiuPaul/Yahwehs-Sword/actions/runs/36813961368): **5970 passed / 16 platform skips**, zero failures; analysis and secret scan succeeded. Two independent source-review rounds found no remaining blocker.
 - Canonical web release deployed **1.7.0** and verified served versions/bundles on dev and production. GitHub release, newly signed Apple deliveries and latest store packages are being prepared; this checkpoint does not claim their completion.

@@ -1,3 +1,4 @@
+import 'package:yahwehs_sword/constants/learning_visibility.dart';
 import 'package:yahwehs_sword/pages/passion_wheel_page.dart';
 import 'package:yahwehs_sword/pages/bible_principles_page.dart';
 import 'dart:async' show unawaited;
@@ -87,7 +88,8 @@ import 'package:yahwehs_sword/services/cross_reference_service.dart';
 import 'package:yahwehs_sword/services/sermon_service.dart';
 import 'package:yahwehs_sword/services/synopsis_service.dart';
 import 'package:yahwehs_sword/utils/keyboard_shortcuts.dart';
-import 'package:yahwehs_sword/utils/version_mapper.dart' show localeAwareBookName;
+import 'package:yahwehs_sword/utils/version_mapper.dart'
+    show localeAwareBookName;
 import 'package:yahwehs_sword/widgets/bible_reading_pane.dart';
 import 'package:yahwehs_sword/widgets/command_pane.dart';
 import 'package:yahwehs_sword/widgets/passage_report_sheet.dart'
@@ -108,7 +110,8 @@ import 'package:yahwehs_sword/utils/search_highlight.dart';
 import 'package:yahwehs_sword/widgets/analysis_pin_bar.dart';
 import 'package:yahwehs_sword/widgets/analysis_tabs.dart';
 import 'package:yahwehs_sword/widgets/verse_list_pane.dart';
-import 'package:yahwehs_sword/utils/verse_list.dart' show VerseRef, verseListKeys;
+import 'package:yahwehs_sword/utils/verse_list.dart'
+    show VerseRef, verseListKeys;
 import 'package:yahwehs_sword/widgets/kwic_pane.dart';
 import 'package:yahwehs_sword/widgets/related_verses_pane.dart';
 import 'package:yahwehs_sword/widgets/phrase_match_pane.dart';
@@ -120,7 +123,8 @@ import 'package:yahwehs_sword/widgets/sermons_pane.dart';
 import 'package:yahwehs_sword/widgets/verse_notes_pane.dart';
 import 'package:yahwehs_sword/utils/verse_notes.dart' show parseVerseId;
 import 'package:yahwehs_sword/widgets/word_chart_view.dart';
-import 'package:yahwehs_sword/constants/book_groups.dart' show oldTestamentBooks;
+import 'package:yahwehs_sword/constants/book_groups.dart'
+    show oldTestamentBooks;
 import 'package:yahwehs_sword/services/greek_stats_service.dart';
 import 'package:yahwehs_sword/services/strongs_service.dart';
 import 'package:yahwehs_sword/utils/search_scope.dart' show kScopeAllBooks;
@@ -711,8 +715,8 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
           shortcut: _accel(WbShortcutId.copyCenter),
         ),
         const WbMenuItem.separator(),
-        WbMenuItem(s('settings', 'Settings…'),
-            () => _go(HelpDestination.settings)),
+        WbMenuItem(
+            s('settings', 'Settings…'), () => _go(HelpDestination.settings)),
         // "Exit to reader" used to sit here and replace the whole route
         // with HomePage. There is nothing left to exit to: the reader is
         // the centre pane in three arrangements (View menu, below), and
@@ -867,8 +871,7 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         WbMenuItem(s('trivia', 'Trivia'), () => _go(HelpDestination.trivia)),
       ]),
       WbMenu(s('menuResources', 'Resources'), [
-        WbMenuItem(
-            s('sermons', 'Sermons'), () => _go(HelpDestination.sermons)),
+        WbMenuItem(s('sermons', 'Sermons'), () => _go(HelpDestination.sermons)),
         // Resources, not Tools: bwh07 splits the two on whether the
         // item OPERATES on the current text (Word List, KWIC, Phrase
         // Matching) or is a reference database you CONSULT (maps,
@@ -917,8 +920,7 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         // topical indexes, charts — and this one is the Lord's own
         // teaching. It is the only entry here a reader might open
         // without a question to look up.
-        WbMenuItem(
-            kJesusTeachingsTitle[locale] ?? kJesusTeachingsTitle['en']!,
+        WbMenuItem(kJesusTeachingsTitle[locale] ?? kJesusTeachingsTitle['en']!,
             () => _go(HelpDestination.jesusTeachings)),
         WbMenuItem(s('hebrewKings', 'Kings of Judah & Israel'),
             () => _go(HelpDestination.hebrewKings)),
@@ -948,8 +950,16 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
         // Each now goes where it says. The remembered-form door still
         // exists for the toolbar icon on the Bible Chronology page,
         // which has no room to name two.
-        WbMenuItem(kPassionTitle[locale] ?? kPassionTitle['en']!, () => pushPage(const PassionWheelPage(), routeName: kPassionWheelPath)),
-        WbMenuItem(kPrinciplesTitle[locale] ?? kPrinciplesTitle['en']!, () => pushPage(const BiblePrinciplesPage(), routeName: kPrinciplesPath)),
+        if (kShowNewLearningPages) ...[
+          WbMenuItem(
+              kPassionTitle[locale] ?? kPassionTitle['en']!,
+              () => pushPage(const PassionWheelPage(),
+                  routeName: kPassionWheelPath)),
+          WbMenuItem(
+              kPrinciplesTitle[locale] ?? kPrinciplesTitle['en']!,
+              () => pushPage(const BiblePrinciplesPage(),
+                  routeName: kPrinciplesPath)),
+        ],
         WbMenuItem(s('wheelTitle', 'World History Wheel'),
             () => _go(HelpDestination.wheel)),
         WbMenuItem(kStripPageTitle[locale] ?? kStripPageTitle['en']!,
@@ -1741,10 +1751,13 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
     final settings = context.watch<AppSettings>();
     final paper = settings.readingPaperTheme;
     return Theme(
-      data: withPhoneTextRolesOn(context, workbenchTheme(Theme.of(context),
-          paper: paper,
-          textScale: WbType.of(context).textScale,
-          accent: settings.primaryColor), fontSize: settings.fontSize),
+      data: withPhoneTextRolesOn(
+          context,
+          workbenchTheme(Theme.of(context),
+              paper: paper,
+              textScale: WbType.of(context).textScale,
+              accent: settings.primaryColor),
+          fontSize: settings.fontSize),
       child: ChangeNotifierProvider<WorkbenchProvider>.value(
         value: _wb,
         child: Builder(
@@ -1811,13 +1824,12 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
             // the place their eye is already travelling through on the
             // way to the text. Kept in immersive reading too — it is the
             // one band that says a newer version exists.
-            if (_update != null &&
-                _update!.latestVersion != _updateWavedAway)
+            if (_update != null && _update!.latestVersion != _updateWavedAway)
               UpdateAvailableBanner(
                 info: _update!,
                 locale: locale,
-                onDismiss: () => setState(
-                    () => _updateWavedAway = _update!.latestVersion),
+                onDismiss: () =>
+                    setState(() => _updateWavedAway = _update!.latestVersion),
               ),
             Expanded(child: _buildPanes(context)),
             // The phone's navigation, between the panes and the status
@@ -1825,13 +1837,13 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
             if (compact && !immersive) _buildPhoneBar(context, locale),
             if (!immersive)
               WorkbenchStatusBar(
-              message: _statusMessage(locale),
-              // Reference and version only on a phone — the rest
-              // (Browse/Strong's/Analysis state) is desktop detail.
-              fields: compact
-                  ? _statusFields(mp, locale).take(2).toList()
-                  : _statusFields(mp, locale),
-            ),
+                message: _statusMessage(locale),
+                // Reference and version only on a phone — the rest
+                // (Browse/Strong's/Analysis state) is desktop detail.
+                fields: compact
+                    ? _statusFields(mp, locale).take(2).toList()
+                    : _statusFields(mp, locale),
+              ),
           ],
         ),
       ),
