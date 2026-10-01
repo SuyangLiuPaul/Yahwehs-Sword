@@ -12,11 +12,15 @@ import 'package:yahwehs_sword/utils/app_bar_room.dart';
 /// time. Calls the same `settings.setLocale` the Settings dropdown
 /// already uses, so the two stay in sync — neither is "the real one".
 class LanguageSwitcherButton extends StatelessWidget {
-  const LanguageSwitcherButton({super.key, this.dense = false});
+  const LanguageSwitcherButton(
+      {super.key, this.dense = false, this.alwaysVisible = false});
 
   /// Compact form for the Workbench menu bar, whose chrome is 11px and
   /// whose row height a stock 48px IconButton would break.
   final bool dense;
+
+  /// Dedicated learning pages reserve room for the language control.
+  final bool alwaysVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,9 @@ class LanguageSwitcherButton extends StatelessWidget {
     // On a narrow screen a SUB-page gives this room back to its own
     // title or field: the language is in Settings, and the root page's
     // bar keeps this button at every width. See `kRoomyAppBarWidth`.
-    if (appBarIsCramped(context) && Navigator.of(context).canPop()) {
+    if (!alwaysVisible &&
+        appBarIsCramped(context) &&
+        Navigator.of(context).canPop()) {
       return const SizedBox.shrink();
     }
     return PopupMenuButton<String>(
