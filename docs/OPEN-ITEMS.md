@@ -39,6 +39,9 @@ This file is the complete picture, including things nobody has scheduled.
 
 ## Current release gates and source decisions — 2026-10-01
 
+**Latest distribution checkpoint:** [1.7.3 delivery](delivery-1.7.3-2026-10-01.md) and [Microsoft package guard](microsoft-followup-1.7.3.md) supersede the older store versions below. GitHub/web1.7.3 is released, Google closed Alpha1.7.3 is available, Apple1.7.3 builds are processed, and Microsoft submission4 is pending. Keep the entries below as dated evidence; do not upload an older queued package.
+
+
 These checks supersede earlier release-preparation statements; the older bug and parity entries remain individually dated and are not closed by a green release.
 
 - **Apple beta approval `[open; checked 2026-10-01]`:** replacement iOS **1.6.330 (1060331)** delivered/complete after **1060330** failed **ITMS-90683**; PR #5 purpose-string repair merged with green CI **36728390165** and one regression test. External Public beta remains **Waiting for Review**. Compliance is complete and internal Sword group has one assigned tester. Mac **1.6.330 (1060330)** delivered with external beta **Waiting for Review** and internal group assigned.
