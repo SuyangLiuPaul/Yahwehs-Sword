@@ -1,3 +1,4 @@
+import '../widgets/play_update_banner.dart';
 import 'package:yahwehs_sword/constants/learning_visibility.dart';
 import 'package:yahwehs_sword/pages/passion_wheel_page.dart';
 import 'package:yahwehs_sword/pages/bible_principles_page.dart';
@@ -5,6 +6,7 @@ import 'dart:async' show unawaited;
 import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter/material.dart';
+import '../widgets/store_update_banner.dart';
 import 'package:flutter/services.dart'
     show HardwareKeyboard, KeyDownEvent, KeyEvent, LogicalKeyboardKey;
 import 'package:provider/provider.dart';
@@ -1826,6 +1828,8 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
             // the place their eye is already travelling through on the
             // way to the text. Kept in immersive reading too — it is the
             // one band that says a newer version exists.
+            PlayUpdateBanner(locale: locale),
+            StoreUpdateBanner(locale: locale),
             if (_update != null && _update!.latestVersion != _updateWavedAway)
               UpdateAvailableBanner(
                 info: _update!,

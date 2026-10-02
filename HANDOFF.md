@@ -1,3 +1,11 @@
+## Active paired 1.7.5 preparation
+
+See `docs/delivery-1.7.5-2026-10-02.md`. New update prompts and Words companion/audio repairs are in preparation; preserve pending store reviews and immutable prior tags.
+
+## Google Play in-app update preparation — 2026-10-02
+
+Added the official flexible Play update bridge and localized home/workbench banner. Both apps target the next shared release **1.7.5**; current source versions, immutable tags and pending reviews remain unchanged. [Implementation, channel guards and next-release checklist](docs/google-play-in-app-updates-2026-10-02.md). Real Play-installed old-to-new transaction remains a delivery check.
+
 ## Google phone internal testing corrected — 2026-10-02 Melbourne
 
 Both existing internal phone tracks now serve **1.7.3**: Words1007003, released02:05, and Sword2000010, released02:04. Each release3 visibly reports Available to internal testers. Reused the processed phone bundle and existing three-language Alpha notes; preserved selected tester lists. The prior internal tracks still served Words1.6.32 and Sword1.6.328, so testers enrolled internally did not receive newer Alpha builds. Words Alpha remains in review; Sword Alpha is available. These internal releases do not meet public production qualification. [Current delivery record](docs/delivery-1.7.3-2026-10-01.md).

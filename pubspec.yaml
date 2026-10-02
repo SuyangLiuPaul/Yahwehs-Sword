@@ -1,7 +1,7 @@
 name: yahwehs_sword
 description: "Yahweh's Sword / 雅伟之剑 — a desktop/tablet-first bilingual Bible exegesis tool with structured original-language search, forked from Yahweh's Words."
 publish_to: 'none'
-version: 1.7.3+1070003
+version: 1.7.7+1070007
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -69,6 +69,7 @@ dependencies:
   # the analyzer's `depend_on_referenced_packages` lint stops
   # complaining about a direct import without a direct dep.
   web: ^1.0.0
+  url_launcher: ^6.3.2
   # 2026-05-24 (v1.3.19): flutter_tts removed with the 朗读 feature.
   # path_provider + crypto were part of its audio cache and were kept on
   # the theory that a second consumer would turn up; task #281 found none
@@ -337,10 +338,13 @@ flutter_icons:
     generate: true
   ios:
     generate: true
+  # macOS and Windows icons are rounded renders written by
+  # tools/generate_brand_marks.py; flutter_launcher_icons would overwrite
+  # them with the full-bleed square.
   macos:
-    generate: true
+    generate: false
   windows:
-    generate: true
+    generate: false
   linux:
     generate: true
   web:
@@ -356,7 +360,7 @@ msix_config:
   publisher_display_name: Yahweh's People
   identity_name: YahwehsPeople.YahwehsSword
   publisher: CN=C4997401-2CEE-44B6-9803-4775768C89A5
-  logo_path: assets/app_icon.png
+  logo_path: assets/windows_icon.png
   capabilities: internetClient
   languages: en-us
   trim_logo: false
