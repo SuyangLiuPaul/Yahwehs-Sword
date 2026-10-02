@@ -11,8 +11,9 @@ store reviews remain unchanged. This record is preparation, not store publicatio
 - iOS / Mac App Store: public Apple lookup for this app, platform and locale country;
   only a newer public version produces a prompt, with a corresponding store link.
 - Microsoft Store: asynchronous StoreContext package-update query, with store link.
-  No GitHub installer in a Store package. Windows compilation is an open gate until
-  the Windows runner completes; Mac cannot compile this native Windows integration.
+  No GitHub installer in a Store package. Windows runner compiled and packaged the integration successfully
+  (Words preflight 36979332124; Sword preflight 36979335268). The final
+  release must use the final tested tag, not an older preflight artifact.
 - Direct APK / EXE: retain the existing corresponding GitHub asset/update flow.
 - Web: visible refresh prompt from deployed version metadata, preserving local data.
 - Prompt labels and actions cover English, Simplified Chinese and Traditional Chinese.
