@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../constants/workbench_theme.dart';
 
 /// Only Play's installed-package query determines whether a tester can update.
 /// Store builds never fall back to a GitHub APK with a different signing key.
@@ -119,7 +120,7 @@ class _PlayUpdateBannerState extends State<PlayUpdateBanner>
     final bytes = (info['bytes'] as num?)?.toDouble() ?? 0;
     return Material(
       color: Theme.of(context).colorScheme.secondaryContainer,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(WbMetrics.radiusControl),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
