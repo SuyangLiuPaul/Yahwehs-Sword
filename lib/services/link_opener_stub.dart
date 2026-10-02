@@ -1,9 +1,22 @@
-// Non-web fallback stub. The Flutter app today only ships web, but
-// keeping this stub means a future native build still type-checks.
-//
-// To enable URL opening on iOS / Android / desktop, add the
-// `url_launcher` package and replace this body with launchUrl(...).
+import 'package:url_launcher/url_launcher.dart';
 
-bool openIsAvailable() => false;
-
-Future<bool> openUrl(String url) async => false;
+bool openIsAvailable() => true;
+Future<bool> openUrl(String url) async {
+  final uri = Uri.tryParse(url);
+  if (uri == null ||
+      !const [
+        'https',
+        'http',
+        'mailto',
+        'ms-windows-store',
+        'itms-apps',
+        'macappstore'
+      ].contains(uri.scheme)) {
+    return false;
+  }
+  try {
+    return await launchUrl(uri, mode: LaunchMode.externalApplication);
+  } catch (_) {
+    return false;
+  }
+}
