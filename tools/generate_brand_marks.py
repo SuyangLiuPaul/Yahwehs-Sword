@@ -162,8 +162,6 @@ LAUNCHER_ICONS = [
     Path("ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png"),
     Path("android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"),
     Path("web/icons/Icon-512.png"),
-    Path("macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_1024.png"),
-    Path("macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_512.png"),
 ]
 # Only sizes where the drawing is still legible are checked. Below about
 # 128 px a change of this kind covers a couple of pixels and cannot be
@@ -219,11 +217,47 @@ def launcher_drift(master: Image.Image) -> list[str]:
     return out
 
 
+# macOS draws no mask of its own: whatever the icon file shows is what the
+# Dock shows. The sword icon shipped there as a full-bleed RGB square, so it
+# sat among the other apps' rounded icons with sharp corners (owner,
+# 2026-10-03: 「为什么这个是尖尖的角 … 我要 round corner」; the Transporter
+# list showed it plainly). A Mac icon is the artwork inside the standard
+# 824-of-1024 rounded square, corners transparent.
+MACOS_ART = 824
+MACOS_RADIUS_FRACTION = 0.225
+
+
+def _rounded(art: Image.Image, canvas: int, art_size: int, radius: float) -> Image.Image:
+    """`art` clipped to a rounded square of `art_size`, centred on a clear canvas.
+
+    Drawn at 4x and reduced so the curve is anti-aliased rather than stepped.
+    """
+    scale = 4
+    big_art = art.convert("RGBA").resize(
+        (art_size * scale, art_size * scale), Image.Resampling.LANCZOS
+    )
+    mask = Image.new("L", big_art.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle(
+        (0, 0, big_art.width - 1, big_art.height - 1),
+        radius=round(radius * scale),
+        fill=255,
+    )
+    layer = Image.new("RGBA", (canvas * scale, canvas * scale), (0, 0, 0, 0))
+    offset = (canvas * scale - big_art.width) // 2
+    layer.paste(big_art, (offset, offset), mask)
+    return layer.resize((canvas, canvas), Image.Resampling.LANCZOS)
+
+
+def render_macos(master: Image.Image) -> Image.Image:
+    return _rounded(master, 1024, MACOS_ART, MACOS_ART * MACOS_RADIUS_FRACTION)
+
+
 def macos_targets(master: Image.Image) -> dict[Path, Image.Image]:
     contents_file = MACOS_ICONSET / "Contents.json"
     if not contents_file.exists():
         return {}
     contents = json.loads(contents_file.read_text())
+    base = render_macos(master)
     out: dict[Path, Image.Image] = {}
     for entry in contents["images"]:
         filename = entry.get("filename")
@@ -232,16 +266,59 @@ def macos_targets(master: Image.Image) -> dict[Path, Image.Image]:
         points = float(entry["size"].split("x", 1)[0])
         scale = int(entry["scale"].removesuffix("x"))
         size = round(points * scale)
-        out[MACOS_ICONSET / filename] = master.convert("RGB").resize(
+        out[MACOS_ICONSET / filename] = base.resize(
             (size, size), Image.Resampling.LANCZOS
         )
     return out
+
+
+# Windows, same two complaints from the same day: the .ico carried only a
+# 48 px square (Windows scales that up for the taskbar and Start, hence soft)
+# on the pale PINK ground the mark is drawn on, which read as a pink tile
+# beside the other apps. The Windows icon is the mark on a neutral ground,
+# rounded, with every size the shell asks for.
+WINDOWS_ICON = ROOT / "assets" / "windows_icon.png"
+WINDOWS_GROUND = (236, 240, 244)
+WINDOWS_CORNER_RATIO = 0.22
+
+
+def render_windows_icon(master: Image.Image) -> Image.Image:
+    art = master.convert("RGB")
+    ground = art.getpixel((2, 2))
+    pixels = art.load()
+    out = Image.new("RGB", art.size)
+    target = out.load()
+    for y in range(art.height):
+        for x in range(art.width):
+            pixel = pixels[x, y]
+            distance = math.dist(pixel, ground)
+            if distance >= GROUND_TOLERANCE:
+                target[x, y] = pixel
+                continue
+            weight = 1.0 - distance / GROUND_TOLERANCE
+            target[x, y] = tuple(
+                round(c * (1 - weight) + g * weight)
+                for c, g in zip(pixel, WINDOWS_GROUND)
+            )
+    size = art.width
+    return _rounded(out, size, size, size * WINDOWS_CORNER_RATIO)
+
+
+def windows_ico_bytes(icon: Image.Image) -> bytes:
+    import io
+
+    buffer = io.BytesIO()
+    icon.resize((256, 256), Image.Resampling.LANCZOS).save(
+        buffer, format="ICO", sizes=WINDOWS_ICO_SIZES
+    )
+    return buffer.getvalue()
 
 
 OUTPUTS = {
     LOADING: render_loading,
     ROUNDED: render_rounded,
     DARK_VARIANT: render_dark_variant,
+    WINDOWS_ICON: render_windows_icon,
 }
 
 
@@ -273,6 +350,27 @@ def main() -> int:
         want.save(path, optimize=True)
         print(f"wrote {rel}")
 
+
+    # macOS Dock icons and the Windows .ico are owned here (flutter_launcher_icons
+    # is switched off for both in pubspec), so they are written and checked
+    # like the marks above.
+    for path, want in macos_targets(master).items():
+        rel = path.relative_to(ROOT)
+        if check_only:
+            have = Image.open(path).convert("RGBA") if path.exists() else None
+            if have is None or have.size != want.size or have.tobytes() != want.convert("RGBA").tobytes():
+                drifted.append(f"{rel} does not match the rounded macOS render of {MASTER.name}")
+            continue
+        want.save(path, optimize=True)
+        print(f"wrote {rel}")
+
+    ico = windows_ico_bytes(rendered[WINDOWS_ICON])
+    if check_only:
+        if not WINDOWS_ICO.exists() or WINDOWS_ICO.read_bytes() != ico:
+            drifted.append(f"{WINDOWS_ICO.relative_to(ROOT)} does not match windows_icon.png")
+    else:
+        WINDOWS_ICO.write_bytes(ico)
+        print(f"wrote {WINDOWS_ICO.relative_to(ROOT)}")
 
     if check_only:
         drifted.extend(launcher_drift(master))

@@ -338,10 +338,13 @@ flutter_icons:
     generate: true
   ios:
     generate: true
+  # macOS and Windows icons are rounded renders written by
+  # tools/generate_brand_marks.py; flutter_launcher_icons would overwrite
+  # them with the full-bleed square.
   macos:
-    generate: true
+    generate: false
   windows:
-    generate: true
+    generate: false
   linux:
     generate: true
   web:
@@ -357,7 +360,7 @@ msix_config:
   publisher_display_name: Yahweh's People
   identity_name: YahwehsPeople.YahwehsSword
   publisher: CN=C4997401-2CEE-44B6-9803-4775768C89A5
-  logo_path: assets/app_icon.png
+  logo_path: assets/windows_icon.png
   capabilities: internetClient
   languages: en-us
   trim_logo: false
