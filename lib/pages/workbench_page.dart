@@ -1,3 +1,4 @@
+import '../widgets/play_update_banner.dart';
 import 'package:yahwehs_sword/constants/learning_visibility.dart';
 import 'package:yahwehs_sword/pages/passion_wheel_page.dart';
 import 'package:yahwehs_sword/pages/bible_principles_page.dart';
@@ -1826,6 +1827,7 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
             // the place their eye is already travelling through on the
             // way to the text. Kept in immersive reading too — it is the
             // one band that says a newer version exists.
+            PlayUpdateBanner(locale: locale),
             if (_update != null && _update!.latestVersion != _updateWavedAway)
               UpdateAvailableBanner(
                 info: _update!,

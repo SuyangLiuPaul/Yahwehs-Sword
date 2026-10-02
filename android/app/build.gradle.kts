@@ -152,6 +152,7 @@ flutter {
 // and other Java 8+ APIs that flutter_local_notifications relies on.
 // Required by isCoreLibraryDesugaringEnabled above.
 dependencies {
+    implementation("com.google.android.play:app-update:2.1.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
 
