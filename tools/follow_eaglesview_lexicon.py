@@ -108,7 +108,7 @@ ZH_FOOTNOTES = {  # (simplified, traditional)
 def main():
     write = '--write' in sys.argv
     greek = json.load(open(GREEK, encoding='utf-8'))
-    thayer = json.load(open(THAYER, encoding='utf-8'))
+    thayer = json.load(open(THAYER, encoding='utf-8')) if os.path.exists(THAYER) else None
     bad = 0
     for sid, field, old, new in GREEK_EDITS:
         cur = greek[sid].get(field, '')
@@ -121,7 +121,7 @@ def main():
             print('already  greek   %s.%s' % (sid, field))
         else:
             print('NO MATCH greek   %s.%s: %r' % (sid, field, cur[:80])); bad += 1
-    for sid, old, new in THAYER_EDITS:
+    for sid, old, new in (THAYER_EDITS if thayer is not None else []):
         s = thayer[sid]['s']
         n = len(old)
         at = next((i for i in range(len(s) - n + 1) if s[i:i + n] == old), None)
@@ -148,7 +148,9 @@ def main():
             else:
                 greek[sid][field] = cur.rstrip() + '\n' + text
                 print('applied  zh-note %s.%s' % (sid, field))
-        if any(x.startswith(ZH_NOTE_MARK) for x in thayer[sid]['s']):
+        if thayer is None:
+            pass
+        elif any(x.startswith(ZH_NOTE_MARK) for x in thayer[sid]['s']):
             print('already  zh-note thayer %s' % sid)
         else:
             thayer[sid]['s'].append(simp)
@@ -159,10 +161,21 @@ def main():
         print('(dry run; pass --write)')
         return
     for path, obj in ((GREEK, greek), (THAYER, thayer), (THAYER_EN, thayer_en)):
+        if obj is None:
+            continue
+        with open(path, encoding='utf-8') as f:
+            raw = f.read()
+        before = json.loads(raw)
+        # Write back in the file's own format, so the diff is only the edit.
+        for kw, nl in ((dict(separators=(',', ':')), ''), (dict(separators=(',', ':')), '\n'),
+                       (dict(indent=2), ''), (dict(indent=2), '\n')):
+            if json.dumps(before, ensure_ascii=False, **kw) + nl == raw:
+                out = json.dumps(obj, ensure_ascii=False, **kw) + nl
+                break
+        else:
+            raise SystemExit('unknown JSON layout in %s' % path)
         with open(path, 'w', encoding='utf-8') as f:
-            json.dump(obj, f, ensure_ascii=False, separators=(',', ':'))
-            if path == THAYER_EN:  # this one file ends with a newline
-                f.write('\n')
+            f.write(out)
         print('WROTE %s' % path)
 
 
