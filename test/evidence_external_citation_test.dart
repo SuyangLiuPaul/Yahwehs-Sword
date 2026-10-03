@@ -93,7 +93,7 @@ void main() {
     final entries =
         (jsonDecode(File('assets/bible_evidence.json').readAsStringSync())
             as Map)['evidences'] as List;
-    expect(entries.length, 225);
+    expect(entries.length, 231);  // 225 -> 231 on 2026-10-04: six new entries
     final missing = <String>[];
     for (final entry in entries) {
       for (final part in splitCitation(entry['scriptureReference'] as String)) {
