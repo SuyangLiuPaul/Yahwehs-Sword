@@ -112,6 +112,20 @@ def main():
     bad = 0
     for sid, field, old, new in GREEK_EDITS:
         cur = greek[sid].get(field, '')
+        if sid == 'G3056':
+            head = new.split(',')[0]            # '3) 在约翰福音中' / '3) 在約翰福音中'
+            at = cur.find(head)
+            if at < 0:
+                print('NO MATCH greek   %s.%s' % (sid, field)); bad += 1; continue
+            tail = cur[at:]
+            if tail.split('\n※')[0].rstrip() == new:
+                print('already  greek   %s.%s' % (sid, field))
+            elif '第二位格' in tail:
+                greek[sid][field] = cur[:at] + new
+                print('applied  greek   %s.%s' % (sid, field))
+            else:
+                print('NO MATCH greek   %s.%s: tail %r' % (sid, field, tail[:60])); bad += 1
+            continue
         if old in cur:
             if cur.count(old) != 1:
                 print('AMBIGUOUS greek %s.%s' % (sid, field)); bad += 1; continue
@@ -123,6 +137,19 @@ def main():
             print('NO MATCH greek   %s.%s: %r' % (sid, field, cur[:80])); bad += 1
     for sid, old, new in (THAYER_EDITS if thayer is not None else []):
         s = thayer[sid]['s']
+        if sid == 'G3056':
+            at = next((i for i, x in enumerate(s) if x.startswith('3) 在约翰福音中')), None)
+            if at is None:
+                print('NO MATCH thayer  %s' % sid); bad += 1; continue
+            tail = ''.join(s[at:])
+            if [x for x in s[at:] if not x.startswith('※')] == new:
+                print('already  thayer  %s' % sid)
+            elif '第二位格' in tail:
+                thayer[sid]['s'] = s[:at] + new
+                print('applied  thayer  %s' % sid)
+            else:
+                print('NO MATCH thayer  %s: tail %r' % (sid, tail[:60])); bad += 1
+            continue
         n = len(old)
         at = next((i for i in range(len(s) - n + 1) if s[i:i + n] == old), None)
         if at is not None:
