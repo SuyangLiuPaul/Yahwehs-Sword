@@ -110,7 +110,7 @@ void main() {
     });
 
     test('the Chinese probes that file measured are untouched too', () {
-      expect(hits(cuvs, '爱'), 822);
+      expect(hits(cuvs, '爱'), 823);  // 822 -> 823 on 2026-10-04: 哥林多後書 7:15 (Raymond's "Use B" sheet)
       expect(hits(cuvs, '爱神'), 12);
       expect(hits(cuvs, '这诫命'), 4);
       expect(hits(cuvs, '雅伟'), 6102);
@@ -150,7 +150,7 @@ void main() {
       // the same man 彼得, and the order is what the labels report.
       expect(byKind(cuvs, '磯法'),
           {FuzzyMatch.script: 9, FuzzyMatch.synonym: 175});
-      expect(byKind(cuvs, '愛'), {FuzzyMatch.script: 822});
+      expect(byKind(cuvs, '愛'), {FuzzyMatch.script: 823});
     });
 
     test('an English query reaches the other forms of its own verb', () {

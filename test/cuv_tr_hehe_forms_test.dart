@@ -133,7 +133,9 @@ void main() {
       // Recorded as 都不是 rather than guessed at: adopting a form
       // neither conversion produced would be inventing text.
       expect(tr['023029018'], contains('迷蒙黑暗'));       // 和合本 迷矇
-      expect(tr['044008027'], contains('女王干大基'));     // 和合本 甘大基
+      // 2026-10-04: 使徒行傳 8:27 left this list — Pastor Raymond's "Use B" sheet
+      // rules for the printing, so it now reads 衣索匹亞女王甘大基.
+      expect(tr['044008027'], contains('女王甘大基'));
       expect(tr['038008004'], contains('手拿拐杖'));       // 和合本 柺杖
       expect(all, isNot(contains('柺')));
       expect(all, isNot(contains('矇')));
@@ -142,7 +144,8 @@ void main() {
     test('使徒行傳 27:33 is a wording difference, not a character one', () {
       // 和合本 reads 懸望忍餓; this edition reads 懸望一直挨餓. The 挨/捱
       // position has no counterpart to compare against, so it was left.
-      expect(tr['044027033'], contains('懸望一直挨餓'));
+      // 2026-10-04: Pastor Raymond's "Use B" sheet — now 懸望忍餓, as the print.
+      expect(tr['044027033'], contains('懸望忍餓'));
     });
 
     test('the Hong Kong glyph ruling is untouched by any of this', () {

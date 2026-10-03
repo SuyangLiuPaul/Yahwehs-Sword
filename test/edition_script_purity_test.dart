@@ -29,6 +29,9 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
 
 const _leftDeliberately = <String>[
+  // 2026-10-04: Pastor Raymond's reply — 简体 回复, 繁体 回覆 (his words in the
+  // 用字 table: 繁体:回覆). One verse, 歷代志下 10:6, differs on purpose.
+  '014010006',
   // 2026-09-08, a second and different reason, so the list was two
   // groups and not five sites of one kind — and since 2026-09-14 it is
   // the only reason left. 复 is one Simplified
@@ -104,7 +107,7 @@ void main() {
 
   test(
       'the traditional edition converts back to the simplified one, '
-      'except at three named sites', () {
+      'except at the named sites', () {
     // Derive a traditional->simplified map from the corpus itself: for
     // every equal-length verse pair, vote per character position, then
     // take the majority simplified character for each traditional one.
