@@ -81,6 +81,20 @@ CORRECTIONS = [
      '它就不出來〔或作："不能趕它出來">。」〕',
      '〔有古卷在此有21節：「至於這一類的鬼，若不禱告、禁食，'
      '它就不出來〔或作："不能趕它出來"〕。」〕', '馬太福音 17:21'),
+    # 2026-10-03: six verses where THIS app, not the publisher, was wrong.
+    # Checked against the official database (bible.db v38) and the printed
+    # 和合本: in each the official text is right and our copy lost a word or
+    # mangled a note while being converted. Not a reading, a keystroke.
+    ('024049036', 'st', '分散四<note: "方"', '分散四方<note: "方"', '耶利米書 49:36'),
+    ('026026006', 'st', '城邑的<note: "居民"', '城邑的居民<note: "居民"', '以西結書 26:6'),
+    ('066012005', 's', '辖管"<note: "辖管"：原文是"牧>', '辖管<note: "辖管"：原文是"牧">', '启示录 12:5'),
+    ('066012005', 't', '轄管"<note: "轄管"：原文是"牧>', '轄管<note: "轄管"：原文是"牧">', '啟示錄 12:5'),
+    ('023041016', 's', '以色列的圣者为夸耀', '以以色列的圣者为夸耀', '以赛亚书 41:16'),
+    ('023041016', 't', '以色列的聖者為誇耀', '以以色列的聖者為誇耀', '以賽亞書 41:16'),
+    ('041015013', 's', ')他们又喊着说', '他们又喊着说', '马可福音 15:13'),
+    ('041015013', 't', ')他們又喊着説', '他們又喊着説', '馬可福音 15:13'),
+    ('042018037', 's', '告诉他:：“', '告诉他：“', '路加福音 18:37'),
+    ('042018037', 't', '告訴他:：「', '告訴他：「', '路加福音 18:37'),
 ]
 
 # OPEN, AND NOT DECIDED HERE
@@ -141,7 +155,8 @@ def main():
     for k in sorted(touched):
         path, rows = files[k]
         with open(path, 'w', encoding='utf-8') as f:
-            json.dump(rows, f, ensure_ascii=False, separators=(',', ':'))
+            json.dump(rows, f, ensure_ascii=False, indent=2)
+            f.write('\n')
         print('WROTE %s' % path)
 
 
