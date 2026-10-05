@@ -102,4 +102,24 @@ void main() {
       expect(out.map((s) => s.text).join(), '起初神创造天地');
     });
   });
+
+  group('countTextHits', () {
+    test('counts every occurrence, not every verse', () {
+      final n = countTextHits([
+        'Paul, a servant of Jesus Christ, called to be an apostle',
+        'Even the righteousness of God by faith of Jesus Christ: Jesus.',
+      ], ['jesus']);
+      expect(n, 3);
+    });
+
+    test('matches case-insensitively and merges overlapping terms', () {
+      expect(countTextHits(['JESUS jesus Jesus'], ['jesus']), 3);
+      expect(countTextHits(['light'], ['lig', 'ight']), 1);
+    });
+
+    test('no terms or no text count nothing', () {
+      expect(countTextHits(['Jesus'], []), 0);
+      expect(countTextHits(const [], ['jesus']), 0);
+    });
+  });
 }

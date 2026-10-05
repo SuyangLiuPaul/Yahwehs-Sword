@@ -250,3 +250,21 @@ List<HighlightSpan>? strongsSnippetSpans({
   if (words.isEmpty) return null;
   return splitOnTerms(preview, words);
 }
+
+/// How many times [terms] occur across [texts]: the number a reader means
+/// by "the exact count", as against the number of verses that hold a hit.
+///
+/// Counted with the same splitter that marks the words on screen, so the
+/// figure printed in the header is the number of highlights the reader can
+/// see by scrolling the list. Overlapping or adjacent matches merge into
+/// one, exactly as they do in the marked text.
+int countTextHits(Iterable<String> texts, List<String> terms) {
+  if (terms.isEmpty) return 0;
+  var n = 0;
+  for (final t in texts) {
+    for (final span in splitOnTerms(t, terms)) {
+      if (span.isHit) n++;
+    }
+  }
+  return n;
+}

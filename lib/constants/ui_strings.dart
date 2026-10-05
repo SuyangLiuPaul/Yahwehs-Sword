@@ -2517,6 +2517,13 @@ const uiStrings = {
     'zh-Hant': '{query} — 共 {count} 節',
     'en': '{query} — {count} verses',
   },
+  // A plain-text result reports both counts too: "Jesus" in the Pauline
+  // epistles is 206 verses holding more than 206 occurrences.
+  'textHeaderWithHits': {
+    'zh-Hans': '{query} — 共 {count} 节 · {hits} 处',
+    'zh-Hant': '{query} — 共 {count} 節 · {hits} 處',
+    'en': '{query} — {count} verses · {hits} occurrences',
+  },
   // #295: a Strong's result reports BOTH counts, as BibleWorks' status
   // line does — verses and hits differ (G25 is 143 hits in 110 verses).
   'strongsHeaderWithHits': {
@@ -7930,10 +7937,12 @@ const uiStrings = {
     'zh-Hant': '把搜尋限定在此列表內',
     'en': 'Limit searches to this list',
   },
+  // The number is the size of the range, in verses: Pauline epistles are
+  // 2033 verses. It used to print bare, and a reader took it for a hit count.
   'vlmLimitBanner': {
-    'zh-Hans': '限定：{name}（{count} 处）',
-    'zh-Hant': '限定：{name}（{count} 處）',
-    'en': 'Limited to {name} ({count})',
+    'zh-Hans': '限定：{name}（共 {count} 节）',
+    'zh-Hant': '限定：{name}（共 {count} 節）',
+    'en': 'Limited to {name} ({count} verses in range)',
   },
 
   // ── Phrase Matching (bwh51) ──────────────────────────────────────

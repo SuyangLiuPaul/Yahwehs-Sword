@@ -677,6 +677,40 @@ class _CommandPaneState extends State<CommandPane> {
           .replaceAll('{query}', queryLabel)
           .replaceAll('{count}', count.toString());
 
+  List<Verse>? _hitsFor;
+  String _hitsQuery = '';
+  int _hitsCount = 0;
+
+  /// The plain-text header. Adds the occurrence count when every listed
+  /// verse really holds a marked hit; a fuzzy or pinyin match can list a
+  /// verse the highlighter cannot mark, and then a count of marks would
+  /// undercount, so the header stays at verses rather than print it.
+  String _textSummary(String queryLabel, List<Verse> results,
+      SearchHighlight hl, String locale) {
+    if (hl.textTerms.isEmpty || hl.strongsNumbers.isNotEmpty ||
+        hl.strongsPrefixes.isNotEmpty) {
+      return _summary(queryLabel, results.length, locale);
+    }
+    // Counted once per result list: this runs inside build, and "the" lists
+    // twenty thousand verses.
+    if (!identical(_hitsFor, results) || _hitsQuery != queryLabel) {
+      _hitsFor = results;
+      _hitsQuery = queryLabel;
+      _hitsCount = countTextHits(
+          results.map((v) => sanitizeForSearch(v.scriptureText)),
+          hl.textTerms);
+    }
+    final hits = _hitsCount;
+    if (hits < results.length) {
+      return _summary(queryLabel, results.length, locale);
+    }
+    return (uiStrings['textHeaderWithHits']?[locale] ??
+            '{query} — {count} verses · {hits} occurrences')
+        .replaceAll('{query}', queryLabel)
+        .replaceAll('{count}', groupThousands(results.length))
+        .replaceAll('{hits}', groupThousands(hits));
+  }
+
   /// The Strong's header. Reports verses AND occurrences when both are
   /// known, and says outright when the bundled verse list stopped at the
   /// pipeline cap — see `strongs_result_counts.dart` for why silence
@@ -1346,7 +1380,8 @@ class _CommandPaneState extends State<CommandPane> {
       maxNames: 3,
     );
     final label =
-        (uiStrings['vlmLimitBanner']?[locale] ?? 'Limited to {name} ({count})')
+        (uiStrings['vlmLimitBanner']?[locale] ??
+                'Limited to {name} ({count} verses in range)')
             .replaceAll('{name}',
                 name.isEmpty ? (uiStrings['vlmMain']?[locale] ?? 'Main') : name)
             .replaceAll('{count}', '${wb.searchLimit?.length ?? 0}');
@@ -1916,7 +1951,7 @@ class _CommandPaneState extends State<CommandPane> {
     return Column(
       children: [
         _resultHeader(
-          _summary(_queryLabel(wb, locale), results.length, locale),
+          _textSummary(_queryLabel(wb, locale), results, hl, locale),
           () => _copyAllTextResults(settings, results),
           settings,
           locale,

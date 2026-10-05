@@ -291,6 +291,16 @@ void main() {
       expect(find.textContaining('2'), findsWidgets);
     });
 
+    testWidgets('a plain search reports verses AND occurrences',
+        (tester) async {
+      await pump(tester);
+      await submit(tester, 'world');
+      // John 3:16 has one "world", John 3:17 has two: 2 verses, 3 hits.
+      // The header used to stop at the verse count, so a reader who asked
+      // "how many times" got the smaller number.
+      expect(find.textContaining('2 verses · 3 occurrences'), findsOneWidget);
+    });
+
     testWidgets('a refused query explains itself', (tester) async {
       await pump(tester);
       await submit(tester, '~beginn(.*');
