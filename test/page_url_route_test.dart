@@ -51,6 +51,9 @@ import 'package:yahwehs_sword/providers/main_provider.dart';
 import 'package:yahwehs_sword/utils/chronology_chart_entry.dart'
     show chronologyChartEntryPage;
 import 'package:yahwehs_sword/utils/page_links.dart';
+import 'package:yahwehs_sword/pages/study_principles_page.dart';
+import 'package:yahwehs_sword/pages/study_promises_page.dart';
+import 'package:yahwehs_sword/pages/study_testaments_page.dart';
 import 'package:yahwehs_sword/widgets/chart_help_sheet.dart';
 
 void main() {
@@ -65,6 +68,11 @@ void main() {
   });
 
   group('pageForUrlPath', () {
+    test('the three study pages answer their own paths', () {
+      expect(pageForUrlPath('/study/principles'), isA<StudyPrinciplesPage>());
+      expect(pageForUrlPath('#/study/promises'), isA<StudyPromisesPage>());
+      expect(pageForUrlPath('/study/testaments'), isA<StudyTestamentsPage>());
+    });
     test('the wheel path names the wheel page', () {
       expect(pageForUrlPath(kWheelUrlPath), isA<RadialChronologyPage>());
       // The engine hands over a bare path; a shared link carries the `#`.

@@ -2,6 +2,10 @@ import '../widgets/play_update_banner.dart';
 import 'package:yahwehs_sword/constants/learning_visibility.dart';
 import 'package:yahwehs_sword/pages/passion_wheel_page.dart';
 import 'package:yahwehs_sword/pages/bible_principles_page.dart';
+import 'package:yahwehs_sword/pages/study_principles_page.dart';
+import 'package:yahwehs_sword/pages/study_promises_page.dart';
+import 'package:yahwehs_sword/pages/study_testaments_page.dart';
+import 'package:yahwehs_sword/widgets/study_widgets.dart' show studyL;
 import 'dart:async' show unawaited;
 import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform;
@@ -958,6 +962,20 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
               () => pushPage(const PassionWheelPage(),
                   routeName: kPassionWheelPath)),
         ],
+        // 2026-10-05: the three Bible-first study pages, no longer hidden
+        // (「两个app都上，不用hidden了」). Each opens on the Bible text and
+        // keeps sermons as links only.
+        WbMenuItem(studyL(locale, 'Bible principles', '圣经原则', '聖經原則'),
+            () => pushPage(const StudyPrinciplesPage(),
+                routeName: kStudyPrinciplesPath)),
+        WbMenuItem(studyL(locale, 'Promises of God', '神的应许', '神的應許'),
+            () => pushPage(const StudyPromisesPage(),
+                routeName: kStudyPromisesPath)),
+        WbMenuItem(
+            studyL(locale, 'New Testament and Old Testament',
+                '新约与旧约的对应', '新約與舊約的對應'),
+            () => pushPage(const StudyTestamentsPage(),
+                routeName: kStudyTestamentsPath)),
         if (kShowNewLearningPages) ...[
           WbMenuItem(
               kPrinciplesTitle[locale] ?? kPrinciplesTitle['en']!,
