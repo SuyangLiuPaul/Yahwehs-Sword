@@ -52,14 +52,14 @@ void main() {
       expect(tr['002027010'], contains('和杆子都要用銀子'));
     });
 
-    test('以西結書 23:44 prints 茍合 and then 苟合, in that order', () {
-      // The single place in the Bible where one pair takes both forms
-      // inside one verse, so the position and not the verse is what the
-      // verdict attaches to.
+    test('以西結書 23:44 prints 苟合 twice (the publisher\'s 2026-10-06 reply)', () {
+      // 和合本 prints 茍合 and then 苟合 here, and a pin said so until
+      // Pastor Raymond marked 「淫妇苟合」 in green on 2026-10-06 and asked
+      // for that reading back. His word is the one that decides it.
       final v = tr['026023044']!;
-      expect(v, contains('二淫婦茍合'));
+      expect(v, contains('二淫婦苟合'));
       expect(v, contains('與妓女苟合'));
-      expect(v.indexOf('茍'), lessThan(v.indexOf('苟')));
+      expect(v, isNot(contains('茍')));
     });
 
     test('the three verses where the pair is the other way round', () {
