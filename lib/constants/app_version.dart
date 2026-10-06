@@ -2183,9 +2183,9 @@
 // now pins both literals below to pubspec.yaml.
 const String _envAppVersion = String.fromEnvironment(
   'APP_VERSION',
-  defaultValue: '1.7.12',
+  defaultValue: '1.7.13',
 );
-const String kAppVersion = _envAppVersion == '' ? '1.7.12' : _envAppVersion;
+const String kAppVersion = _envAppVersion == '' ? '1.7.13' : _envAppVersion;
 
 /// 2026-05-10 (v1.2.20): paired with `kAppVersion` so the About
 /// footer's "Last updated …" stamp moves in lockstep with every
@@ -2224,7 +2224,7 @@ const String kAppVersion = _envAppVersion == '' ? '1.7.12' : _envAppVersion;
 /// for the build, which in practice means dev workflow only.
 const String kAppReleaseTime = String.fromEnvironment(
   'APP_RELEASE_TIME',
-  defaultValue: '2026-10-06T07:47:40Z',
+  defaultValue: '2026-10-06T22:19:48Z',
 );
 
 /// Returns a user-locale-formatted release time string. Parses
