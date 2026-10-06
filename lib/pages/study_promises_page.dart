@@ -1,3 +1,4 @@
+import 'package:yahwehs_sword/constants/workbench_theme.dart' show WbMetrics, WbType;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yahwehs_sword/models/app_settings.dart';
@@ -191,7 +192,7 @@ class _StudyPromisesPageState extends State<StudyPromisesPage> {
     Widget bullet(String en, String hs, String ht) => Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Text('• ${studyL(locale, en, hs, ht)}',
-            style: const TextStyle(fontSize: 15, height: 1.6)));
+            style: TextStyle(fontSize: WbType.of(context).scaled(15), height: 1.6)));
     return ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
         children: [
@@ -215,7 +216,7 @@ class _StudyPromisesPageState extends State<StudyPromisesPage> {
                 const SizedBox(width: 10),
                 Expanded(
                     child: Text(d.status[s]!.note.of(locale),
-                        style: const TextStyle(fontSize: 14, height: 1.5))),
+                        style: TextStyle(fontSize: WbType.of(context).scaled(14), height: 1.5))),
               ]),
             ),
           StudyLabel2(studyL(locale, 'How reliable is it', '可靠程度', '可靠程度')),
@@ -277,7 +278,7 @@ class _PromiseCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(WbMetrics.radiusSurface),
           side: BorderSide(color: scheme.outlineVariant)),
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -290,8 +291,8 @@ class _PromiseCard extends StatelessWidget {
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
           title: Text(p.title.of(locale),
-              style: const TextStyle(
-                  fontWeight: FontWeight.w800, fontSize: 15.5, height: 1.35)),
+              style: TextStyle(
+                  fontWeight: FontWeight.w800, fontSize: WbType.of(context).scaled(15.5), height: 1.35)),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Wrap(spacing: 6, runSpacing: 6, children: [
@@ -318,11 +319,11 @@ class _PromiseCard extends StatelessWidget {
             StudyLabel2(
                 studyL(locale, 'To whom, on what condition', '对象与条件', '對象與條件')),
             Text('${p.who.of(locale)}\n${p.condText.of(locale)}',
-                style: const TextStyle(fontSize: 15, height: 1.6)),
+                style: TextStyle(fontSize: WbType.of(context).scaled(15), height: 1.6)),
             StudyLabel2(
                 studyL(locale, 'Fulfilment and status', '应验与现状', '應驗與現狀')),
             Text(p.fulfil.of(locale),
-                style: const TextStyle(fontSize: 15, height: 1.6)),
+                style: TextStyle(fontSize: WbType.of(context).scaled(15), height: 1.6)),
             if (p.fulfilRefs.isNotEmpty) ...[
               const SizedBox(height: 8),
               StudyRefChips(refs: p.fulfilRefs, locale: locale),
@@ -331,7 +332,7 @@ class _PromiseCard extends StatelessWidget {
               StudyLabel2(studyL(
                   locale, 'How it relates to history', '与现实历史的关系', '與現實歷史的關係')),
               Text(p.history!.of(locale),
-                  style: const TextStyle(fontSize: 15, height: 1.6)),
+                  style: TextStyle(fontSize: WbType.of(context).scaled(15), height: 1.6)),
               for (final s in p.sources)
                 StudySourceLink(source: s, locale: locale),
             ],

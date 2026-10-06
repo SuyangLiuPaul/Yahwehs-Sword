@@ -361,7 +361,7 @@ class _PassionWheelPageState extends State<PassionWheelPage> {
                         '红线：事件的先后顺序，从 18:00（圆点）起，绕过夜晚，再沿白昼向外。',
                         '紅線：事件的先後順序，從 18:00（圓點）起，繞過夜晚，再沿白晝向外。'),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 12.5)),
+                    style: TextStyle(fontSize: WbType.of(context).scaled(12.5))),
                 const SizedBox(height: 8),
               ],
               Text(

@@ -1,3 +1,4 @@
+import 'package:yahwehs_sword/constants/workbench_theme.dart' show WbMetrics, WbType;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yahwehs_sword/models/app_settings.dart';
@@ -164,16 +165,16 @@ class _StudyPrinciplesPageState extends State<StudyPrinciplesPage> {
     Widget bullet(String en, String hs, String ht) => Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Text('• ${studyL(locale, en, hs, ht)}',
-            style: const TextStyle(fontSize: 14.5, height: 1.6)));
+            style: TextStyle(fontSize: WbType.of(context).scaled(14.5), height: 1.6)));
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
           color: scheme.surfaceContainerHighest.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(WbMetrics.radiusSurface),
           border: Border.all(color: scheme.outlineVariant)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(studyL(locale, 'About this page', '关于这一页', '關於這一頁'),
-            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
+            style: TextStyle(fontWeight: FontWeight.w800, fontSize: WbType.of(context).scaled(15))),
         const SizedBox(height: 8),
         bullet(
             'Verse text is taken from the app’s own Bibles (Chinese Union Version; KJV in English), not from memory.',
@@ -215,7 +216,7 @@ class _PrincipleCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(WbMetrics.radiusSurface),
           side: BorderSide(color: scheme.outlineVariant)),
       child: ExpansionTile(
         key: ValueKey('principle.${p.id}'),
@@ -231,15 +232,15 @@ class _PrincipleCard extends StatelessWidget {
                 style: TextStyle(
                     color: scheme.onPrimary,
                     fontWeight: FontWeight.w800,
-                    fontSize: 12))),
+                    fontSize: WbType.of(context).scaled(12)))),
         title: Text(p.title.of(locale),
-            style: const TextStyle(
-                fontWeight: FontWeight.w800, fontSize: 15.5, height: 1.35)),
+            style: TextStyle(
+                fontWeight: FontWeight.w800, fontSize: WbType.of(context).scaled(15.5), height: 1.35)),
         subtitle: Padding(
             padding: const EdgeInsets.only(top: 6),
             child: Text(p.line.of(locale),
                 style: TextStyle(
-                    fontSize: 13.5,
+                    fontSize: WbType.of(context).scaled(13.5),
                     height: 1.5,
                     color: scheme.onSurfaceVariant))),
         children: [

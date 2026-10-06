@@ -1,3 +1,4 @@
+import 'package:yahwehs_sword/constants/workbench_theme.dart' show WbMetrics, WbType;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yahwehs_sword/models/app_settings.dart';
@@ -361,7 +362,7 @@ class _StudyTestamentsPageState extends State<StudyTestamentsPage> {
             elevation: 0,
             margin: const EdgeInsets.only(bottom: 8),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(WbMetrics.radiusSurface),
                 side: BorderSide(color: scheme.outlineVariant)),
             child: Padding(
               padding: const EdgeInsets.all(12),
@@ -377,7 +378,7 @@ class _StudyTestamentsPageState extends State<StudyTestamentsPage> {
                       Text(
                           studyL(locale, 'Old Testament', '旧约', '舊約'),
                           style: TextStyle(
-                              fontSize: 12, color: scheme.onSurfaceVariant)),
+                              fontSize: WbType.of(context).scaled(12), color: scheme.onSurfaceVariant)),
                     ]),
                     const SizedBox(height: 4),
                     StudyRefChips(refs: r.ot, locale: locale),
@@ -392,7 +393,7 @@ class _StudyTestamentsPageState extends State<StudyTestamentsPage> {
     Widget bullet(String en, String hs, String ht) => Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: Text('• ${studyL(locale, en, hs, ht)}',
-            style: const TextStyle(fontSize: 15, height: 1.6)));
+            style: TextStyle(fontSize: WbType.of(context).scaled(15), height: 1.6)));
     final scheme = Theme.of(context).colorScheme;
     final sources = <StudySource>[
       StudySource(
@@ -454,7 +455,7 @@ class _StudyTestamentsPageState extends State<StudyTestamentsPage> {
                   '“引用”的依据是本应用自带的 LEB（Lexham English Bible）与 NET（New English Translation）译本的脚注。',
                   '“引用”的依據是本應用自帶的 LEB（Lexham English Bible）與 NET（New English Translation）譯本的腳註。'),
               style: TextStyle(
-                  fontSize: 14, height: 1.5, color: scheme.onSurfaceVariant)),
+                  fontSize: WbType.of(context).scaled(14), height: 1.5, color: scheme.onSurfaceVariant)),
           for (final s in sources) StudySourceLink(source: s, locale: locale),
         ]);
   }
@@ -490,7 +491,7 @@ class _CorrespondenceCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(WbMetrics.radiusSurface),
           side: BorderSide(color: scheme.outlineVariant)),
       child: ExpansionTile(
         shape: const Border(),
@@ -499,8 +500,8 @@ class _CorrespondenceCard extends StatelessWidget {
         childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         title: Text(localizePassage(e.nt, locale),
-            style: const TextStyle(
-                fontWeight: FontWeight.w800, fontSize: 15.5, height: 1.35)),
+            style: TextStyle(
+                fontWeight: FontWeight.w800, fontSize: WbType.of(context).scaled(15.5), height: 1.35)),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Wrap(spacing: 6, runSpacing: 6, children: [
@@ -541,7 +542,7 @@ class _CorrespondenceCard extends StatelessWidget {
                     'LEB 与 NET 两个译本的脚注都标出了这一处。',
                     'LEB 與 NET 兩個譯本的腳註都標出了這一處。'),
                 style: TextStyle(
-                    fontSize: 12.5, color: scheme.onSurfaceVariant)),
+                    fontSize: WbType.of(context).scaled(12.5), color: scheme.onSurfaceVariant)),
         ],
       ),
     );
@@ -562,7 +563,7 @@ class _TypologyCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(WbMetrics.radiusSurface),
           side: BorderSide(color: scheme.outlineVariant)),
       child: ExpansionTile(
         key: ValueKey('typology.${t.id}'),
@@ -572,8 +573,8 @@ class _TypologyCard extends StatelessWidget {
         childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         title: Text(t.title.of(locale),
-            style: const TextStyle(
-                fontWeight: FontWeight.w800, fontSize: 15.5, height: 1.35)),
+            style: TextStyle(
+                fontWeight: FontWeight.w800, fontSize: WbType.of(context).scaled(15.5), height: 1.35)),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Wrap(spacing: 6, runSpacing: 6, children: [
@@ -584,7 +585,7 @@ class _TypologyCard extends StatelessWidget {
           StudyLabel2(studyL(locale, 'What the New Testament says',
               '新约怎么说', '新約怎麼說')),
           Text(t.says.of(locale),
-              style: const TextStyle(fontSize: 15, height: 1.6)),
+              style: TextStyle(fontSize: WbType.of(context).scaled(15), height: 1.6)),
           StudyLabel2(studyL(locale, 'Old Testament', '旧约', '舊約')),
           for (final v in t.otBlocks) StudyVerseBlock(verse: v, locale: locale),
           if (t.ot.length > t.otBlocks.length)

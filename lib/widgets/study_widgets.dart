@@ -1,3 +1,4 @@
+import 'package:yahwehs_sword/constants/workbench_theme.dart' show WbMetrics, WbType;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yahwehs_sword/models/sermon.dart';
@@ -64,7 +65,7 @@ class StudyBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(
           color: color.withValues(alpha: 0.14),
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: BorderRadius.circular(WbMetrics.radiusPill),
           border: Border.all(color: color.withValues(alpha: 0.45))),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         if (glyph != null) ...[
@@ -74,7 +75,7 @@ class StudyBadge extends StatelessWidget {
         Flexible(
             child: Text(text,
                 style: TextStyle(
-                    color: color, fontSize: 12, fontWeight: FontWeight.w700),
+                    color: color, fontSize: WbType.of(context).scaled(12), fontWeight: FontWeight.w700),
                 overflow: TextOverflow.ellipsis)),
       ]),
     );
@@ -95,7 +96,7 @@ class StudyLabel2 extends StatelessWidget {
             width: 3,
             height: 14,
             decoration: BoxDecoration(
-                color: scheme.primary, borderRadius: BorderRadius.circular(2))),
+                color: scheme.primary, borderRadius: BorderRadius.circular(WbMetrics.radiusControl))),
         const SizedBox(width: 8),
         Expanded(
             child: Text(text,
@@ -124,7 +125,7 @@ class StudyRefChips extends StatelessWidget {
           avatar:
               Icon(Icons.menu_book_rounded, size: 15, color: scheme.primary),
           label: Text(localizePassage(r, locale),
-              style: const TextStyle(fontSize: 13)),
+              style: TextStyle(fontSize: WbType.of(context).scaled(13))),
           onPressed: () {
             final ref = parseReference(r);
             if (ref != null) showVersePopup(context, ref);
@@ -156,7 +157,7 @@ class StudyVerseBlock extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: InkWell(
         key: ValueKey('verse.${verse.ref}'),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(WbMetrics.radiusSurface),
         onTap: () {
           final ref = parseReference(verse.ref);
           if (ref != null) showVersePopup(context, ref);
@@ -166,13 +167,13 @@ class StudyVerseBlock extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(14, 10, 12, 10),
           decoration: BoxDecoration(
               color: scheme.primaryContainer.withValues(alpha: 0.35),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(WbMetrics.radiusSurface),
               border:
                   Border(left: BorderSide(color: scheme.primary, width: 3.5))),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(verse.text.of(locale),
-                style: const TextStyle(fontSize: 15.5, height: 1.6)),
+                style: TextStyle(fontSize: WbType.of(context).scaled(15.5), height: 1.6)),
             const SizedBox(height: 6),
             Row(children: [
               Icon(Icons.menu_book_rounded, size: 14, color: scheme.primary),
@@ -182,7 +183,7 @@ class StudyVerseBlock extends StatelessWidget {
                       localizePassage(verse.ref, locale) +
                           (locale == 'en' ? ' · KJV' : ' · 和合本'),
                       style: TextStyle(
-                          fontSize: 12.5,
+                          fontSize: WbType.of(context).scaled(12.5),
                           fontWeight: FontWeight.w700,
                           color: scheme.primary))),
               Icon(Icons.chevron_right_rounded,
@@ -220,7 +221,7 @@ class StudySermonLinks extends StatelessWidget {
               constraints: BoxConstraints(maxWidth: maxLabel),
               child: Text('${s.id} · ${s.title.of(locale)}'.trim(),
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 13)),
+                  style: TextStyle(fontSize: WbType.of(context).scaled(13))),
             ),
             onPressed: () => openSermonById(context, s.id),
           ),
@@ -250,7 +251,7 @@ class StudyBullets extends StatelessWidget {
                         color: scheme.primary, shape: BoxShape.circle))),
             Expanded(
                 child: Text(p.of(locale),
-                    style: const TextStyle(fontSize: 15, height: 1.6))),
+                    style: TextStyle(fontSize: WbType.of(context).scaled(15), height: 1.6))),
           ]),
         ),
     ]);
@@ -277,7 +278,7 @@ class StudySourceLink extends StatelessWidget {
           Expanded(
               child: Text(source.name.of(locale),
                   style: TextStyle(
-                      fontSize: 13.5,
+                      fontSize: WbType.of(context).scaled(13.5),
                       color: scheme.primary,
                       decoration: TextDecoration.underline))),
         ]),
@@ -309,7 +310,7 @@ class StudyHeader extends StatelessWidget {
                 scheme.primaryContainer,
                 scheme.secondaryContainer.withValues(alpha: 0.7)
               ]),
-          borderRadius: BorderRadius.circular(18)),
+          borderRadius: BorderRadius.circular(WbMetrics.radiusSurface)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(title,
             style: Theme.of(context)
