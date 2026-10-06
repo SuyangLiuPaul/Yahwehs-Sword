@@ -5,8 +5,9 @@ import 'package:yahwehs_sword/models/app_settings.dart';
 import 'package:yahwehs_sword/utils/clipboard_helper.dart';
 import 'package:yahwehs_sword/constants/text_patterns.dart';
 import 'package:yahwehs_sword/constants/ui_strings.dart';
+import 'package:yahwehs_sword/constants/workbench_theme.dart' show WbMetrics;
 import 'package:yahwehs_sword/widgets/verse_notes_block.dart'
-    show superscriptNumber, isNoteMarkerText;
+    show superscriptNumber;
 import 'package:yahwehs_sword/utils/font_catalog.dart' show kCjkFontFallback;
 import 'package:yahwehs_sword/utils/verse_text_absence.dart';
 
@@ -450,28 +451,39 @@ List<InlineSpan> buildAnnotatedSpans({
         // reason; a run only happens where the notes share a position,
         // so the range loses nothing.
         final previous = spans.isEmpty ? null : spans.last;
-        if (previous is TextSpan &&
-            previous.text != null &&
-            isNoteMarkerText(previous.text!)) {
-          spans[spans.length - 1] = TextSpan(
-            text: '${_markerStart(previous.text!)}\u2060⁻\u2060'
+        final markerStyle = TextStyle(
+          fontSize: fs * 0.85,
+          fontWeight: FontWeight.w800,
+          fontFamily: settings.fontFamily,
+          fontFamilyFallback: kCjkFontFallback,
+          color: isSelected
+              ? Theme.of(context).colorScheme.onPrimaryContainer
+              : Theme.of(context).colorScheme.primary,
+        );
+        final markerTint = spanBgColor ??
+            (isSelected
+                ? null
+                : Theme.of(context).colorScheme.primary.withValues(alpha: 0.12));
+        if (previous is NoteMarkerSpan) {
+          spans[spans.length - 1] = NoteMarkerSpan(
+            marker: '${_markerStart(previous.marker)}\u2060⁻\u2060'
                 '${superscriptNumber(noteSink.length)}',
-            style: previous.style,
+            style: markerStyle,
+            tint: markerTint,
+            raise: fs * 0.04,
           );
           lastPart = part;
           continue;
         }
-        spans.add(TextSpan(
-          text: superscriptNumber(noteSink.length),
-          style: TextStyle(
-            fontSize: fs * 0.75,
-            fontFamily: settings.fontFamily,
-            fontFamilyFallback: kCjkFontFallback,
-            color: isSelected
-                ? Theme.of(context).colorScheme.onPrimaryContainer
-                : Theme.of(context).colorScheme.primary,
-            backgroundColor: spanBgColor,
-          ),
+        // 2026-10-04: 「top aligned」 then 「middle align好看些 还有点gap」 — the
+        // marker is centred on the line, with no padding around it (a WidgetSpan, so it can be shifted off the baseline;
+        // a TextSpan cannot). [NoteMarkerSpan] carries its own text for
+        // the range collapse and for the tests.
+        spans.add(NoteMarkerSpan(
+          marker: superscriptNumber(noteSink.length),
+          style: markerStyle,
+          tint: markerTint,
+          raise: fs * 0.04,
         ));
         lastPart = part;
         continue;
@@ -560,3 +572,33 @@ List<InlineSpan> buildAnnotatedSpans({
 /// The first number of a marker that may already be a range.
 String _markerStart(String text) =>
     text.split('\u2060').first;
+
+
+/// A footnote marker lifted off the baseline. Its [marker] text is what the
+/// collapse-to-range logic and the tests read; `toPlainText` sees only a
+/// placeholder, which is correct for copy — notes are never copied.
+class NoteMarkerSpan extends WidgetSpan {
+  NoteMarkerSpan({
+    required this.marker,
+    required TextStyle style,
+    required Color? tint,
+    required double raise,
+  }) : super(
+          alignment: PlaceholderAlignment.middle,
+          child: Transform.translate(
+            offset: Offset(0, -raise),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: tint,
+                borderRadius: BorderRadius.circular(WbMetrics.radiusControl),
+              ),
+              child: Padding(
+                padding: EdgeInsets.zero,
+                child: Text(marker, style: style),
+              ),
+            ),
+          ),
+        );
+
+  final String marker;
+}

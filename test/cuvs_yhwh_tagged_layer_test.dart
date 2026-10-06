@@ -185,7 +185,7 @@ void main() {
     expect(joined('jeremiah', '7:14'), contains('向这称为我名下、'));
     expect(joined('psalms', '102:26'), contains('天地就都改变了'));
     expect(joined('1_john', '4:2'), contains('是成了肉身来的，就是出于神的'));
-    expect(joined('acts', '26:16'), contains('站着，我特意向你显现'));
+    expect(joined('acts', '26:16'), contains('站着！我特意向你显现'));
     expect(joined('obadiah', '1:5'), contains('摘葡萄的若来到你那里'));
   });
 

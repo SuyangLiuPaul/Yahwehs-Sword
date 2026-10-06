@@ -150,3 +150,11 @@
     # flow (no window.opener dependency) so COOP can go strict and
     # COEP can be added without breaking auth.
     Cross-Origin-Opener-Policy = "same-origin-allow-popups"
+
+# 2026-10-06: the admin portal (admin.yahwehword.com) reads this tiny file
+# to show which version is live. Public, 70 bytes, no secrets.
+[[headers]]
+  for = "/version.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "no-cache, no-store, must-revalidate"

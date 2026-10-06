@@ -1,7 +1,17 @@
+import 'package:url_launcher/url_launcher.dart';
+import 'package:yahwehs_sword/services/release_registry.dart';
+import 'package:yahwehs_sword/services/admin_content.dart';
+import 'package:yahwehs_sword/services/admin_overlay.dart';
+import 'package:yahwehs_sword/services/usage_stats.dart';
+import 'package:yahwehs_sword/widgets/admin_announcement_banner.dart';
 import '../widgets/play_update_banner.dart';
 import 'package:yahwehs_sword/constants/learning_visibility.dart';
 import 'package:yahwehs_sword/pages/passion_wheel_page.dart';
 import 'package:yahwehs_sword/pages/bible_principles_page.dart';
+import 'package:yahwehs_sword/pages/study_principles_page.dart';
+import 'package:yahwehs_sword/pages/study_promises_page.dart';
+import 'package:yahwehs_sword/pages/study_testaments_page.dart';
+import 'package:yahwehs_sword/widgets/study_widgets.dart' show studyL;
 import 'dart:async' show unawaited;
 import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform;
@@ -187,6 +197,12 @@ class WorkbenchPage extends StatefulWidget {
 }
 
 class _WorkbenchPageState extends State<WorkbenchPage> {
+  /// What the admin portal says (announcement); empty until it loads.
+  AdminSite _adminSite = AdminSite.none;
+
+  /// Links added in the admin portal for this app (Resources menu).
+  List<AdminLink> _adminLinks = const [];
+
   static const String _kLeftWidthKey = 'workbench_left_width';
   static const String _kRightWidthKey = 'workbench_right_width';
   static const String _kLeftOpenKey = 'workbench_left_open';
@@ -443,6 +459,13 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
   void initState() {
     super.initState();
     _wb = WorkbenchProvider(mainProvider: context.read<MainProvider>());
+    UsageStats.session();
+    AdminOverlay.collection('adm_links').then((o) {
+      if (mounted) setState(() => _adminLinks = parseAdminLinks(o, kRegistryApp));
+    });
+    AdminOverlay.site().then((site) {
+      if (mounted) setState(() => _adminSite = site);
+    });
     _wb.onBrowseStateChanged = _persistPrefs;
     _restorePrefs();
     HardwareKeyboard.instance.addHandler(_onGlobalKey);
@@ -866,121 +889,94 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
           mp.verses.isEmpty ? null : _openPassageReport,
           shortcut: _accel(WbShortcutId.passageReport),
         ),
+        const WbMenuItem.separator(),
+        // The lookups, below the tools that work on the passage on screen.
         WbMenuItem(s('bibleEvidence', 'Bible Evidence'),
             () => _go(HelpDestination.evidence)),
         WbMenuItem(
             s('timeline', 'Timeline'), () => _go(HelpDestination.timeline)),
         WbMenuItem(s('trivia', 'Trivia'), () => _go(HelpDestination.trivia)),
       ]),
+      // 2026-10-06: Resources had grown to nineteen entries in one
+      // unbroken run (「menu也好好排版一下 … 好像Windows一样」). Same items,
+      // now in groups with a rule between them, ordered by what the
+      // reader is doing: hear the teaching, study a theme, look at the
+      // world of the Bible, follow time, look a word up, then the
+      // reader's own things.
       WbMenu(s('menuResources', 'Resources'), [
+        // Teaching
         WbMenuItem(s('sermons', 'Sermons'), () => _go(HelpDestination.sermons)),
-        // Resources, not Tools: bwh07 splits the two on whether the
-        // item OPERATES on the current text (Word List, KWIC, Phrase
-        // Matching) or is a reference database you CONSULT (maps,
-        // dictionaries, commentaries, the Bible Views picture set).
-        // `assets/family_tree.json` is the second kind, and bwh07 files
-        // the map module here too — which is the whole argument for the
-        // Atlas being a window rather than a lens over the reader.
-        WbMenuItem(
-            s('atlasTitle', 'Bible Atlas'), () => _go(HelpDestination.atlas)),
-        // The "Bible Views picture set" named above is the one entry
-        // bwh07 stops to describe, and ours had no door: 1,192 plates
-        // reachable only by already reading a chapter that matched one.
-        WbMenuItem(s('maps', 'Illustrations'),
-            () => _go(HelpDestination.illustrations)),
-        // Same argument one more time. The Topics tab answers "what is
-        // THIS verse about"; a reader who wants what Nave filed under
-        // REPENTANCE had to guess a verse that might be under it first.
-        // A database you CONSULT needs a door of its own.
-        WbMenuItem(s('navesTitle', "Nave's Topical Bible"),
-            () => _go(HelpDestination.naves)),
-        // 2026-09-05: the same argument a third time, for the OTHER
-        // topical index in the same tab. `ModernConcordanceService.topics()`
-        // returned all 341 topics and had no caller in `lib/` for a
-        // month: the reader could be TOLD that Matthew 24:15 is where
-        // the concordance files "Abomination", and could not ask what
-        // else it files, or read a topic's other Greek words — the
-        // Topics tab narrows a topic to the one word that cited the
-        // verse (`analysis_tabs.dart`, `_TopicDetail`).
-        // Beside Nave's and before the Lexicon Browser on purpose: the
-        // three run topics/66 books -> topics/NT Greek -> words, which
-        // is a gradient rather than a duplicate.
-        WbMenuItem(s('modernConcordanceTitle', 'Modern Concordance (NT)'),
-            () => _go(HelpDestination.modernConcordance)),
-        // bwh35 files the lexicons under Resources for the same reason.
-        // Tapping a word has always shown its entry; nothing could show
-        // the LIST, so a reader had to already hold the word in order to
-        // ask about it, and could never ask what stands beside it.
-        WbMenuItem(s('lexiconBrowserTitle', 'Lexicon Browser'),
-            () => _go(HelpDestination.lexicon)),
-        WbMenuItem(s('familyTree', 'Family Tree'),
-            () => _go(HelpDestination.familyTree)),
-        // Separate from Family Tree on purpose: the tree is Judah's line
-        // of descent, this is both thrones on one time axis.
-        // 2026-09-16, and it goes FIRST in this group on purpose: the
-        // rest of the Resources list is apparatus — atlases, lexicons,
-        // topical indexes, charts — and this one is the Lord's own
-        // teaching. It is the only entry here a reader might open
-        // without a question to look up.
         WbMenuItem(kJesusTeachingsTitle[locale] ?? kJesusTeachingsTitle['en']!,
             () => _go(HelpDestination.jesusTeachings)),
-        WbMenuItem(s('hebrewKings', 'Kings of Judah & Israel'),
-            () => _go(HelpDestination.hebrewKings)),
-        // Earlier than the kings, and resting on a different kind of
-        // evidence: the kings chart states Thiele's reconstruction and
-        // has to cite him, this one states ages Genesis gives and cites
-        // the verses.
-        WbMenuItem(s('chronology', 'Bible Chronology'),
-            () => _go(HelpDestination.chronology)),
-        // 2026-08-24: its own entry. The wheel used to be reachable
-        // only through a button on the Bible Chronology page, so a
-        // reader who wanted one never discovered the other — and they
-        // answer different questions: that page is the lifespans of
-        // Genesis 5 and 11 on an Anno Mundi axis, this is world
-        // history from 4000 BC to the present.
-        // 2026-09-16: TWO ENTRIES, and this reverses the note that used
-        // to stand here. 「menu strip和wheel都要有是吧」.
-        //
-        // The old reasoning was that the wheel and the strip are two
-        // shapes of one chart rather than two charts, so one door was
-        // enough and it opened whichever form the reader had last. That
-        // is a defensible model and it had a defect the owner's question
-        // exposed: the door was LABELLED "World History Wheel" and could
-        // open the strip. A menu item that names one thing and does
-        // another is worse than a longer menu.
-        //
-        // Each now goes where it says. The remembered-form door still
-        // exists for the toolbar icon on the Bible Chronology page,
-        // which has no room to name two.
-        if (kShowPassionTimeline) ...[
-          WbMenuItem(
-              kPassionTitle[locale] ?? kPassionTitle['en']!,
-              () => pushPage(const PassionWheelPage(),
-                  routeName: kPassionWheelPath)),
-        ],
-        if (kShowNewLearningPages) ...[
+        const WbMenuItem.separator(),
+        // Study pages: the Bible text first, sermons only as links.
+        WbMenuItem(studyL(locale, 'Bible principles', '圣经原则', '聖經原則'),
+            () => pushPage(const StudyPrinciplesPage(),
+                routeName: kStudyPrinciplesPath)),
+        WbMenuItem(studyL(locale, 'Promises of God', '神的应许', '神的應許'),
+            () => pushPage(const StudyPromisesPage(),
+                routeName: kStudyPromisesPath)),
+        WbMenuItem(
+            studyL(locale, 'New Testament and Old Testament',
+                '新约与旧约的对应', '新約與舊約的對應'),
+            () => pushPage(const StudyTestamentsPage(),
+                routeName: kStudyTestamentsPath)),
+        if (kShowNewLearningPages)
           WbMenuItem(
               kPrinciplesTitle[locale] ?? kPrinciplesTitle['en']!,
               () => pushPage(const BiblePrinciplesPage(),
                   routeName: kPrinciplesPath)),
-        ],
+        const WbMenuItem.separator(),
+        // The world of the Bible
+        WbMenuItem(
+            s('atlasTitle', 'Bible Atlas'), () => _go(HelpDestination.atlas)),
+        WbMenuItem(s('maps', 'Illustrations'),
+            () => _go(HelpDestination.illustrations)),
+        WbMenuItem(s('familyTree', 'Family Tree'),
+            () => _go(HelpDestination.familyTree)),
+        const WbMenuItem.separator(),
+        // Time. The wheel and the strip are two entries on purpose
+        // (2026-09-16, 「menu strip和wheel都要有是吧」): each opens
+        // what its label says.
+        WbMenuItem(s('chronology', 'Bible Chronology'),
+            () => _go(HelpDestination.chronology)),
+        WbMenuItem(s('hebrewKings', 'Kings of Judah & Israel'),
+            () => _go(HelpDestination.hebrewKings)),
+        if (kShowPassionTimeline)
+          WbMenuItem(
+              kPassionTitle[locale] ?? kPassionTitle['en']!,
+              () => pushPage(const PassionWheelPage(),
+                  routeName: kPassionWheelPath)),
         WbMenuItem(s('wheelTitle', 'World History Wheel'),
             () => _go(HelpDestination.wheel)),
         WbMenuItem(kStripPageTitle[locale] ?? kStripPageTitle['en']!,
             () => _go(HelpDestination.strip)),
-        // 2026-09-08: projection had a route and no door. `#/project`
-        // is typeable on the web and unreachable on iOS and Android,
-        // which have no address bar — so on the two platforms a Sunday
-        // service is most likely to be driven from, the feature did not
-        // exist. Found by opening the build on a simulator and looking
-        // for it in this menu.
+        const WbMenuItem.separator(),
+        // Looking a word or a topic up
+        WbMenuItem(s('navesTitle', "Nave's Topical Bible"),
+            () => _go(HelpDestination.naves)),
+        WbMenuItem(s('modernConcordanceTitle', 'Modern Concordance (NT)'),
+            () => _go(HelpDestination.modernConcordance)),
+        WbMenuItem(s('lexiconBrowserTitle', 'Lexicon Browser'),
+            () => _go(HelpDestination.lexicon)),
+        const WbMenuItem.separator(),
+        // The reader's own, and moving about
+        WbMenuItem(s('library', 'Notes & highlights'),
+            () => _go(HelpDestination.library)),
+        WbMenuItem(s('books', 'Go to book…'), () => _go(HelpDestination.books)),
         WbMenuItem(
             projectionStrings['projectionTitle']?[locale] ??
                 projectionStrings['projectionTitle']!['en']!,
             () => _go(HelpDestination.projection)),
-        WbMenuItem(s('library', 'Notes & highlights'),
-            () => _go(HelpDestination.library)),
-        WbMenuItem(s('books', 'Go to book…'), () => _go(HelpDestination.books)),
+              // 2026-10-06: links added in the admin portal for Sword.
+        if (_adminLinks.isNotEmpty) ...[
+          const WbMenuItem.separator(),
+          for (final l in _adminLinks)
+            WbMenuItem(
+                l.title,
+                () => launchUrl(Uri.parse(l.url),
+                    mode: LaunchMode.externalApplication)),
+        ],
       ]),
       WbMenu(s('menuHelp', 'Help'), [
         // 2026-09-18: one page for every feature and every key, where
@@ -1830,6 +1826,9 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
             // one band that says a newer version exists.
             PlayUpdateBanner(locale: locale),
             StoreUpdateBanner(locale: locale),
+            // 2026-10-06: the announcement set in the admin portal.
+            AdminAnnouncementBanner(
+                locale: locale, announcement: _adminSite.announcement),
             if (_update != null && _update!.latestVersion != _updateWavedAway)
               UpdateAvailableBanner(
                 info: _update!,

@@ -1,5 +1,8 @@
 import 'package:yahwehs_sword/pages/passion_wheel_page.dart';
 import 'package:yahwehs_sword/pages/bible_principles_page.dart';
+import 'package:yahwehs_sword/pages/study_principles_page.dart';
+import 'package:yahwehs_sword/pages/study_promises_page.dart';
+import 'package:yahwehs_sword/pages/study_testaments_page.dart';
 // URL paths that name a full-screen PAGE rather than a passage.
 //
 // Most of the app's URLs are reader links — `#/<book>/<chapter>` — and
@@ -65,6 +68,9 @@ Widget? pageForUrlPath(String? path) {
   final base = p.split('?').first;
   if (base == kPassionWheelPath) return const PassionWheelPage();
   if (base == kPrinciplesPath) return const BiblePrinciplesPage();
+  if (base == kStudyPrinciplesPath) return const StudyPrinciplesPage();
+  if (base == kStudyPromisesPath) return const StudyPromisesPage();
+  if (base == kStudyTestamentsPath) return const StudyTestamentsPage();
   if (p == kWheelUrlPath || p.startsWith('$kWheelUrlPath/') ||
       p.startsWith('$kWheelUrlPath?')) {
     return const RadialChronologyPage();

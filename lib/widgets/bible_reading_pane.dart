@@ -5229,7 +5229,7 @@ class _ChapterPreview extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (ctx, idx) {
           if (idx == 0) {
-            return SizedBox(height: topInset + 64 * settings.menuScale + 12);
+            return SizedBox(height: topInset + 48 * settings.menuScale + 18);
           }
           if (idx == verses.length + 1) {
             return SizedBox(height: 96 * settings.menuScale);
@@ -5493,7 +5493,10 @@ class _ChapterPageState extends State<_ChapterPage>
             // chrome at scale 1.0, scaling proportionally when
             // the user bumps menuScale.
             final topInset = MediaQuery.of(context).padding.top;
-            return SizedBox(height: topInset + 48 * settings.menuScale + 4);
+            // 2026-10-06: a little more air under the chrome (the same
+            // change as Words: the first line sat right under the bar on
+            // an iPhone). The swipe preview uses the same number.
+            return SizedBox(height: topInset + 48 * settings.menuScale + 18);
           }
           final groupIdx = index - 1;
           if (groupIdx < paragraphGroups.length) {

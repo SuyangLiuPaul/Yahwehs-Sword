@@ -156,7 +156,7 @@ void main() {
     setUpAll(() => zh = corpus('assets/cuvs-yhwh.json'));
 
     test('a Han query is still a substring search', () {
-      expect(plain(zh, '爱').length, 822);
+      expect(plain(zh, '爱').length, 823);  // 822 -> 823 on 2026-10-04
       expect(plain(zh, '神').length, 3994);
       expect(plain(zh, '爱神').length, 12);
       expect(plain(zh, '起初').length, 37);
