@@ -7,3 +7,35 @@ Both apps use Study Yahweh's Words / 研读雅伟的话 / 研讀雅偉的話. So
 Version1.7.13 source preparation started with canonical explicit-set tools. No tag/build/publication is claimed until matching-head checks and package validation succeed. Words old Mac1.6.34 withdrawal requested in visible App Store Connect; edit page became available. Await latest signed13 builds to submit replacement. Existing Microsoft metadata drafts Words13/1152921505702059790 and Sword10/1152921505702059903 must be reused for final new-package delivery. Google three-language short descriptions are drafted; preserve Words pending Alpha review unless owner specifically authorizes restarting it.
 
 Sword clean release workspace: /Users/pliu0036/Documents/CodingProject/SeekSparks-release-1713. Original178 owner's dirty changelog and macOS PBX remain untouched. Runtime state and physical companion checks are distinct from store delivery.
+
+## October7 upload checkpoint
+
+Matching CI37539984415 passed atf4390dad0907118a02a7866c3b846fb04d9d70a3; PR38 merged and immutablev1.7.13 pushed. All seven workflows succeeded. All six GitHub asset hashes match published digests; Android signature checked. Play13/2000017 manifest and JAR signature verified; existing internal release upload active, not yet available. Microsoft13/x64 identity/publisher/SHA verified, existing draft10 upload active, no certification yet. Signed iOS/Mac13/1070013 exports verified; both Transporter uploads active.
+
+Both old Mac public reviews were withdrawn under the owner’s explicit authorization; replacement13 drafts saved. Words iOS13 draft saved after11 approval; Sword iOS8 pending review preserved. All three Microsoft notes/short descriptions saved with Study Yahweh’s Words/localized equivalent. Preserve pending Google WordsAlpha3 review and old Apple beta reviews. Active uploads must not be duplicated. Storage recovery6.39GiB documented; final cleanup waits for all accepted latest packages and idle builds/uploads.
+
+## October7 10:07 verified checkpoint
+
+Microsoft Sword1.7.13 submission10/1152921505702059903 and Words13 are now In certification / Pre-processing, automatic publication. Sword phone Play13/2000017 accepted/optimised; existing internal release9 preview started, not yet published. Words Wear13 internal release12 is Available to internal testers. Both Sword Apple13 signed exports uploaded once and still active; public iOS8 pending preserved. Both Mac13 replacement drafts await actual processed13 builds. Allsix public Sword GitHub13 assets/digests verified and professional localized release notes saved. Web must follow completed Words six-site deployment sequentially.
+
+## October 7 10:23 verified delivery checkpoint
+
+Final Words CI 37541151738 passed at f6d21791d495ae9fe5335e769a40b3cd39cbe353. The owner’s failure email for 43b556e is an earlier pre-fix run; no new runtime change or version bump is needed. Both immutable v1.7.13 GitHub releases have completed all native workflow sets; all 7 Words and 6 Sword named public assets were verified against GitHub sizes/digests. Signed Apple distribution packages are separate from the unsigned GitHub iOS artifacts.
+
+Google existing phone internal tracks now serve Words 1.7.13/10070131 and Sword 1.7.13/2000017; Words Wear internal serves 1.7.13/20001021. All are visibly Available to internal testers. Sword Alpha 1.7.13 was sent for review. Words Alpha 1.7.13 was saved unsubmitted while the existing Alpha 1.7.3 remains in review; do not restart/cancel it. Internal access is not public production or completion of real tester qualification.
+
+Words iOS 1.7.13/1070013 delivered and processed, accurate standard-algorithm compliance saved with France unavailable, internal group assigned and existing Public beta submitted with automatic notification (Waiting for Review). Latest public Words iOS 1.7.13 was submitted using that matching build and preserved screenshots/approved information/automatic release. Apple confirmed 1 Item Submitted; review ID 2038e4cf-fe1a-4fef-8aae-1b1b33c7571a.
+
+Sword Mac 1.7.13/1070013 delivered at 10:08 and processed. Internal group assigned; existing Public beta submitted with current notes and automatic notification (Waiting for Review). Under the owner's explicit Mac replacement authorization, public Mac 1.7.13 with matching build was submitted at 10:22, preserving approved screenshots/descriptions/privacy/contact and automatic release. Apple confirmed 1 Item Submitted; review ID 03ac8703-b010-4ce9-a072-dc8d7b42ed80. Sword public iOS 1.7.8 remains Waiting for Review and must be preserved.
+
+Words Mac and Sword iOS 1.7.13 Transporter uploads are still active; do not duplicate or claim acceptance. Both Microsoft 1.7.13 submissions remain in certification with automatic publication (Words 1152921505702059790, Sword 1152921505702059903).
+
+Words canonical sequential international/China deployment completed all six sites, with actual served version and complete mode-specific bundle hashes checked. Sword canonical two-site deployment started only after all six Words sites completed and is still active. The Words admin web/GitHub/Wear rows are saved at 1.7.13 and verified after reload; public iOS/Watch remains 1.7.11, Microsoft 1.7.12, Google production and initial Mac Store rows blank until genuinely available. Final cleanup remains gated on accepted latest uploads and idle builds/uploads. Physical watch/vehicle/Android Auto and audible interruption recovery remain unverified.
+
+Evidence: /Users/pliu0036/Downloads/Yahweh-Release-1713/ (Google publication/queued-review PNGs, Apple public/external submission PNGs, GitHub asset verification JSONs and canonical deployment logs). Runtime tags, signing, archives, dSYMs, prior useful packages and owner changes remain preserved.
+
+## October 7 10:28 web completion and recovery
+
+All eight websites now serve 1.7.13. Full main.dart.js SHA-256 matches the local frozen source build for each international/China/Sword group; Sword index/bootstrap/manifest/asset-manifest all return HTTP 200 and match across dev/production. Evidence web-sites-1.7.13-verification.json. Words was completed before Sword; canonical no-bump wrappers used. Sword full retry deployed 2,787 files and three functions: dev 6ac583c646b4f9b0171f6257, production 6ac583c6c4e70232ece69198. Admin Sword web row and truthful three-language channel notes saved at 1.7.13; store review rows remain at actual available versions.
+
+Recovery incident: the first Sword canonical upload stalled. A compressed-main cache request omitted draft=true and unexpectedly published an incomplete ZIP deploy (6ac58368ca645b0e93a91bc5). Production was immediately restored to the previously verified complete 1.7.12 deploy at 23:26:19 UTC, then the complete canonical 1.7.13 retry succeeded. Do not restore/publish that incomplete deploy. The current full deployment and resources were independently verified. Runtime/tag unchanged; record the incident rather than describing it as a preview-only upload.
