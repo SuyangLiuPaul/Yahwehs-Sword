@@ -4,7 +4,7 @@
   <img src="brand/favicon-512.png" alt="SeekSparks App Icon" width="80"/>
 </p>
 
-<p align="center"><em>A bilingual Bible exegesis tool for bigger screens — structured original-language search, built for iPad web, Mac, and Windows.</em></p>
+<p align="center"><em>Study Yahweh's Words — structured original-language study with Yahweh's Sword.</em></p>
 
 <p align="center">
   <a href="https://seeksparks.netlify.app">
