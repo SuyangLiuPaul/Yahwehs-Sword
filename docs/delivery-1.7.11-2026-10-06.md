@@ -17,3 +17,13 @@ Preparation only: visible version1.7.11, no new tag or package uploaded at this 
 ## Open checks
 
 Admin portal live-data end-to-end announcement/overlay/feedback behavior still needs verification with temporary records restored. Physical Watch/CarPlay and Android Auto playback/route/call recovery remain open. Store uploads, Google internal/closed tracks, Apple processing/TestFlight/public updates, Microsoft submission, GitHub releases and eight web sites must each have separate verified status.
+
+## October6 final source verification
+
+Old failed headab49b37 is superseded by final1f37fbeb8bccb028776d133f7c0a344b35b10901, CI37424554856 SUCCESS; local6092passed/10skipped. PR34 merged as23c3ed93275824aa9baf98d604eb553cdfc28ad8. No Sword1.7.11 tag or upload at this checkpoint: Words release sequence remains active. Sword Microsoft current published Submission8 is1.7.8.0, id1152921505702033237. Preserve Apple pending iOS1.7.8 and Mac1.6.329 public reviews. Sword has no companion/audio capability.
+
+## October6 forward-release consolidation
+
+Exact source1f37fbeb8bccb028776d133f7c0a344b35b10901 passed CI37424554856 and merged PR34. The failure email forab49b37 is superseded; no failed checks were bypassed. Sword1.7.11 was not tagged, uploaded or deployed. Its signed1070011 archives were prepared but remain unsubmitted.
+
+A genuine Words release-APK check exposed missing runtime-resolved custom audio-action icons after resource shrinking; the forward fix also handles the owner's tiny-label screenshot through wrapping/adaptive quick links. Preserve published Words v1.7.11 and pending store reviews, and consolidate next Words/Sword visible version as1.7.12. Sword retains no Watch/car/audio capability. Stage only the explicit version/delivery files; keep the unrelated/generated macOS PBX modification untouched. All original frozen Bible data remains unchanged.
