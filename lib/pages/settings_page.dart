@@ -19,6 +19,7 @@ import 'package:yahwehs_sword/services/version_import_service.dart';
 import 'package:yahwehs_sword/utils/pick_text_file.dart';
 import 'package:yahwehs_sword/constants/fuzzy_search_strings.dart';
 import 'package:yahwehs_sword/constants/ui_strings.dart';
+import 'package:yahwehs_sword/widgets/manual_update_tile.dart';
 import 'package:yahwehs_sword/widgets/update_check_tile.dart';
 import 'package:yahwehs_sword/constants/update_check_frequency.dart';
 import 'package:yahwehs_sword/utils/cross_version_search.dart'
@@ -1645,6 +1646,19 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                ],
+                // 2026-10-06: the web app and the store builds have no GitHub
+                // updater, so the block above hides itself for them and they
+                // had NO way to ask. This is that way.
+                if (!UpdateService.isSupported) ...[
+                  SizedBox(height: 12 * s),
+                  Card(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4, vertical: 4 * s),
+                      child: ManualUpdateTile(locale: settings.locale),
                     ),
                   ),
                 ],

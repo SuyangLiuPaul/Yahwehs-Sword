@@ -1,3 +1,9 @@
+import 'package:url_launcher/url_launcher.dart';
+import 'package:yahwehs_sword/services/release_registry.dart';
+import 'package:yahwehs_sword/services/admin_content.dart';
+import 'package:yahwehs_sword/services/admin_overlay.dart';
+import 'package:yahwehs_sword/services/usage_stats.dart';
+import 'package:yahwehs_sword/widgets/admin_announcement_banner.dart';
 import '../widgets/play_update_banner.dart';
 import 'package:yahwehs_sword/constants/learning_visibility.dart';
 import 'package:yahwehs_sword/pages/passion_wheel_page.dart';
@@ -191,6 +197,12 @@ class WorkbenchPage extends StatefulWidget {
 }
 
 class _WorkbenchPageState extends State<WorkbenchPage> {
+  /// What the admin portal says (announcement); empty until it loads.
+  AdminSite _adminSite = AdminSite.none;
+
+  /// Links added in the admin portal for this app (Resources menu).
+  List<AdminLink> _adminLinks = const [];
+
   static const String _kLeftWidthKey = 'workbench_left_width';
   static const String _kRightWidthKey = 'workbench_right_width';
   static const String _kLeftOpenKey = 'workbench_left_open';
@@ -447,6 +459,13 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
   void initState() {
     super.initState();
     _wb = WorkbenchProvider(mainProvider: context.read<MainProvider>());
+    UsageStats.session();
+    AdminOverlay.collection('adm_links').then((o) {
+      if (mounted) setState(() => _adminLinks = parseAdminLinks(o, kRegistryApp));
+    });
+    AdminOverlay.site().then((site) {
+      if (mounted) setState(() => _adminSite = site);
+    });
     _wb.onBrowseStateChanged = _persistPrefs;
     _restorePrefs();
     HardwareKeyboard.instance.addHandler(_onGlobalKey);
@@ -949,6 +968,15 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
             projectionStrings['projectionTitle']?[locale] ??
                 projectionStrings['projectionTitle']!['en']!,
             () => _go(HelpDestination.projection)),
+              // 2026-10-06: links added in the admin portal for Sword.
+        if (_adminLinks.isNotEmpty) ...[
+          const WbMenuItem.separator(),
+          for (final l in _adminLinks)
+            WbMenuItem(
+                l.title,
+                () => launchUrl(Uri.parse(l.url),
+                    mode: LaunchMode.externalApplication)),
+        ],
       ]),
       WbMenu(s('menuHelp', 'Help'), [
         // 2026-09-18: one page for every feature and every key, where
@@ -1798,6 +1826,9 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
             // one band that says a newer version exists.
             PlayUpdateBanner(locale: locale),
             StoreUpdateBanner(locale: locale),
+            // 2026-10-06: the announcement set in the admin portal.
+            AdminAnnouncementBanner(
+                locale: locale, announcement: _adminSite.announcement),
             if (_update != null && _update!.latestVersion != _updateWavedAway)
               UpdateAvailableBanner(
                 info: _update!,

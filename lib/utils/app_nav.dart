@@ -1,3 +1,4 @@
+import 'package:yahwehs_sword/services/usage_stats.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -27,8 +28,9 @@ Future<T?>? pushPage<T>(
   bool reverse = false,
   String? routeName,
   bool preventDuplicates = true,
-}) =>
-    Get.to<T>(
+}) {
+  UsageStats.page(routeName ?? '/${page.runtimeType}');
+  return Get.to<T>(
       // A page written at the workbench's density draws larger on a
       // phone — see `kPhonePageBoost`.
       () => page is PhoneBoostedPage ? WbPhoneBoost(child: page) : page,
@@ -37,4 +39,5 @@ Future<T?>? pushPage<T>(
       transition: reverse ? Transition.leftToRight : Transition.rightToLeft,
       duration: AppMotion.standard,
       curve: AppMotion.enter,
-    );
+  );
+}
