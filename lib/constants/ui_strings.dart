@@ -3780,9 +3780,9 @@ const uiStrings = {
     'en': 'About',
   },
   'appTagline': {
-    'zh-Hans': '面向大屏幕的双语圣经解经工具。',
-    'zh-Hant': '面向大螢幕的雙語聖經解經工具。',
-    'en': 'A bilingual Bible exegesis tool for bigger screens.',
+    'zh-Hans': '研读雅伟的话。',
+    'zh-Hant': '研讀雅偉的話。',
+    'en': "Study Yahweh's Words",
   },
   'contactIntro': {
     'zh-Hans': '作者 Paul Liu',
