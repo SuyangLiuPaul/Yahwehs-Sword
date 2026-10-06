@@ -31,3 +31,7 @@ A genuine Words release-APK check exposed missing runtime-resolved custom audio-
 ### Forward1.7.12 changelog consistency repair
 
 CI37431904754 failed exactly three changelog consistency assertions: bundled asset remained1.7.11 while pubspec was1.7.12. Regenerated assets/changelog.json using the existing build_changelog.py with head1.7.12/date2026-10-06; retained previous release history and all checks. Focused changelog tests passed. Await new matching-head full CI before merge/tag or any Sword delivery. Owner's unrelated macOS PBX change remains unstaged.
+
+### Sword title readability included in paired1.7.12
+
+Audit found the same proportional shrinking in WbPaneTitle. Pane edition-stack titles now preserve the configured chrome size, wrap and grow their strip, and retain the existing click action. Existing chrome/truncation and touch-target checks passed13tests; direct English/Simplified/Traditional long-title checks passed3tests at normal/1.8system scale with no FittedBox and working taps. Analysis clean. These source changes supersede the version-only forward head; require the new matching-head full CI before release.
