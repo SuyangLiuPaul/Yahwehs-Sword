@@ -1,3 +1,15 @@
+# October6 1.7.12 verified channel delivery
+
+Immutable tag1d83f03d3da733540c55bce623cb0853dee9437d; all seven native/store build jobs successful; six public GitHub installer assets/digests and Android signature verified. Google existing internal release8/2000016 Available; Alpha12+DataSafety Changes in review. Microsoft submission9/1152921505702054468 validated12.0 and In certification automatic publication. Both signed Apple1070012 packages DELIVERED/processed, existing internalSword1owner/Public beta assigned and explicitly Waiting for Review, automatic testers. Existing iOSpublic1.7.8 and Macpublic1.6.329 remain Waiting for Review; preserved. Swordweb remains1.7.8 pending sequential deployment after blockedWordsChina. Admin download12 / Web8 / Microsoft8, unverified publicGoogle/Apple latest blank. Current detailed source/status/evidence in docs/delivery-1.7.12-2026-10-06.md. Physicalcompanion checks apply to Words only; no Sword media capability. Finalcleanup gated; automation paused10h; exclude yahwehdehua. OwnerPBX remains unchanged.
+
+---
+
+## Latest paired 1.7.12 delivery checkpoint — 6 October 2026
+
+This dated checkpoint supersedes older active-preparation headings below. The owner authorized sequential Words then Sword all-platform publication. Sword PR35 merged after exact-head CI37434302657 succeeded at `1d83f03d3da733540c55bce623cb0853dee9437d` (6,089 passed, 16 existing skips). Version/changelog assets agree at1.7.12. The earlier f6a81f1 notification describes superseded version-consistency failures, not the current CI.
+
+The signed iOS and universal Mac1.7.12/1070012 archives/exports have passed version, signature, entitlement/architecture and package-hash checks. They are prepared locally; Sword has not yet been tagged, uploaded or deployed at this checkpoint. Words1.7.12 GitHub/Google internal delivery and both Apple beta submissions are complete; Microsoft submission12 is in certification. Sword publication waits for the active Words six-site web wrapper to finish. See [current1.7.12 delivery record](docs/delivery-1.7.12-2026-10-06.md). Preserve owner PBX changes, signing/archives/dSYMs and pending reviews. Sword has no audio/watch/car capabilities. No physical Android Auto/watch/vehicle verification is claimed. Automation remains paused; final cleanup remains gated.
+
 ## Active paired 1.7.5 preparation
 
 See `docs/delivery-1.7.5-2026-10-02.md`. New update prompts and Words companion/audio repairs are in preparation; preserve pending store reviews and immutable prior tags.
