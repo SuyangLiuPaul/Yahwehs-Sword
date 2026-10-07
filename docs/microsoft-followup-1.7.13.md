@@ -1,5 +1,11 @@
 # Sword Microsoft 1.7.13 package guards
 
+## Current verified state — October 7
+
+**PUBLISHED 1.7.13.0.** The visible Partner Center overview confirms latest product available, Start update enabled and live Submission 10. Submission ID 1152921505702059903. Preserve this publication; do not repeat the historical draft/upload actions below. Admin Microsoft row saved at 1.7.13. Evidence microsoft-sword-1713-published.png and microsoft-1713-published.json in Yahweh-Release-1713.
+
+## Immutable artifact and historical submission guards
+
 Immutable source/tag: f4390dad0907118a02a7866c3b846fb04d9d70a3 / v1.7.13. Matching Flutter CI37539984415 and MSIX37541185675 succeeded.
 
 Package: `/Volumes/YahwehRelease1713/Sword-MSIX-1713/Yahwehs-Sword-msix/yahwehs_sword.msix`
