@@ -1,0 +1,14 @@
+# Settings verification — 2026-10-07
+
+Owner authorized thorough checks of both Settings pages, local commits and sequential dev/prod deployment without a version bump. Words' final runtime source is `2baf52a7e0775d038b70846c30e6ba739971324d`; Sword's is `85566dadd042ba5275e03a46d235f167d7ee3328`.
+
+Words now calls the layout editor **Home sections / 首页内容 / 首頁內容**, keeps Read Bible mandatory, and explains current frequent links plus expandable Study/Reference/Help and the fixed notices above reorderable sections. All section descriptions are available in English/Simplified/Traditional Chinese. Sword calls its local-only profile section **Local profiles / 本地资料 / 本機資料**, describes projection/search reset correctly and uses Yahweh's Sword in PWA install guidance. Notification fallbacks describe actual current categories. Existing preference keys/routes/data are unchanged.
+
+Both analyses passed. Full suites: Words 4055 passed/36 skipped and Sword 6097 passed/10 skipped. These full runs preceded the final small localization/install-name corrections; after those, all 23 Words and 60 Sword related tests passed. All 21 Words and 26 Sword value-bound Settings properties have traced consumers. Rendered checks covered English/Chinese phone widths, the locked Bible entry, persistent Quick links visibility (restored after check), Sword font slider 20→23→20, current channel-aware manual update results and local profile/reset controls. Final rendered Featured Chinese/PWA name fixes were separately checked after publication.
+
+All eight sites (Words international dev/qat/prod; Words China dev/qat/prod; Sword dev/prod) now serve the final 1.7.13 web builds. Independent complete main.dart.js and flutter_bootstrap.js SHA-256/size comparisons passed on every site. Words canonical deployment exited 0 after targeted transport retries. Sword canonical CLI was interrupted for stalled transfer recovery and exited 1; the same complete prepared prod deploy was finalized with a SHA1-verified file PUT, and normal dev CLI recovery exited 0. Both final live Sword bundles were independently verified; do not describe the original interrupted Sword command as exit 0. See all-eight-final-live-verification.json and sword-single-transfer.json.
+
+Evidence, test logs, file digests and screenshots: `/Users/pliu0036/Downloads/Yahweh-Settings-20261007/`. Version remains 1.7.13; source/docs are local commits only, no GitHub push or new tag. Native/store packages were not rebuilt in this task; these copy changes need a future explicitly authorized native release. Physical companion/notification/installation behavior was not newly claimed verified. Sword's unrelated PBX override hash remains `06a794e396afda48e413fd5d82f4c9978985c7a012d0aef9af0ba9fadaf3ed04`. Existing pending reviews, release artifacts and the paused store monitor remain unchanged.
+
+---
+

@@ -1709,9 +1709,9 @@ const uiStrings = {
     'en': 'App',
   },
   'settingsSectionAccount': {
-    'zh-Hans': '账号',
-    'zh-Hant': '帳號',
-    'en': 'Account',
+    'zh-Hans': '本地资料',
+    'zh-Hant': '本機資料',
+    'en': 'Local profiles',
   },
   'resetToDefault': {
     'zh-Hans': '恢复默认',

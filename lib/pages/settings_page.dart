@@ -1,3 +1,4 @@
+import '../widgets/diagnosis_tile.dart';
 // 2026-05-20 (v1.2.67): `dart:js_interop` was here. See
 // `lib/utils/clear_cache_helper.dart` for the conditional-import
 // pattern that replaced it.
@@ -1662,7 +1663,8 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
                     ),
                   ),
                 ],
-                // 2026-05-06: Account section moved to TOP of Settings
+                DiagnosisTile(locale: settings.locale),
+              // 2026-05-06: Account section moved to TOP of Settings
                 // (was after Display/Reading/App). User feedback: tapping
                 // a profile chip on the dashboard navigates here, so
                 // sync / sign-in controls should be the first thing they
@@ -2457,7 +2459,8 @@ class _NotificationsCardState extends State<_NotificationsCard> {
             ? (uiStrings['notificationsBlocked']?[locale] ??
                 'Permission blocked at the browser level. Re-enable in browser settings, then toggle on here.')
             : (uiStrings['notificationsHint']?[locale] ??
-                'Get gentle daily reminders for verse, reading, and news.');
+                'Gentle daily reminders for the daily verse, Bible evidence and '
+                'the sermon of the day.');
 
     return Card(
       child: Padding(
@@ -2938,7 +2941,7 @@ class _AboutCard extends StatelessWidget {
             SizedBox(height: 4 * s),
             Text(
               uiStrings['resetSettingsNote']?[locale] ??
-                  'Restores fonts, theme, color, dashboard layout, and '
+                  'Restores fonts, theme, color, projection, search, and '
                       'other preferences. Your bookmarks, notes, '
                       'highlights, profile, and language are kept.',
               textAlign: TextAlign.center,
@@ -2976,7 +2979,7 @@ class _AboutCard extends StatelessWidget {
         title: Text(uiStrings['resetSettings']?[locale] ?? 'Reset settings'),
         content: Text(
           uiStrings['resetSettingsConfirm']?[locale] ??
-              'This restores fonts, theme, color, dashboard layout, '
+              'This restores fonts, theme, color, projection, search, '
                   'and other preferences. Your bookmarks, notes, '
                   'highlights, profile, and language stay the same. '
                   'Continue?',
@@ -3646,7 +3649,7 @@ class _OfflinePackCardState extends State<_OfflinePackCard> {
 /// app is already an installed binary. Within web, the card
 /// branches on what the browser is offering:
 ///   * `nativePrompt`   — Chrome / Edge has fired
-///     beforeinstallprompt. Show "Install SeekSparks" button which
+///     beforeinstallprompt. Show "Install Yahweh's Sword" button which
 ///     triggers the OS install picker.
 ///   * `iosManual`      — iOS Safari has no programmatic install
 ///     API. Show a 2-step guide pointing at the Share sheet.
@@ -3693,8 +3696,8 @@ class _InstallAppCardState extends State<_InstallAppCard> {
     if (outcome == 'accepted') {
       messenger.showSnackBar(SnackBar(
         content: Text(locale.startsWith('zh')
-            ? _zhScript(locale, '正在安装 SeekSparks…', '正在安裝 SeekSparks…')
-            : 'Installing SeekSparks…'),
+            ? _zhScript(locale, '正在安装 Yahweh\'s Sword…', '正在安裝 Yahweh\'s Sword…')
+            : 'Installing Yahweh\'s Sword…'),
         duration: const Duration(seconds: 2),
       ));
     }
@@ -3717,10 +3720,10 @@ class _InstallAppCardState extends State<_InstallAppCard> {
 
     switch (_flow) {
       case InstallFlowKind.nativePrompt:
-        title = isZh ? _zhScript(locale, '安装 SeekSparks', '安裝 SeekSparks') : 'Install SeekSparks';
+        title = isZh ? _zhScript(locale, '安装 Yahweh\'s Sword', '安裝 Yahweh\'s Sword') : 'Install Yahweh\'s Sword';
         body = isZh
-            ? _zhScript(locale, '把 SeekSparks 安装到主屏幕，获得更快的启动速度和离线访问。', '把 SeekSparks 安裝到主畫面，獲得更快的啟動速度和離線存取。')
-            : 'Install SeekSparks to your home screen for faster launch + offline access.';
+            ? _zhScript(locale, '把 Yahweh\'s Sword 安装到主屏幕，获得更快的启动速度和离线访问。', '把 Yahweh\'s Sword 安裝到主畫面，獲得更快的啟動速度和離線存取。')
+            : 'Install Yahweh\'s Sword to your home screen for faster launch + offline access.';
         action = FilledButton.icon(
           onPressed: _busy ? null : _onInstallPressed,
           icon: const Icon(Icons.install_mobile_outlined, size: 18),
@@ -3730,15 +3733,15 @@ class _InstallAppCardState extends State<_InstallAppCard> {
       case InstallFlowKind.iosManual:
         title = isZh ? _zhScript(locale, '添加到主屏幕', '加入主畫面') : 'Add to Home Screen';
         body = isZh
-            ? _zhScript(locale, '1. 点击 Safari 底部的「分享」按钮（⬆️）\n2. 选择「添加到主屏幕」\n3. 点击「添加」 — SeekSparks 就会像原生 App 一样运行。', '1. 點擊 Safari 底部的「分享」按鈕（⬆️）\n2. 選擇「加入主畫面」\n3. 點擊「加入」—— SeekSparks 就會像原生 App 一樣運行。')
-            : '1. Tap the Safari Share button at the bottom (⬆️)\n2. Choose "Add to Home Screen"\n3. Tap "Add" — SeekSparks runs like a native app.';
+            ? _zhScript(locale, '1. 点击 Safari 底部的「分享」按钮（⬆️）\n2. 选择「添加到主屏幕」\n3. 点击「添加」 — Yahweh\'s Sword 就会像原生 App 一样运行。', '1. 點擊 Safari 底部的「分享」按鈕（⬆️）\n2. 選擇「加入主畫面」\n3. 點擊「加入」—— Yahweh\'s Sword 就會像原生 App 一樣運行。')
+            : '1. Tap the Safari Share button at the bottom (⬆️)\n2. Choose "Add to Home Screen"\n3. Tap "Add" — Yahweh\'s Sword runs like a native app.';
         break;
       case InstallFlowKind.desktopManual:
         title =
-            isZh ? _zhScript(locale, '安装 SeekSparks 桌面版', '安裝 SeekSparks 桌面版') : 'Install SeekSparks as a desktop app';
+            isZh ? _zhScript(locale, '安装 Yahweh\'s Sword 桌面版', '安裝 Yahweh\'s Sword 桌面版') : 'Install Yahweh\'s Sword as a desktop app';
         body = isZh
-            ? _zhScript(locale, '在地址栏右侧找到「安装」图标（⊕），或者打开浏览器菜单 →「安装 SeekSparks」。安装后 SeekSparks 会有自己的窗口和 Dock / 开始菜单图标。', '在網址列右側找到「安裝」圖示（⊕），或者打開瀏覽器選單 →「安裝 SeekSparks」。安裝後 SeekSparks 會有自己的視窗和 Dock / 開始選單圖示。')
-            : 'Look for the install icon (⊕) on the right side of the address bar, or open the browser menu → "Install SeekSparks". Once installed SeekSparks gets its own window + Dock / Start Menu icon.';
+            ? _zhScript(locale, '在地址栏右侧找到「安装」图标（⊕），或者打开浏览器菜单 →「安装 Yahweh\'s Sword」。安装后 Yahweh\'s Sword 会有自己的窗口和 Dock / 开始菜单图标。', '在網址列右側找到「安裝」圖示（⊕），或者打開瀏覽器選單 →「安裝 Yahweh\'s Sword」。安裝後 Yahweh\'s Sword 會有自己的視窗和 Dock / 開始選單圖示。')
+            : 'Look for the install icon (⊕) on the right side of the address bar, or open the browser menu → "Install Yahweh\'s Sword". Once installed Yahweh\'s Sword gets its own window + Dock / Start Menu icon.';
         break;
       case InstallFlowKind.alreadyInstalled:
       case InstallFlowKind.notApplicable:
