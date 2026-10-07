@@ -11,3 +11,7 @@ Web deployments run Words then Sword. Apple build1070016, independently monotoni
 ## Local preparation checks
 
 Flutter3.44.2 analysis clean; existing focused Settings checks passed 24 tests. Words includes an English narrow-screen section-header wrapping repair identified at1.3 text scaling. No tag/build/upload claimed by these source checks.
+
+## Full CI repair before tag
+
+Initial current-head CI37701526409 failed because the existing Projector geometry tests opened the now-collapsed Advanced group without a section link, and the bundled changelog still identified1.7.15. The tests now use the existing Reading section link and wait for debounced locale persistence; all original Projector layout assertions remain. Canonical changelog generation refreshed the bundled record to1.7.16. The focused59 tests passed. No Sword tag or upload was made from the failed head. Generated CocoaPods Mac resource-phase wiring remains a local build change and is not staged.

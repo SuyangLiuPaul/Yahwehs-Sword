@@ -67,12 +67,17 @@ Future<void> _openProjector(
           return _settings;
         }),
       ],
-      child: const MaterialApp(home: SettingsPage()),
+      child: const MaterialApp(
+        home: SettingsPage(initialSection: SettingsSection.reading),
+      ),
     ),
   );
   await tester.pump(const Duration(milliseconds: 100));
   await tester.pump(const Duration(milliseconds: 700));
   await _settings.setLocale(locale);
+  // Locale persistence is debounced; settling scroll animations alone does
+  // not advance a pending preferences timer on the shorter tiered page.
+  await tester.pump(const Duration(milliseconds: 700));
   await tester.pumpAndSettle();
 
   await tester.scrollUntilVisible(
@@ -134,7 +139,8 @@ void main() {
             // Half a pixel of slack for the sub-pixel widths a flex
             // hands out; the failure this guards against was 169.
             expect(want, lessThanOrEqualTo(flex.size.width + 0.5),
-                reason: 'a Projector row is ${flex.size.width.toStringAsFixed(0)} px '
+                reason:
+                    'a Projector row is ${flex.size.width.toStringAsFixed(0)} px '
                     'wide and its children want ${want.toStringAsFixed(0)} px — '
                     'it overflows by ${(want - flex.size.width).toStringAsFixed(0)}. '
                     'Something in this row is sizing to its own content '
@@ -150,13 +156,15 @@ void main() {
           // English edition, the longest list the card has.
           final label = find.descendant(
             of: _projectorCard(),
-            matching: find.text(
-                _s('projectorCompanionForZh', 'Beside a Chinese passage, show')),
+            matching: find.text(_s(
+                'projectorCompanionForZh', 'Beside a Chinese passage, show')),
           );
           expect(label, findsOneWidget);
 
-          final row = tester.renderObject<RenderFlex>(
-              find.ancestor(of: label, matching: find.byWidgetPredicate((w) => w is Flex)).first);
+          final row = tester.renderObject<RenderFlex>(find
+              .ancestor(
+                  of: label, matching: find.byWidgetPredicate((w) => w is Flex))
+              .first);
           final got = tester.getSize(label).width;
 
           // A third of the row is a floor, not a target. The broken
@@ -183,20 +191,24 @@ void main() {
             _s('projectorCompanionForZh', 'Beside a Chinese passage, show')),
       );
       final paragraph = tester.renderObject<RenderParagraph>(label);
-      final container = tester.renderObject<RenderFlex>(find.ancestor(
-          of: label, matching: find.byWidgetPredicate((w) => w is Flex)).first);
+      final container = tester.renderObject<RenderFlex>(find
+          .ancestor(
+              of: label, matching: find.byWidgetPredicate((w) => w is Flex))
+          .first);
       final fullWidth = TextPainter(
         text: paragraph.text,
         textDirection: paragraph.textDirection,
         textScaler: paragraph.textScaler,
       )..layout(maxWidth: container.size.width);
       expect(paragraph.size.height, lessThanOrEqualTo(fullWidth.height + 0.5),
-          reason: 'at ${w.toInt()} px the label should use the available width');
+          reason:
+              'at ${w.toInt()} px the label should use the available width');
       fullWidth.dispose();
     }
   });
 
-  testWidgets('the reason the rule exists: this dropdown wants more width '
+  testWidgets(
+      'the reason the rule exists: this dropdown wants more width '
       'than the settings column it lives in', (tester) async {
     // The guard for the guards above. They measure the FIXED layout, so
     // if the English edition list ever got short they would pass no
