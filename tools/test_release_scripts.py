@@ -167,6 +167,8 @@ class ReleaseWeb(unittest.TestCase):
         (self.project / 'pubspec.yaml').write_text(
             'name: x\nversion: 1.0.0+1000000\n', encoding='utf-8')
         shutil.copy(TOOLS / 'release_web.sh', self.project / 'tools')
+        executable(self.project / 'tools' / 'verify_web_asset_manifests.py',
+                   '#!/usr/bin/env python3\nprint("manifest verifier stub")\n')
         # The generator is its own test file's business; here it only
         # has to not fail.
         executable(self.project / 'tools' / 'build_changelog.py',
