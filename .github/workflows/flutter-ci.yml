@@ -35,7 +35,8 @@ name: Flutter CI
 
 on:
   push:
-    branches: [main]
+    # Release fixes must have an exact-head run even when a PR event is delayed.
+    branches: [main, 'release/all-platform-*']
   pull_request:
     branches: [main]
 
