@@ -104,6 +104,7 @@ verify_site() {
     served="$(curl -fsS --max-time 30 "https://$host/version.json" 2>/dev/null \
       | sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')"
     if [[ "$served" = "$APP_VERSION" ]]; then
+      python3 "$PROJECT/tools/verify_web_asset_manifests.py" "https://$host" || return 1
       echo "  ✓ $name — https://$host serves v$APP_VERSION"
       return 0
     fi

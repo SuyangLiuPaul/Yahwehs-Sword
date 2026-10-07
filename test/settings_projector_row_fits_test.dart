@@ -156,7 +156,7 @@ void main() {
           expect(label, findsOneWidget);
 
           final row = tester.renderObject<RenderFlex>(
-              find.ancestor(of: label, matching: find.byType(Row)).first);
+              find.ancestor(of: label, matching: find.byWidgetPredicate((w) => w is Flex)).first);
           final got = tester.getSize(label).width;
 
           // A third of the row is a floor, not a target. The broken
@@ -170,30 +170,29 @@ void main() {
     });
   }
 
-  testWidgets('the label is a line or two, not a column of fragments',
+  testWidgets('the label wraps using the full available width, not fragments',
       (tester) async {
-    // The symptom as the operator met it: 232 px of stacked pieces
-    // where a label belonged. One line's height is measured on the
-    // SAME label in the SAME card at the widest column the app has,
-    // rather than reconstructed from a TextStyle by hand.
-    await _openProjector(tester, 1920, 'en');
-    final label = find.descendant(
-      of: _projectorCard(),
-      matching:
-          find.text(_s('projectorCompanionForZh', 'Beside a Chinese passage, show')),
-    );
-    final oneLine = tester.getSize(label).height;
-
+    // Different platforms/fonts wrap this sentence into different counts.
+    // Compare the real paragraph against its full-width layout instead of
+    // assuming a fixed three-line limit or a horizontal Row ancestor.
     for (final w in _widths) {
       await _openProjector(tester, w, 'en');
-      final got = tester.getSize(find.descendant(
+      final label = find.descendant(
         of: _projectorCard(),
         matching: find.text(
             _s('projectorCompanionForZh', 'Beside a Chinese passage, show')),
-      )).height;
-      expect(got, lessThanOrEqualTo(oneLine * 3),
-          reason: 'at ${w.toInt()} px the label is '
-              '${(got / oneLine).round()} lines tall');
+      );
+      final paragraph = tester.renderObject<RenderParagraph>(label);
+      final container = tester.renderObject<RenderFlex>(find.ancestor(
+          of: label, matching: find.byWidgetPredicate((w) => w is Flex)).first);
+      final fullWidth = TextPainter(
+        text: paragraph.text,
+        textDirection: paragraph.textDirection,
+        textScaler: paragraph.textScaler,
+      )..layout(maxWidth: container.size.width);
+      expect(paragraph.size.height, lessThanOrEqualTo(fullWidth.height + 0.5),
+          reason: 'at ${w.toInt()} px the label should use the available width');
+      fullWidth.dispose();
     }
   });
 

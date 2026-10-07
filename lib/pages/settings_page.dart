@@ -196,7 +196,7 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
     if (target == null) return;
     // Wait for the first frame so the target has a render box, then
     // smooth-scroll to it. Using ensureVisible keeps us inside the
-    // existing ListView controller without us needing to manage one.
+    // existing scroll position without us needing to manage one.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ctx = target.currentContext;
       if (ctx == null) return;
@@ -258,388 +258,354 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
         return Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxW),
-            child: ListView(
+            // The finite form uses exact heights, avoiding lazy-list offset
+            // corrections when variable-height sections enter the viewport.
+            child: SingleChildScrollView(
+              key: const Key('settings.scroll'),
               padding: EdgeInsets.all(16 * s),
-              children: [
-                // 2026-09-18, as in YsWords: above everything, because this
-                // is where a reader looking for a feature arrives when they
-                // cannot find it.
-                Card(
-                  elevation: 0,
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  child: ListTile(
-                    key: const Key('settings.help'),
-                    leading: const Icon(Icons.help_outline_rounded),
-                    title: Text(uiStrings['helpTitle']?[settings.locale] ??
-                        'Help & shortcuts'),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => openHelp(context),
-                  ),
-                ),
-                // 2026-09-18: the release notes, one tap away. They lived only
-                // behind a button on the About page, where the owner could not
-                // find them (「可以有个地方放最新的release notes吗」).
-                Card(
-                  elevation: 0,
-                  child: ListTile(
-                    key: const Key('settings.changelog'),
-                    leading: const Icon(Icons.new_releases_outlined),
-                    title: Text(uiStrings['changelogTitle']?[settings.locale] ??
-                        "What's new"),
-                    subtitle: Text('v$kAppVersion'),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => pushPage(const ChangelogPage()),
-                  ),
-                ),
-                SizedBox(height: 12 * s),
-                // Account section now FIRST — see comment below at the
-                // old _accountKey location for the rationale.
-                KeyedSubtree(
-                  key: _accountKey,
-                  child: _SectionHeader(uiStrings['settingsSectionAccount']
-                          ?[settings.locale] ??
-                      'Account'),
-                ),
-                _AccountSection(settings: settings, s: s),
-                SizedBox(height: 16 * s),
-                KeyedSubtree(
-                  key: _displayKey,
-                  child: _SectionHeader(uiStrings['settingsSectionDisplay']
-                          ?[settings.locale] ??
-                      'Display'),
-                ),
-                // 2026-09-07: Font Size, Menu Size and Line Spacing used
-                // to be three separate Cards holding one slider each —
-                // the same widget written out three times with the
-                // label and the range changed. Three cards for three
-                // rows of the same KIND of setting is what made this
-                // page read as a list of unrelated boxes rather than as
-                // a settings panel; every reference in the modern brief
-                // groups a family of controls into one surface with a
-                // divider between rows. So: one card, one row widget,
-                // three calls.
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16 * s, vertical: 4 * s),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _SliderRow(
-                          settings: settings,
-                          s: s,
-                          label: uiStrings['fontSize']?[settings.locale] ??
-                              'Font Size',
-                          value: settings.fontSize,
-                          min: kFontSizeMin,
-                          max: kFontSizeMax,
-                          divisions: (kFontSizeMax - kFontSizeMin).round(),
-                          readout: '${settings.fontSize.toInt()} pt',
-                          onChanged: settings.setFontSize,
-                        ),
-                        const Divider(height: 1),
-                        _SliderRow(
-                          settings: settings,
-                          s: s,
-                          label: uiStrings['menuScale']?[settings.locale] ??
-                              'Menu Size',
-                          value: settings.menuScale,
-                          min: kMenuScaleMin,
-                          max: kMenuScaleMax,
-                          divisions:
-                              ((kMenuScaleMax - kMenuScaleMin) * 10).round(),
-                          readout: '${settings.menuScale.toStringAsFixed(1)}x',
-                          onChanged: settings.setMenuScale,
-                        ),
-                        const Divider(height: 1),
-                        _SliderRow(
-                          settings: settings,
-                          s: s,
-                          label: uiStrings['lineSpacing']?[settings.locale] ??
-                              'Line Spacing',
-                          value: settings.lineSpacing,
-                          min: kLineSpacingMin,
-                          max: kLineSpacingMax,
-                          divisions: ((kLineSpacingMax - kLineSpacingMin) * 10)
-                              .round(),
-                          readout: settings.lineSpacing.toStringAsFixed(1),
-                          // The only one that rounds: line spacing is
-                          // stored to one decimal and a raw slider value
-                          // would persist 1.2000000000000002.
-                          onChanged: (val) => settings.setLineSpacing(
-                              double.parse(val.toStringAsFixed(1))),
-                        ),
-                        const Divider(height: 1),
-                        // 2026-09-20: how long the opening verse holds.
-                        // It was a fixed 3 s and the feedback was that
-                        // the verse was gone before it had been read.
-                        _SliderRow(
-                          settings: settings,
-                          s: s,
-                          label: uiStrings['splashSeconds']?[settings.locale] ??
-                              'Splash screen',
-                          value: settings.splashSeconds.toDouble(),
-                          min: kSplashSecondsMin.toDouble(),
-                          max: kSplashSecondsMax.toDouble(),
-                          divisions: kSplashSecondsMax - kSplashSecondsMin,
-                          readout: (uiStrings['splashSecondsValue']
-                                      ?[settings.locale] ??
-                                  '{n}s')
-                              .replaceAll('{n}', '${settings.splashSeconds}'),
-                          onChanged: (val) =>
-                              settings.setSplashSeconds(val.round()),
-                        ),
-                      ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // 2026-09-18, as in YsWords: above everything, because this
+                  // is where a reader looking for a feature arrives when they
+                  // cannot find it.
+                  Card(
+                    elevation: 0,
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    child: ListTile(
+                      key: const Key('settings.help'),
+                      leading: const Icon(Icons.help_outline_rounded),
+                      title: Text(uiStrings['helpTitle']?[settings.locale] ??
+                          'Help & shortcuts'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => openHelp(context),
                     ),
                   ),
-                ),
-                SizedBox(height: 16 * s),
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16 * s),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          uiStrings['samplePreview']?[settings.locale] ??
-                              'Sample Preview',
-                          style: TextStyle(
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
+                  // 2026-09-18: the release notes, one tap away. They lived only
+                  // behind a button on the About page, where the owner could not
+                  // find them (「可以有个地方放最新的release notes吗」).
+                  Card(
+                    elevation: 0,
+                    child: ListTile(
+                      key: const Key('settings.changelog'),
+                      leading: const Icon(Icons.new_releases_outlined),
+                      title: Text(uiStrings['changelogTitle']
+                              ?[settings.locale] ??
+                          "What's new"),
+                      subtitle: Text('v$kAppVersion'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => pushPage(const ChangelogPage()),
+                    ),
+                  ),
+                  SizedBox(height: 12 * s),
+                  // Account section now FIRST — see comment below at the
+                  // old _accountKey location for the rationale.
+                  KeyedSubtree(
+                    key: _accountKey,
+                    child: _SectionHeader(uiStrings['settingsSectionAccount']
+                            ?[settings.locale] ??
+                        'Account'),
+                  ),
+                  _AccountSection(settings: settings, s: s),
+                  SizedBox(height: 16 * s),
+                  KeyedSubtree(
+                    key: _displayKey,
+                    child: _SectionHeader(uiStrings['settingsSectionDisplay']
+                            ?[settings.locale] ??
+                        'Display'),
+                  ),
+                  // 2026-09-07: Font Size, Menu Size and Line Spacing used
+                  // to be three separate Cards holding one slider each —
+                  // the same widget written out three times with the
+                  // label and the range changed. Three cards for three
+                  // rows of the same KIND of setting is what made this
+                  // page read as a list of unrelated boxes rather than as
+                  // a settings panel; every reference in the modern brief
+                  // groups a family of controls into one surface with a
+                  // divider between rows. So: one card, one row widget,
+                  // three calls.
+                  Card(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16 * s, vertical: 4 * s),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _SliderRow(
+                            settings: settings,
+                            s: s,
+                            label: uiStrings['fontSize']?[settings.locale] ??
+                                'Font Size',
+                            value: settings.fontSize,
+                            min: kFontSizeMin,
+                            max: kFontSizeMax,
+                            divisions: (kFontSizeMax - kFontSizeMin).round(),
+                            readout: '${settings.fontSize.toInt()} pt',
+                            onChanged: settings.setFontSize,
                           ),
-                        ),
-                        SizedBox(height: 12 * s),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              uiStrings['copyFormat']?[settings.locale] ??
-                                  'Copy Format',
-                              style: TextStyle(
-                                fontFamily: settings.fontFamily,
-                                fontFamilyFallback: kCjkFontFallback,
-                                fontSize: settings.fontSize + 2,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          const Divider(height: 1),
+                          _SliderRow(
+                            settings: settings,
+                            s: s,
+                            label: uiStrings['menuScale']?[settings.locale] ??
+                                'Menu Size',
+                            value: settings.menuScale,
+                            min: kMenuScaleMin,
+                            max: kMenuScaleMax,
+                            divisions:
+                                ((kMenuScaleMax - kMenuScaleMin) * 10).round(),
+                            readout:
+                                '${settings.menuScale.toStringAsFixed(1)}x',
+                            onChanged: settings.setMenuScale,
+                          ),
+                          const Divider(height: 1),
+                          _SliderRow(
+                            settings: settings,
+                            s: s,
+                            label: uiStrings['lineSpacing']?[settings.locale] ??
+                                'Line Spacing',
+                            value: settings.lineSpacing,
+                            min: kLineSpacingMin,
+                            max: kLineSpacingMax,
+                            divisions:
+                                ((kLineSpacingMax - kLineSpacingMin) * 10)
+                                    .round(),
+                            readout: settings.lineSpacing.toStringAsFixed(1),
+                            // The only one that rounds: line spacing is
+                            // stored to one decimal and a raw slider value
+                            // would persist 1.2000000000000002.
+                            onChanged: (val) => settings.setLineSpacing(
+                                double.parse(val.toStringAsFixed(1))),
+                          ),
+                          const Divider(height: 1),
+                          // 2026-09-20: how long the opening verse holds.
+                          // It was a fixed 3 s and the feedback was that
+                          // the verse was gone before it had been read.
+                          _SliderRow(
+                            settings: settings,
+                            s: s,
+                            label: uiStrings['splashSeconds']
+                                    ?[settings.locale] ??
+                                'Splash screen',
+                            value: settings.splashSeconds.toDouble(),
+                            min: kSplashSecondsMin.toDouble(),
+                            max: kSplashSecondsMax.toDouble(),
+                            divisions: kSplashSecondsMax - kSplashSecondsMin,
+                            readout: (uiStrings['splashSecondsValue']
+                                        ?[settings.locale] ??
+                                    '{n}s')
+                                .replaceAll('{n}', '${settings.splashSeconds}'),
+                            onChanged: (val) =>
+                                settings.setSplashSeconds(val.round()),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16 * s),
+                  Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(16 * s),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            uiStrings['samplePreview']?[settings.locale] ??
+                                'Sample Preview',
+                            style: TextStyle(
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
                             ),
-                            SizedBox(height: 8 * s),
-                            // Full width, not the width of its widest
-                            // item. 「Devotional Format」 wants 366 px,
-                            // and the Display card gets 258 on a 320 px
-                            // phone — this overflowed by 109 there in
-                            // English (the Chinese labels are short
-                            // enough that it never showed at home).
-                            // Found by the Projector row's fit test,
-                            // same disease one card up.
-                            DropdownButton<String>(
-                              isExpanded: true,
-                              value: settings.copyFormat,
-                              onChanged: (val) {
-                                if (val != null) settings.setCopyFormat(val);
-                              },
-                              items: [
-                                DropdownMenuItem(
-                                    value: 'plain',
-                                    child: Text(
-                                      uiStrings['plainText']
-                                              ?[settings.locale] ??
-                                          'Plain Text',
-                                      style: TextStyle(
-                                        fontSize: settings.fontSize,
-                                        fontFamily: settings.fontFamily,
-                                        fontFamilyFallback: kCjkFontFallback,
-                                      ),
-                                    )),
-                                DropdownMenuItem(
-                                    value: 'withRef',
-                                    child: Text(
-                                      uiStrings['withReference']
-                                              ?[settings.locale] ??
-                                          'With Reference',
-                                      style: TextStyle(
-                                        fontSize: settings.fontSize,
-                                        fontFamily: settings.fontFamily,
-                                        fontFamilyFallback: kCjkFontFallback,
-                                      ),
-                                    )),
-                                DropdownMenuItem(
-                                    value: 'devotional',
-                                    child: Text(
-                                      uiStrings['devotionalFormat']
-                                              ?[settings.locale] ??
-                                          'Devotional Format',
-                                      style: TextStyle(
-                                        fontSize: settings.fontSize,
-                                        fontFamily: settings.fontFamily,
-                                        fontFamilyFallback: kCjkFontFallback,
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 12 * s),
-                        // 2026-09-13: 「好像这里面有原文（）这个复制粘贴要不要包含应该在
-                        // setting有一个option toggle」. The CUV's translators' notes sit in
-                        // full-width parentheses inside the verse text; whether a copy keeps
-                        // them is a choice, made here beside the format it applies to. The
-                        // preview below follows it, so the reader sees the answer before
-                        // they paste.
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    uiStrings['copyStripNotes']?[settings.locale] ??
-                                        "Leave out translators' notes",
-                                    style: TextStyle(
-                                      fontFamily: settings.fontFamily,
-                                      fontFamilyFallback: kCjkFontFallback,
-                                      fontSize: settings.fontSize,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4 * s),
-                                  Text(
-                                    uiStrings['copyStripNotesHint']?[settings.locale] ??
-                                        'Notes in full-width parentheses, like （原文作…）, '
-                                            'are not copied.',
-                                    style: TextStyle(
-                                      fontFamily: settings.fontFamily,
-                                      fontFamilyFallback: kCjkFontFallback,
-                                      fontSize: settings.fontSize * 0.85,
-                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                  // Ported from YsWords (2026-09-15): with
-                                  // the switch on and nothing in the preview
-                                  // to strip, say whether the CHAPTER has a
-                                  // note out of shot, or none at all.
-                                  if (settings.copyStripParentheticals &&
-                                      !verseSamples.any((v) =>
-                                          parentheticalNotePattern
-                                              .hasMatch(v['text'] as String)))
-                                    Builder(builder: (context) {
-                                      Verse? elsewhere;
-                                      for (final v in versesInChapter) {
-                                        if (parentheticalNotePattern
-                                            .hasMatch(v.text)) {
-                                          elsewhere = v;
-                                          break;
-                                        }
-                                      }
-                                      final text = elsewhere == null
-                                          ? (uiStrings[
-                                                      'copyStripNotesNothingHere']
-                                                  ?[settings.locale] ??
-                                              'This chapter has none, so the '
-                                                  'switch changes nothing here.')
-                                          : (uiStrings['copyStripNotesElsewhere']
-                                                      ?[settings.locale] ??
-                                                  'This chapter has one (verse '
-                                                      '{verse}), but not in the '
-                                                      'verses previewed above.')
-                                              .replaceAll('{verse}',
-                                                  elsewhere.verseLabel);
-                                      return Padding(
-                                        padding: EdgeInsets.only(top: 4 * s),
-                                        child: Text(
-                                          text,
-                                          style: TextStyle(
-                                            fontFamily: settings.fontFamily,
-                                            fontFamilyFallback: kCjkFontFallback,
-                                            fontSize: settings.fontSize * 0.85,
-                                            fontStyle: FontStyle.italic,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurfaceVariant,
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                ],
-                              ),
-                            ),
-                            Switch.adaptive(
-                              value: settings.copyStripParentheticals,
-                              onChanged: settings.setCopyStripParentheticals,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 12 * s),
-                        Text(
-                          currentBook != null && currentChapter != null
-                              ? '$currentBook $currentChapter'
-                              : uiStrings['noVersesAvailable']
-                                      ?[settings.locale] ??
-                                  'No verses available',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(
-                                fontFamily: settings.fontFamily,
-                                fontFamilyFallback: kCjkFontFallback,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: settings.fontSize,
-                              ),
-                        ),
-                        SizedBox(height: 8 * s),
-                        if (settings.copyFormat == 'devotional')
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: settings.lineSpacing * 2),
-                            child: RichText(
-                              text: TextSpan(
+                          ),
+                          SizedBox(height: 12 * s),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                uiStrings['copyFormat']?[settings.locale] ??
+                                    'Copy Format',
                                 style: TextStyle(
-                                  fontSize: settings.fontSize,
                                   fontFamily: settings.fontFamily,
                                   fontFamilyFallback: kCjkFontFallback,
-                                  height: settings.lineSpacing,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color,
+                                  fontSize: settings.fontSize + 2,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                children: [
-                                  TextSpan(
-                                    text: getDevotionalFormattedText(
-                                      stripParentheticals:
-                                          settings.copyStripParentheticals,
-                                        verseSamples,
-                                        currentBook,
-                                        currentChapter),
-                                  ),
+                              ),
+                              SizedBox(height: 8 * s),
+                              // Full width, not the width of its widest
+                              // item. 「Devotional Format」 wants 366 px,
+                              // and the Display card gets 258 on a 320 px
+                              // phone — this overflowed by 109 there in
+                              // English (the Chinese labels are short
+                              // enough that it never showed at home).
+                              // Found by the Projector row's fit test,
+                              // same disease one card up.
+                              DropdownButton<String>(
+                                isExpanded: true,
+                                value: settings.copyFormat,
+                                onChanged: (val) {
+                                  if (val != null) settings.setCopyFormat(val);
+                                },
+                                items: [
+                                  DropdownMenuItem(
+                                      value: 'plain',
+                                      child: Text(
+                                        uiStrings['plainText']
+                                                ?[settings.locale] ??
+                                            'Plain Text',
+                                        style: TextStyle(
+                                          fontSize: settings.fontSize,
+                                          fontFamily: settings.fontFamily,
+                                          fontFamilyFallback: kCjkFontFallback,
+                                        ),
+                                      )),
+                                  DropdownMenuItem(
+                                      value: 'withRef',
+                                      child: Text(
+                                        uiStrings['withReference']
+                                                ?[settings.locale] ??
+                                            'With Reference',
+                                        style: TextStyle(
+                                          fontSize: settings.fontSize,
+                                          fontFamily: settings.fontFamily,
+                                          fontFamilyFallback: kCjkFontFallback,
+                                        ),
+                                      )),
+                                  DropdownMenuItem(
+                                      value: 'devotional',
+                                      child: Text(
+                                        uiStrings['devotionalFormat']
+                                                ?[settings.locale] ??
+                                            'Devotional Format',
+                                        style: TextStyle(
+                                          fontSize: settings.fontSize,
+                                          fontFamily: settings.fontFamily,
+                                          fontFamilyFallback: kCjkFontFallback,
+                                        ),
+                                      )),
                                 ],
                               ),
-                            ),
-                          )
-                        else
-                          ...verseSamples.map((v) {
-                            final label = v['verseLabel'] as String;
-                            final ref =
-                                '${currentBook ?? ''} $currentChapter:$label';
-                            // 2026-05-19 (v1.2.58): switch the preview's
-                            // ad-hoc regex pipeline to the shared
-                            // `sanitizeForCopy` helper so the preview
-                            // matches the real copy output byte-for-byte.
-                            // Earlier regex chain stripped `{phrase}`
-                            // entirely (the v1.2.56 brace bug that was
-                            // only fixed in sanitize), and didn't strip
-                            // `\n` (which v1.2.57 added to ~292 verses
-                            // for poetry layout). Single helper, single
-                            // truth.
-                            final cleanText =
-                                sanitizeForCopy(v['text'] as String, stripParentheticals: settings.copyStripParentheticals);
-                            final headerText = settings.copyFormat == 'withRef'
-                                ? '[$ref] '
-                                : '';
-
-                            return Padding(
+                            ],
+                          ),
+                          SizedBox(height: 12 * s),
+                          // 2026-09-13: 「好像这里面有原文（）这个复制粘贴要不要包含应该在
+                          // setting有一个option toggle」. The CUV's translators' notes sit in
+                          // full-width parentheses inside the verse text; whether a copy keeps
+                          // them is a choice, made here beside the format it applies to. The
+                          // preview below follows it, so the reader sees the answer before
+                          // they paste.
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      uiStrings['copyStripNotes']
+                                              ?[settings.locale] ??
+                                          "Leave out translators' notes",
+                                      style: TextStyle(
+                                        fontFamily: settings.fontFamily,
+                                        fontFamilyFallback: kCjkFontFallback,
+                                        fontSize: settings.fontSize,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4 * s),
+                                    Text(
+                                      uiStrings['copyStripNotesHint']
+                                              ?[settings.locale] ??
+                                          'Notes in full-width parentheses, like （原文作…）, '
+                                              'are not copied.',
+                                      style: TextStyle(
+                                        fontFamily: settings.fontFamily,
+                                        fontFamilyFallback: kCjkFontFallback,
+                                        fontSize: settings.fontSize * 0.85,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                      ),
+                                    ),
+                                    // Ported from YsWords (2026-09-15): with
+                                    // the switch on and nothing in the preview
+                                    // to strip, say whether the CHAPTER has a
+                                    // note out of shot, or none at all.
+                                    if (settings.copyStripParentheticals &&
+                                        !verseSamples.any((v) =>
+                                            parentheticalNotePattern
+                                                .hasMatch(v['text'] as String)))
+                                      Builder(builder: (context) {
+                                        Verse? elsewhere;
+                                        for (final v in versesInChapter) {
+                                          if (parentheticalNotePattern
+                                              .hasMatch(v.text)) {
+                                            elsewhere = v;
+                                            break;
+                                          }
+                                        }
+                                        final text = elsewhere == null
+                                            ? (uiStrings[
+                                                        'copyStripNotesNothingHere']
+                                                    ?[settings.locale] ??
+                                                'This chapter has none, so the '
+                                                    'switch changes nothing here.')
+                                            : (uiStrings['copyStripNotesElsewhere']
+                                                        ?[settings.locale] ??
+                                                    'This chapter has one (verse '
+                                                        '{verse}), but not in the '
+                                                        'verses previewed above.')
+                                                .replaceAll('{verse}',
+                                                    elsewhere.verseLabel);
+                                        return Padding(
+                                          padding: EdgeInsets.only(top: 4 * s),
+                                          child: Text(
+                                            text,
+                                            style: TextStyle(
+                                              fontFamily: settings.fontFamily,
+                                              fontFamilyFallback:
+                                                  kCjkFontFallback,
+                                              fontSize:
+                                                  settings.fontSize * 0.85,
+                                              fontStyle: FontStyle.italic,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurfaceVariant,
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                  ],
+                                ),
+                              ),
+                              Switch.adaptive(
+                                value: settings.copyStripParentheticals,
+                                onChanged: settings.setCopyStripParentheticals,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12 * s),
+                          Text(
+                            currentBook != null && currentChapter != null
+                                ? '$currentBook $currentChapter'
+                                : uiStrings['noVersesAvailable']
+                                        ?[settings.locale] ??
+                                    'No verses available',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontFamily: settings.fontFamily,
+                                  fontFamilyFallback: kCjkFontFallback,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: settings.fontSize,
+                                ),
+                          ),
+                          SizedBox(height: 8 * s),
+                          if (settings.copyFormat == 'devotional')
+                            Padding(
                               padding: EdgeInsets.only(
                                   bottom: settings.lineSpacing * 2),
                               child: RichText(
@@ -655,519 +621,405 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
                                         ?.color,
                                   ),
                                   children: [
-                                    if (settings.copyFormat == 'plain') ...[
-                                      TextSpan(
-                                        text: '$label ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
-                                      ),
-                                      TextSpan(text: cleanText),
-                                    ] else ...[
-                                      TextSpan(text: '$headerText$cleanText'),
-                                    ],
+                                    TextSpan(
+                                      text: getDevotionalFormattedText(
+                                          stripParentheticals:
+                                              settings.copyStripParentheticals,
+                                          verseSamples,
+                                          currentBook,
+                                          currentChapter),
+                                    ),
                                   ],
                                 ),
                               ),
-                            );
-                          }),
-                        // Removed Copy Preview button and its padding
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16 * s),
-                // Round 56: Style preset picker. Bundles font + size +
-                // line spacing + menu scale + paragraph mode into
-                // named one-tap presets (Classic / Modern / Reverent
-                // / Compact / Reader). Sits at the top of Display so
-                // users see it before manually tuning each setting.
-                _StylePresetCard(settings: settings, s: s),
-                SizedBox(height: 16 * s),
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16 * s, vertical: 12 * s),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          uiStrings['fontFamily']?[settings.locale] ??
-                              'Font Family',
-                          style: TextStyle(
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(height: 12 * s),
-                        DropdownButton<String>(
-                          value: settings.fontSelection,
-                          isExpanded: true,
-                          onChanged: (val) {
-                            if (val != null) settings.setFontFamily(val);
-                          },
-                          // Each row physically renders in its own
-                          // font via [previewTextStyle], so the user
-                          // can compare options before picking. Every
-                          // option is either a bundled asset or a
-                          // system family that degrades to the engine
-                          // default when not installed — nothing here
-                          // is fetched at runtime.
-                          items: [
-                            for (final f in availableFontOptions())
-                              DropdownMenuItem(
-                                value: f.key,
-                                child: Text(
-                                  f.labelFor(settings.locale),
-                                  style: previewTextStyle(
-                                    f.key,
-                                    TextStyle(
+                            )
+                          else
+                            ...verseSamples.map((v) {
+                              final label = v['verseLabel'] as String;
+                              final ref =
+                                  '${currentBook ?? ''} $currentChapter:$label';
+                              // 2026-05-19 (v1.2.58): switch the preview's
+                              // ad-hoc regex pipeline to the shared
+                              // `sanitizeForCopy` helper so the preview
+                              // matches the real copy output byte-for-byte.
+                              // Earlier regex chain stripped `{phrase}`
+                              // entirely (the v1.2.56 brace bug that was
+                              // only fixed in sanitize), and didn't strip
+                              // `\n` (which v1.2.57 added to ~292 verses
+                              // for poetry layout). Single helper, single
+                              // truth.
+                              final cleanText = sanitizeForCopy(
+                                  v['text'] as String,
+                                  stripParentheticals:
+                                      settings.copyStripParentheticals);
+                              final headerText =
+                                  settings.copyFormat == 'withRef'
+                                      ? '[$ref] '
+                                      : '';
+
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: settings.lineSpacing * 2),
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
                                       fontSize: settings.fontSize,
+                                      fontFamily: settings.fontFamily,
+                                      fontFamilyFallback: kCjkFontFallback,
+                                      height: settings.lineSpacing,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color,
+                                    ),
+                                    children: [
+                                      if (settings.copyFormat == 'plain') ...[
+                                        TextSpan(
+                                          text: '$label ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        ),
+                                        TextSpan(text: cleanText),
+                                      ] else ...[
+                                        TextSpan(text: '$headerText$cleanText'),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                          // Removed Copy Preview button and its padding
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16 * s),
+                  // Round 56: Style preset picker. Bundles font + size +
+                  // line spacing + menu scale + paragraph mode into
+                  // named one-tap presets (Classic / Modern / Reverent
+                  // / Compact / Reader). Sits at the top of Display so
+                  // users see it before manually tuning each setting.
+                  _StylePresetCard(settings: settings, s: s),
+                  SizedBox(height: 16 * s),
+                  Card(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16 * s, vertical: 12 * s),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            uiStrings['fontFamily']?[settings.locale] ??
+                                'Font Family',
+                            style: TextStyle(
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: 12 * s),
+                          DropdownButton<String>(
+                            value: settings.fontSelection,
+                            isExpanded: true,
+                            onChanged: (val) {
+                              if (val != null) settings.setFontFamily(val);
+                            },
+                            // Each row physically renders in its own
+                            // font via [previewTextStyle], so the user
+                            // can compare options before picking. Every
+                            // option is either a bundled asset or a
+                            // system family that degrades to the engine
+                            // default when not installed — nothing here
+                            // is fetched at runtime.
+                            items: [
+                              for (final f in availableFontOptions())
+                                DropdownMenuItem(
+                                  value: f.key,
+                                  child: Text(
+                                    f.labelFor(settings.locale),
+                                    style: previewTextStyle(
+                                      f.key,
+                                      TextStyle(
+                                        fontSize: settings.fontSize,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                          ],
-                        ),
-                        SizedBox(height: 6 * s),
-                        Text(
-                          uiStrings['fontFamilyHint']?[settings.locale] ??
-                              'Bundled fonts (Roboto, Microsoft YaHei) work everywhere. Other choices use the system fonts installed on your device.',
-                          style: TextStyle(
-                            fontSize: settings.smallPrint(13),
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.6),
-                            fontStyle: FontStyle.italic,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
+                            ],
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 6 * s),
+                          Text(
+                            uiStrings['fontFamilyHint']?[settings.locale] ??
+                                'Bundled fonts (Roboto, Microsoft YaHei) work everywhere. Other choices use the system fonts installed on your device.',
+                            style: TextStyle(
+                              fontSize: settings.smallPrint(13),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: 0.6),
+                              fontStyle: FontStyle.italic,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 16 * s),
-                // Primary Color card - always visible (dark + light)
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16 * s, vertical: 12 * s),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          uiStrings['primaryColor']?[settings.locale] ??
-                              'Primary Color',
-                          style: TextStyle(
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
+                  SizedBox(height: 16 * s),
+                  // Primary Color card - always visible (dark + light)
+                  Card(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16 * s, vertical: 12 * s),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            uiStrings['primaryColor']?[settings.locale] ??
+                                'Primary Color',
+                            style: TextStyle(
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 12 * s),
-                        Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: palette.map((c) {
-                            final isSelected = settings.primaryColor == c;
-                            // Floor the avatar at ~22 dp so the swatch
-                            // never falls below a comfortable tap
-                            // target even when the user shrinks the
-                            // font size to its minimum.
-                            final avatarRadius =
-                                (settings.fontSize * 0.8).clamp(20.0, 28.0);
-                            return InkWell(
-                              onTap: () => settings.setPrimaryColor(c),
-                              child: Padding(
-                                // Padding pushes the actual hit-test
-                                // size up past 44 dp on every device
-                                // class without changing the visual
-                                // size of the swatch.
-                                padding: const EdgeInsets.all(4),
-                                child: Container(
-                                  width: avatarRadius * 2,
-                                  height: avatarRadius * 2,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: c,
-                                    border: Border.all(
-                                      color: isSelected
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .onSurface
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .outlineVariant,
-                                      width:
-                                          isSelected ? 2 : WbMetrics.hairline,
+                          SizedBox(height: 12 * s),
+                          Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: palette.map((c) {
+                              final isSelected = settings.primaryColor == c;
+                              // Floor the avatar at ~22 dp so the swatch
+                              // never falls below a comfortable tap
+                              // target even when the user shrinks the
+                              // font size to its minimum.
+                              final avatarRadius =
+                                  (settings.fontSize * 0.8).clamp(20.0, 28.0);
+                              return InkWell(
+                                onTap: () => settings.setPrimaryColor(c),
+                                child: Padding(
+                                  // Padding pushes the actual hit-test
+                                  // size up past 44 dp on every device
+                                  // class without changing the visual
+                                  // size of the swatch.
+                                  padding: const EdgeInsets.all(4),
+                                  child: Container(
+                                    width: avatarRadius * 2,
+                                    height: avatarRadius * 2,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: c,
+                                      border: Border.all(
+                                        color: isSelected
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .outlineVariant,
+                                        width:
+                                            isSelected ? 2 : WbMetrics.hairline,
+                                      ),
                                     ),
+                                    child: isSelected
+                                        ? Icon(Icons.check,
+                                            color: c.computeLuminance() > 0.5
+                                                ? Colors.black
+                                                : Colors.white,
+                                            size: settings.fontSize * 0.6)
+                                        : null,
                                   ),
-                                  child: isSelected
-                                      ? Icon(Icons.check,
-                                          color: c.computeLuminance() > 0.5
-                                              ? Colors.black
-                                              : Colors.white,
-                                          size: settings.fontSize * 0.6)
-                                      : null,
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 16 * s),
-                // 2026-09-13: the projector, set up here beside Copy — 「像
-                // copy风格一样在setting里面」. What the operator decides
-                // once (size, ground, which edition keeps the passage
-                // company) lives in Settings; what changes mid-service
-                // (blank, the verse) stays on the projection page.
-                _ProjectorCard(
-                  settings: settings,
-                  mainProvider: mainProvider,
-                  s: s,
-                  // TWO verses when the chapter has them. Three of the
-                  // four layout choices — run-together, verse numbers,
-                  // and what alignment does to a second line — are
-                  // invisible on a single verse, and a preview that
-                  // cannot show what a control does is not a preview.
-                  previewVerses: versesInChapter.take(2).toList(),
-                ),
-                SizedBox(height: 16 * s),
-                KeyedSubtree(
-                  key: _readingKey,
-                  child: _SectionHeader(uiStrings['settingsSectionReading']
-                          ?[settings.locale] ??
-                      'Reading'),
-                ),
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16 * s, vertical: 12 * s),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          uiStrings['themeMode']?[settings.locale] ??
-                              'Theme Mode',
-                          style: TextStyle(
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(height: 12 * s),
-                        DropdownButton<ThemeMode>(
-                          value: settings.themeMode,
-                          onChanged: (val) {
-                            if (val != null) settings.setThemeMode(val);
-                          },
-                          items: [
-                            DropdownMenuItem(
-                              value: ThemeMode.system,
-                              child: Text(
-                                uiStrings['themeSystem']?[settings.locale] ??
-                                    'System Default',
-                                style: TextStyle(
-                                  fontSize: settings.fontSize,
-                                  fontFamily: settings.fontFamily,
-                                  fontFamilyFallback: kCjkFontFallback,
-                                ),
-                              ),
-                            ),
-                            DropdownMenuItem(
-                              value: ThemeMode.light,
-                              child: Text(
-                                uiStrings['themeDay']?[settings.locale] ??
-                                    'Light Mode',
-                                style: TextStyle(
-                                  fontSize: settings.fontSize,
-                                  fontFamily: settings.fontFamily,
-                                  fontFamilyFallback: kCjkFontFallback,
-                                ),
-                              ),
-                            ),
-                            DropdownMenuItem(
-                              value: ThemeMode.dark,
-                              child: Text(
-                                uiStrings['themeNight']?[settings.locale] ??
-                                    'Dark Mode',
-                                style: TextStyle(
-                                  fontSize: settings.fontSize,
-                                  fontFamily: settings.fontFamily,
-                                  fontFamilyFallback: kCjkFontFallback,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  SizedBox(height: 16 * s),
+                  // 2026-09-13: the projector, set up here beside Copy — 「像
+                  // copy风格一样在setting里面」. What the operator decides
+                  // once (size, ground, which edition keeps the passage
+                  // company) lives in Settings; what changes mid-service
+                  // (blank, the verse) stays on the projection page.
+                  _ProjectorCard(
+                    settings: settings,
+                    mainProvider: mainProvider,
+                    s: s,
+                    // TWO verses when the chapter has them. Three of the
+                    // four layout choices — run-together, verse numbers,
+                    // and what alignment does to a second line — are
+                    // invisible on a single verse, and a preview that
+                    // cannot show what a control does is not a preview.
+                    previewVerses: versesInChapter.take(2).toList(),
                   ),
-                ),
-                SizedBox(height: 16 * s),
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16 * s, vertical: 12 * s),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          uiStrings['readingMode']?[settings.locale] ??
-                              'Reading Mode',
-                          style: TextStyle(
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
+                  SizedBox(height: 16 * s),
+                  KeyedSubtree(
+                    key: _readingKey,
+                    child: _SectionHeader(uiStrings['settingsSectionReading']
+                            ?[settings.locale] ??
+                        'Reading'),
+                  ),
+                  Card(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16 * s, vertical: 12 * s),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            uiStrings['themeMode']?[settings.locale] ??
+                                'Theme Mode',
+                            style: TextStyle(
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 12 * s),
-                        LayoutBuilder(
-                          builder: (context, toggleConstraints) {
-                            return ToggleButtons(
-                              isSelected: [
-                                !settings.paragraphMode,
-                                settings.paragraphMode
-                              ],
-                              onPressed: (index) =>
-                                  settings.setParagraphMode(index == 1),
-                              borderRadius: BorderRadius.zero,
-                              constraints: BoxConstraints(
-                                minHeight: 36,
-                                minWidth: (toggleConstraints.maxWidth - 8) / 2,
-                              ),
-                              children: [
-                                Text(
-                                  uiStrings['verseByVerse']?[settings.locale] ??
-                                      'Verse by Verse',
+                          SizedBox(height: 12 * s),
+                          DropdownButton<ThemeMode>(
+                            isExpanded: true,
+                            itemHeight: null,
+                            value: settings.themeMode,
+                            onChanged: (val) {
+                              if (val != null) settings.setThemeMode(val);
+                            },
+                            items: [
+                              DropdownMenuItem(
+                                value: ThemeMode.system,
+                                child: Text(
+                                  uiStrings['themeSystem']?[settings.locale] ??
+                                      'System Default',
                                   style: TextStyle(
-                                    fontSize: settings.fontSize * 0.9,
+                                    fontSize: settings.fontSize,
                                     fontFamily: settings.fontFamily,
                                     fontFamilyFallback: kCjkFontFallback,
                                   ),
                                 ),
-                                Text(
-                                  uiStrings['paragraphFlow']
-                                          ?[settings.locale] ??
-                                      'Paragraph Flow',
+                              ),
+                              DropdownMenuItem(
+                                value: ThemeMode.light,
+                                child: Text(
+                                  uiStrings['themeDay']?[settings.locale] ??
+                                      'Light Mode',
                                   style: TextStyle(
-                                    fontSize: settings.fontSize * 0.9,
+                                    fontSize: settings.fontSize,
                                     fontFamily: settings.fontFamily,
                                     fontFamilyFallback: kCjkFontFallback,
                                   ),
                                 ),
-                              ],
-                            );
-                          },
-                        ),
-                      ],
+                              ),
+                              DropdownMenuItem(
+                                value: ThemeMode.dark,
+                                child: Text(
+                                  uiStrings['themeNight']?[settings.locale] ??
+                                      'Dark Mode',
+                                  style: TextStyle(
+                                    fontSize: settings.fontSize,
+                                    fontFamily: settings.fontFamily,
+                                    fontFamilyFallback: kCjkFontFallback,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 16 * s),
-                // 2026-05-07 (v17): the "Offline Mode" toggle was
-                // removed from this card. The bool was persisted in
-                // SharedPreferences but never read by any other code
-                // path -- a piece of dead UI that suggested the user
-                // could opt out of network use, which was never true.
-                // The Flutter web service worker decides what's cached;
-                // the dedicated "Offline pack" card lower in this page
-                // is the real "make this work without network" knob.
-                Card(
-                  child: Column(
-                    children: [
-                      // 2026-08 (ported from YsWords v1.3.156): warm-paper
-                      // reading theme, toggled independently of the app-wide
-                      // ThemeMode above.
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['readingPaperTheme']?[settings.locale] ??
-                              'Paper reading theme',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
+                  SizedBox(height: 16 * s),
+                  Card(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16 * s, vertical: 12 * s),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            uiStrings['readingMode']?[settings.locale] ??
+                                'Reading Mode',
+                            style: TextStyle(
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['readingPaperThemeSubtitle']
-                                  ?[settings.locale] ??
-                              'Switch the reading pane to a warm, paper-like '
-                                  'background for more comfortable long '
-                                  'reading sessions.',
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
+                          SizedBox(height: 12 * s),
+                          LayoutBuilder(
+                            builder: (context, toggleConstraints) {
+                              return ToggleButtons(
+                                isSelected: [
+                                  !settings.paragraphMode,
+                                  settings.paragraphMode
+                                ],
+                                onPressed: (index) =>
+                                    settings.setParagraphMode(index == 1),
+                                borderRadius: BorderRadius.zero,
+                                constraints: BoxConstraints(
+                                  minHeight: 36,
+                                  minWidth:
+                                      (toggleConstraints.maxWidth - 8) / 2,
+                                  maxWidth:
+                                      (toggleConstraints.maxWidth - 8) / 2,
+                                ),
+                                children: [
+                                  Text(
+                                    uiStrings['verseByVerse']
+                                            ?[settings.locale] ??
+                                        'Verse by Verse',
+                                    style: TextStyle(
+                                      fontSize: settings.fontSize * 0.9,
+                                      fontFamily: settings.fontFamily,
+                                      fontFamilyFallback: kCjkFontFallback,
+                                    ),
+                                  ),
+                                  Text(
+                                    uiStrings['paragraphFlow']
+                                            ?[settings.locale] ??
+                                        'Paragraph Flow',
+                                    style: TextStyle(
+                                      fontSize: settings.fontSize * 0.9,
+                                      fontFamily: settings.fontFamily,
+                                      fontFamilyFallback: kCjkFontFallback,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
-                        ),
-                        value: settings.readingPaperTheme,
-                        onChanged: (val) => settings.setReadingPaperTheme(val),
+                        ],
                       ),
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['boldVerseText']?[settings.locale] ??
-                              'Bold verse text',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['boldVerseTextSubtitle']
-                                  ?[settings.locale] ??
-                              'Render scripture body text in semi-bold weight.',
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.boldVerseText,
-                        onChanged: (val) => settings.setBoldVerseText(val),
-                      ),
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['showSectionTitles']?[settings.locale] ??
-                              'Section titles',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['showSectionTitlesSubtitle']
-                                  ?[settings.locale] ??
-                              'Render paragraph headings (e.g. "The Sermon '
-                                  'on the Mount") above the verse.',
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.showSectionTitles,
-                        onChanged: (val) => settings.setShowSectionTitles(val),
-                      ),
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['showBookIntro']?[settings.locale] ??
-                              'Book introductions',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['showBookIntroSubtitle']
-                                  ?[settings.locale] ??
-                              'Show a collapsible card at the top of '
-                                  'chapter 1 with the book\'s author, '
-                                  'date, themes, and key passage.',
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.showBookIntro,
-                        onChanged: (val) => settings.setShowBookIntro(val),
-                      ),
-                      // Round 56: removed the "Pick verse after
-                      // chapter" toggle. The picker now always shows
-                      // book → chapter → verse as 3-step grid flow,
-                      // matching how YouVersion / Bible Hub etc. work
-                      // and per user request: "选择节应该全部用 grid mode".
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['showStrongsBadge']?[settings.locale] ??
-                              "Show Strong's number on word chips",
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['showStrongsBadgeSubtitle']
-                                  ?[settings.locale] ??
-                              "Display the G#### / H#### badge under each Hebrew/Greek word in the exegesis sheet.",
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.showStrongsInOriginals,
-                        onChanged: (val) =>
-                            settings.setShowStrongsInOriginals(val),
-                      ),
-                      const Divider(height: 1),
-                      // 2026-09-20: 「希腊希伯来文总是出现」. Browse
-                      // appended the originals line to every verse with
-                      // nothing to turn it off. Off by default: a
-                      // reader who wants them asks for them.
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['showOriginalRows']?[settings.locale] ??
-                              'Show the original languages in Browse',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['showOriginalRowsSubtitle']
-                                  ?[settings.locale] ??
-                              'Print the Greek (BGT) or Hebrew (WTT) line '
-                                  'under each verse in the comparison view.',
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.showOriginalRows,
-                        onChanged: (val) => settings.setShowOriginalRows(val),
-                      ),
-                      // bwh47. Under the search/originals block
-                      // because it is about which TEXTS the app holds,
-                      // and shown only where there is a store to hold
-                      // them — a control that cannot work is not a
-                      // feature, it is a promise.
-                      if (canPickTextFile && LocalVersionStore.isAvailable) ...[
-                        const Divider(height: 1),
-                        ListTile(
+                    ),
+                  ),
+                  SizedBox(height: 16 * s),
+                  // 2026-05-07 (v17): the "Offline Mode" toggle was
+                  // removed from this card. The bool was persisted in
+                  // SharedPreferences but never read by any other code
+                  // path -- a piece of dead UI that suggested the user
+                  // could opt out of network use, which was never true.
+                  // The Flutter web service worker decides what's cached;
+                  // the dedicated "Offline pack" card lower in this page
+                  // is the real "make this work without network" knob.
+                  Card(
+                    child: Column(
+                      children: [
+                        // 2026-08 (ported from YsWords v1.3.156): warm-paper
+                        // reading theme, toggled independently of the app-wide
+                        // ThemeMode above.
+                        SwitchListTile(
                           title: Text(
-                            uiStrings['importVersionTitle']?[settings.locale] ??
-                                'Import your own Bible',
+                            uiStrings['readingPaperTheme']?[settings.locale] ??
+                                'Paper reading theme',
                             style: TextStyle(
                               fontSize: settings.fontSize + 2,
                               fontWeight: FontWeight.w600,
@@ -1176,540 +1028,722 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
                             ),
                           ),
                           subtitle: Text(
-                            uiStrings['importVersionSubtitle']
+                            uiStrings['readingPaperThemeSubtitle']
                                     ?[settings.locale] ??
-                                'A JSON file of verses. Stored on this '
-                                    'device only.',
+                                'Switch the reading pane to a warm, paper-like '
+                                    'background for more comfortable long '
+                                    'reading sessions.',
                             style: TextStyle(
                               fontSize: settings.fontSize,
                               fontFamily: settings.fontFamily,
                               fontFamilyFallback: kCjkFontFallback,
                             ),
                           ),
-                          trailing: const Icon(Icons.file_open_outlined),
-                          onTap: () => _importVersion(context, settings),
+                          value: settings.readingPaperTheme,
+                          onChanged: (val) =>
+                              settings.setReadingPaperTheme(val),
                         ),
-                        ValueListenableBuilder<int>(
-                          valueListenable: VersionImportService.changes,
-                          builder: (context, _, __) => Column(
-                            children: [
-                              for (final e in importedVersionLabels.entries)
-                                ListTile(
-                                  dense: true,
-                                  title: Text(
-                                    e.value,
-                                    style: TextStyle(
-                                      fontSize: settings.fontSize,
-                                      fontFamily: settings.fontFamily,
-                                      fontFamilyFallback: kCjkFontFallback,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    uiStrings['aboutLicenseUserSupplied']
-                                            ?[settings.locale] ??
-                                        'Supplied by you',
-                                    style: TextStyle(
-                                      fontSize: settings.fontSize - 1,
-                                      fontFamily: settings.fontFamily,
-                                      fontFamilyFallback: kCjkFontFallback,
-                                    ),
-                                  ),
-                                  trailing: IconButton(
-                                    icon: const Icon(Icons.delete_outline),
-                                    tooltip: uiStrings['importVersionForget']
-                                            ?[settings.locale] ??
-                                        'Remove from this device',
-                                    onPressed: () => _forgetImportedVersion(
-                                        context, settings, e.key, e.value),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
-                      // bwh16's Cross Versions Search Mode. A dropdown
-                      // and not three switches: the modes are exclusive
-                      // and widen in one direction, so a list the reader
-                      // reads top to bottom says that and a row of
-                      // toggles does not.
-                      const Divider(height: 1),
-                      ListTile(
-                        title: Text(
-                          uiStrings['crossVersionSearchMode']
-                                  ?[settings.locale] ??
-                              'Cross-version search',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        // The dropdown is NOT `trailing:`. A ListTile
-                        // lays its trailing widget out first, at
-                        // whatever width it asks for, and a
-                        // DropdownButton asks for its WIDEST item —
-                        // 「同語言，全部版本」 here. On a 390 px phone
-                        // that left the title about one character wide
-                        // and it wrapped down the screen a letter at a
-                        // time. Under the subtitle instead, full width
-                        // with `isExpanded`, so the title always gets
-                        // the row and the dropdown ellipsizes inside it.
-                        isThreeLine: true,
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              uiStrings['crossVersionSearchModeSubtitle']
-                                      ?[settings.locale] ??
-                                  'Runs the same query against several '
-                                      'editions of the same language.',
-                              style: TextStyle(
-                                fontSize: settings.fontSize,
-                                fontFamily: settings.fontFamily,
-                                fontFamilyFallback: kCjkFontFallback,
-                              ),
-                            ),
-                            DropdownButton<CrossVersionSearchMode>(
-                          isExpanded: true,
-                          value: settings.crossVersionSearchMode,
-                          underline: const SizedBox.shrink(),
-                          onChanged: (m) {
-                            if (m != null) {
-                              settings.setCrossVersionSearchMode(m);
-                            }
-                          },
-                          items: [
-                            for (final m in CrossVersionSearchMode.values)
-                              DropdownMenuItem(
-                                value: m,
-                                child: Text(
-                                  uiStrings[_crossVersionModeKey(m)]
-                                          ?[settings.locale] ??
-                                      m.name,
-                                  style: TextStyle(
-                                    fontSize: settings.fontSize,
-                                    fontFamily: settings.fontFamily,
-                                    fontFamilyFallback: kCjkFontFallback,
-                                  ),
-                                ),
-                              ),
-                          ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      // bwh17's switch. Beside bwh29's two, because all
-                      // three are about how the Hebrew and Greek are read
-                      // rather than about the search box.
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['searchIgnoresPointing']
-                                  ?[settings.locale] ??
-                              'Ignore Hebrew vowel points and Greek accents '
-                                  'in searches',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['searchIgnoresPointingSubtitle']
-                                  ?[settings.locale] ??
-                              'On by default, so you can type what you see.',
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.searchIgnoresPointing,
-                        onChanged: (val) =>
-                            settings.setSearchIgnoresPointing(val),
-                      ),
-                      // Off by default and said so in the subtitle. The
-                      // literal rung always runs first, so this can only
-                      // add rows — and each added row names the rung
-                      // that found it, which is what keeps an exact
-                      // search explainable while it is on.
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: Text(
-                          fuzzySearchStrings['fuzzySearchSetting']
-                                  ?[settings.locale] ??
-                              fuzzySearchStrings['fuzzySearchSetting']!['en']!,
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          fuzzySearchStrings['fuzzySearchSettingSubtitle']
-                                  ?[settings.locale] ??
-                              fuzzySearchStrings['fuzzySearchSettingSubtitle']![
-                                  'en']!,
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.fuzzySearch,
-                        onChanged: (val) => settings.setFuzzySearch(val),
-                      ),
-                      // bwh29's two switches. Placed beside the other
-                      // originals-text controls rather than under a
-                      // "search" heading, because what they are about is
-                      // the Hebrew text — a reader looking for them will
-                      // look where the K/Q marks they can see are
-                      // configured.
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['excludeKetivFromSearch']
-                                  ?[settings.locale] ??
-                              'Exclude the Ketiv (written form) from searches',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['excludeKetivFromSearchSubtitle']
-                                  ?[settings.locale] ??
-                              '1,103 verses of the Hebrew Bible carry two '
-                                  'readings.',
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.excludeKetivFromSearch,
-                        onChanged: (val) =>
-                            settings.setExcludeKetivFromSearch(val),
-                      ),
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['excludeQereFromSearch']
-                                  ?[settings.locale] ??
-                              'Exclude the Qere (read form) from searches',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['excludeQereFromSearchSubtitle']
-                                  ?[settings.locale] ??
-                              'The same, for the form the Masoretes direct '
-                                  'be read.',
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.excludeQereFromSearch,
-                        onChanged: (val) =>
-                            settings.setExcludeQereFromSearch(val),
-                      ),
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: Text(
-                          uiStrings['autoExpandFirstRef']?[settings.locale] ??
-                              'Auto-expand first verse group',
-                          style: TextStyle(
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        subtitle: Text(
-                          uiStrings['autoExpandFirstRefSubtitle']
-                                  ?[settings.locale] ??
-                              "Automatically open the first book group of concordance refs in the exegesis sheet.",
-                          style: TextStyle(
-                            fontSize: settings.fontSize,
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                          ),
-                        ),
-                        value: settings.autoExpandFirstRef,
-                        onChanged: (val) => settings.setAutoExpandFirstRef(val),
-                      ),
-                      // 2026-05-07 (v17): "Check for Updates" tile
-                      // removed. It re-ran FetchVerses against the
-                      // already-bundled assets and unconditionally
-                      // showed "You're up to date", making it pure
-                      // theatre. Real PWA updates are driven by the
-                      // service worker (replaced on next reload), and
-                      // the "Clear cache & reload" button further down
-                      // this page already provides an honest force-
-                      // refresh path.
-                    ],
-                  ),
-                ),
-                SizedBox(height: 16 * s),
-                _SectionHeader(
-                    uiStrings['settingsSectionApp']?[settings.locale] ?? 'App'),
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16 * s),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          uiStrings['interfaceLanguage']?[settings.locale] ??
-                              'Interface Language',
-                          style: TextStyle(
-                            fontFamily: settings.fontFamily,
-                            fontFamilyFallback: kCjkFontFallback,
-                            fontSize: settings.fontSize + 2,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(height: 8 * s),
-                        DropdownButton<String>(
-                          value: settings.locale,
-                          onChanged: (val) {
-                            if (val != null) settings.setLocale(val);
-                          },
-                          items: [
-                            DropdownMenuItem(
-                              value: 'zh-Hans',
-                              child: Text('简体中文',
-                                  style: TextStyle(
-                                    fontSize: settings.fontSize,
-                                    fontFamily: settings.fontFamily,
-                                    fontFamilyFallback: kCjkFontFallback,
-                                  )),
-                            ),
-                            DropdownMenuItem(
-                              value: 'zh-Hant',
-                              child: Text('繁體中文',
-                                  style: TextStyle(
-                                    fontSize: settings.fontSize,
-                                    fontFamily: settings.fontFamily,
-                                    fontFamilyFallback: kCjkFontFallback,
-                                  )),
-                            ),
-                            DropdownMenuItem(
-                              value: 'en',
-                              child: Text('English',
-                                  style: TextStyle(
-                                    fontSize: settings.fontSize,
-                                    fontFamily: settings.fontFamily,
-                                    fontFamilyFallback: kCjkFontFallback,
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                // 2026-09-08: the daily update check's switch. It lives
-                // under App rather than under About — About is where you
-                // check by hand, this is a standing preference about a
-                // daily network request, and the two are different
-                // questions. Hidden entirely on the web, where the PWA
-                // serves the newest build on reload and there is nothing
-                // to ask about.
-                if (UpdateService.isSupported) ...[
-                  SizedBox(height: 12 * s),
-                  // 2026-09-14: 「words sword apk setting里面要有一个检查
-                  // 更新的按键」. It was on the About page and nowhere
-                  // else, which is two screens from where a reader looks
-                  // — the sibling Words app has had it in Settings
-                  // beside the switch since the switch existed.
-                  //
-                  // Three doors now, and they are the same flow: this
-                  // button, Help ▸ Check for updates in the menu bar, and
-                  // the periodic check that raises the banner. All of
-                  // them end in `installUpdateInApp` on Android.
-                  //
-                  // 2026-09-15, from a tablet photo with the whole block
-                  // circled: 「这一块字体感觉很不协调」.
-                  //
-                  // Three things about one subject, in three cards, each
-                  // with its own left edge (12 px, 4 px, and a
-                  // ListTile's own 16) — and the check set in the
-                  // theme's label type while the two below it followed
-                  // the reader's font size. Nothing was individually
-                  // broken, which is why it survived a year of reading:
-                  // it simply did not read as ONE thing.
-                  //
-                  // One card, one inset, one type. The check is still
-                  // the same widget the About page shows; it is only
-                  // told which room it is standing in.
-                  Card(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 4, vertical: 4 * s),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Align(
-                            alignment: AlignmentDirectional.centerStart,
-                            child: UpdateCheckTile(
-                              locale: settings.locale,
-                              scheme: Theme.of(context).colorScheme,
-                              iconSize: 24,
-                              labelStyle: TextStyle(
-                                fontSize: settings.fontSize,
-                                fontFamily: settings.fontFamily,
-                                fontFamilyFallback: kCjkFontFallback,
-                                fontWeight: FontWeight.w600,
-                              ),
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: Text(
+                            uiStrings['boldVerseText']?[settings.locale] ??
+                                'Bold verse text',
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
                             ),
                           ),
-                          _SettingsSwitch(
-                            settings: settings,
-                            icon: Icons.system_update_alt_rounded,
-                            label: uiStrings['settingsAutoCheckUpdates']
+                          subtitle: Text(
+                            uiStrings['boldVerseTextSubtitle']
                                     ?[settings.locale] ??
-                                'Check for updates automatically',
-                            subtitle: uiStrings[
-                                    'settingsAutoCheckUpdatesHint']
-                                ?[settings.locale],
-                            value: settings.autoCheckUpdates,
-                            onChanged: settings.setAutoCheckUpdates,
+                                'Render scripture body text in semi-bold weight.',
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
                           ),
-                          // 2026-09-14: the interval, which used to be a
-                          // compiled `Duration(days: 1)`. Under the
-                          // switch and disabled with it — a frequency
-                          // for a check that is off is a control with
-                          // nothing to do, and greying it says so better
-                          // than hiding it, which would leave a reader
-                          // who turned the switch off wondering where
-                          // the choice went.
+                          value: settings.boldVerseText,
+                          onChanged: (val) => settings.setBoldVerseText(val),
+                        ),
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: Text(
+                            uiStrings['showSectionTitles']?[settings.locale] ??
+                                'Section titles',
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          subtitle: Text(
+                            uiStrings['showSectionTitlesSubtitle']
+                                    ?[settings.locale] ??
+                                'Render paragraph headings (e.g. "The Sermon '
+                                    'on the Mount") above the verse.',
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          value: settings.showSectionTitles,
+                          onChanged: (val) =>
+                              settings.setShowSectionTitles(val),
+                        ),
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: Text(
+                            uiStrings['showBookIntro']?[settings.locale] ??
+                                'Book introductions',
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          subtitle: Text(
+                            uiStrings['showBookIntroSubtitle']
+                                    ?[settings.locale] ??
+                                'Show a collapsible card at the top of '
+                                    'chapter 1 with the book\'s author, '
+                                    'date, themes, and key passage.',
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          value: settings.showBookIntro,
+                          onChanged: (val) => settings.setShowBookIntro(val),
+                        ),
+                        // Round 56: removed the "Pick verse after
+                        // chapter" toggle. The picker now always shows
+                        // book → chapter → verse as 3-step grid flow,
+                        // matching how YouVersion / Bible Hub etc. work
+                        // and per user request: "选择节应该全部用 grid mode".
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: Text(
+                            uiStrings['showStrongsBadge']?[settings.locale] ??
+                                "Show Strong's number on word chips",
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          subtitle: Text(
+                            uiStrings['showStrongsBadgeSubtitle']
+                                    ?[settings.locale] ??
+                                "Display the G#### / H#### badge under each Hebrew/Greek word in the exegesis sheet.",
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          value: settings.showStrongsInOriginals,
+                          onChanged: (val) =>
+                              settings.setShowStrongsInOriginals(val),
+                        ),
+                        const Divider(height: 1),
+                        // 2026-09-20: 「希腊希伯来文总是出现」. Browse
+                        // appended the originals line to every verse with
+                        // nothing to turn it off. Off by default: a
+                        // reader who wants them asks for them.
+                        SwitchListTile(
+                          title: Text(
+                            uiStrings['showOriginalRows']?[settings.locale] ??
+                                'Show the original languages in Browse',
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          subtitle: Text(
+                            uiStrings['showOriginalRowsSubtitle']
+                                    ?[settings.locale] ??
+                                'Print the Greek (BGT) or Hebrew (WTT) line '
+                                    'under each verse in the comparison view.',
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          value: settings.showOriginalRows,
+                          onChanged: (val) => settings.setShowOriginalRows(val),
+                        ),
+                        // bwh47. Under the search/originals block
+                        // because it is about which TEXTS the app holds,
+                        // and shown only where there is a store to hold
+                        // them — a control that cannot work is not a
+                        // feature, it is a promise.
+                        if (canPickTextFile &&
+                            LocalVersionStore.isAvailable) ...[
+                          const Divider(height: 1),
                           ListTile(
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 4),
-                            dense: true,
-                            enabled: settings.autoCheckUpdates,
-                            leading: const Icon(Icons.schedule_rounded),
                             title: Text(
-                              uiStrings['settingsUpdateFrequency']
+                              uiStrings['importVersionTitle']
                                       ?[settings.locale] ??
-                                  'How often',
+                                  'Import your own Bible',
+                              style: TextStyle(
+                                fontSize: settings.fontSize + 2,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: settings.fontFamily,
+                                fontFamilyFallback: kCjkFontFallback,
+                              ),
+                            ),
+                            subtitle: Text(
+                              uiStrings['importVersionSubtitle']
+                                      ?[settings.locale] ??
+                                  'A JSON file of verses. Stored on this '
+                                      'device only.',
                               style: TextStyle(
                                 fontSize: settings.fontSize,
                                 fontFamily: settings.fontFamily,
                                 fontFamilyFallback: kCjkFontFallback,
                               ),
                             ),
-                            // Under the title, not `trailing:` — see the
-                            // cross-version tile above for what a wide
-                            // DropdownButton in a ListTile's trailing
-                            // slot does to the title on a phone.
-                            subtitle: DropdownButton<UpdateCheckFrequency>(
-                              isExpanded: true,
-                              value: settings.updateCheckFrequency,
-                              underline: const SizedBox.shrink(),
-                              onChanged: settings.autoCheckUpdates
-                                  ? (f) {
-                                      if (f != null) {
-                                        settings.setUpdateCheckFrequency(f);
-                                      }
-                                    }
-                                  : null,
-                              items: [
-                                for (final f in UpdateCheckFrequency.values)
-                                  DropdownMenuItem(
-                                    value: f,
-                                    child: Text(
-                                      uiStrings[_updateFrequencyKey(f)]
-                                              ?[settings.locale] ??
-                                          f.prefValue,
+                            trailing: const Icon(Icons.file_open_outlined),
+                            onTap: () => _importVersion(context, settings),
+                          ),
+                          ValueListenableBuilder<int>(
+                            valueListenable: VersionImportService.changes,
+                            builder: (context, _, __) => Column(
+                              children: [
+                                for (final e in importedVersionLabels.entries)
+                                  ListTile(
+                                    dense: true,
+                                    title: Text(
+                                      e.value,
                                       style: TextStyle(
                                         fontSize: settings.fontSize,
                                         fontFamily: settings.fontFamily,
                                         fontFamilyFallback: kCjkFontFallback,
                                       ),
                                     ),
+                                    subtitle: Text(
+                                      uiStrings['aboutLicenseUserSupplied']
+                                              ?[settings.locale] ??
+                                          'Supplied by you',
+                                      style: TextStyle(
+                                        fontSize: settings.fontSize - 1,
+                                        fontFamily: settings.fontFamily,
+                                        fontFamilyFallback: kCjkFontFallback,
+                                      ),
+                                    ),
+                                    trailing: IconButton(
+                                      icon: const Icon(Icons.delete_outline),
+                                      tooltip: uiStrings['importVersionForget']
+                                              ?[settings.locale] ??
+                                          'Remove from this device',
+                                      onPressed: () => _forgetImportedVersion(
+                                          context, settings, e.key, e.value),
+                                    ),
                                   ),
                               ],
                             ),
                           ),
                         ],
+                        // bwh16's Cross Versions Search Mode. A dropdown
+                        // and not three switches: the modes are exclusive
+                        // and widen in one direction, so a list the reader
+                        // reads top to bottom says that and a row of
+                        // toggles does not.
+                        const Divider(height: 1),
+                        ListTile(
+                          title: Text(
+                            uiStrings['crossVersionSearchMode']
+                                    ?[settings.locale] ??
+                                'Cross-version search',
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          // The dropdown is NOT `trailing:`. A ListTile
+                          // lays its trailing widget out first, at
+                          // whatever width it asks for, and a
+                          // DropdownButton asks for its WIDEST item —
+                          // 「同語言，全部版本」 here. On a 390 px phone
+                          // that left the title about one character wide
+                          // and it wrapped down the screen a letter at a
+                          // time. Under the subtitle instead, full width
+                          // with `isExpanded`, so the title always gets
+                          // the row and the dropdown ellipsizes inside it.
+                          isThreeLine: true,
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                uiStrings['crossVersionSearchModeSubtitle']
+                                        ?[settings.locale] ??
+                                    'Runs the same query against several '
+                                        'editions of the same language.',
+                                style: TextStyle(
+                                  fontSize: settings.fontSize,
+                                  fontFamily: settings.fontFamily,
+                                  fontFamilyFallback: kCjkFontFallback,
+                                ),
+                              ),
+                              DropdownButton<CrossVersionSearchMode>(
+                                isExpanded: true,
+                                value: settings.crossVersionSearchMode,
+                                underline: const SizedBox.shrink(),
+                                onChanged: (m) {
+                                  if (m != null) {
+                                    settings.setCrossVersionSearchMode(m);
+                                  }
+                                },
+                                items: [
+                                  for (final m in CrossVersionSearchMode.values)
+                                    DropdownMenuItem(
+                                      value: m,
+                                      child: Text(
+                                        uiStrings[_crossVersionModeKey(m)]
+                                                ?[settings.locale] ??
+                                            m.name,
+                                        style: TextStyle(
+                                          fontSize: settings.fontSize,
+                                          fontFamily: settings.fontFamily,
+                                          fontFamilyFallback: kCjkFontFallback,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        // bwh17's switch. Beside bwh29's two, because all
+                        // three are about how the Hebrew and Greek are read
+                        // rather than about the search box.
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: Text(
+                            uiStrings['searchIgnoresPointing']
+                                    ?[settings.locale] ??
+                                'Ignore Hebrew vowel points and Greek accents '
+                                    'in searches',
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          subtitle: Text(
+                            uiStrings['searchIgnoresPointingSubtitle']
+                                    ?[settings.locale] ??
+                                'On by default, so you can type what you see.',
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          value: settings.searchIgnoresPointing,
+                          onChanged: (val) =>
+                              settings.setSearchIgnoresPointing(val),
+                        ),
+                        // Off by default and said so in the subtitle. The
+                        // literal rung always runs first, so this can only
+                        // add rows — and each added row names the rung
+                        // that found it, which is what keeps an exact
+                        // search explainable while it is on.
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: Text(
+                            fuzzySearchStrings['fuzzySearchSetting']
+                                    ?[settings.locale] ??
+                                fuzzySearchStrings['fuzzySearchSetting']![
+                                    'en']!,
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          subtitle: Text(
+                            fuzzySearchStrings['fuzzySearchSettingSubtitle']
+                                    ?[settings.locale] ??
+                                fuzzySearchStrings[
+                                    'fuzzySearchSettingSubtitle']!['en']!,
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          value: settings.fuzzySearch,
+                          onChanged: (val) => settings.setFuzzySearch(val),
+                        ),
+                        // bwh29's two switches. Placed beside the other
+                        // originals-text controls rather than under a
+                        // "search" heading, because what they are about is
+                        // the Hebrew text — a reader looking for them will
+                        // look where the K/Q marks they can see are
+                        // configured.
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: Text(
+                            uiStrings['excludeKetivFromSearch']
+                                    ?[settings.locale] ??
+                                'Exclude the Ketiv (written form) from searches',
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          subtitle: Text(
+                            uiStrings['excludeKetivFromSearchSubtitle']
+                                    ?[settings.locale] ??
+                                '1,103 verses of the Hebrew Bible carry two '
+                                    'readings.',
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          value: settings.excludeKetivFromSearch,
+                          onChanged: (val) =>
+                              settings.setExcludeKetivFromSearch(val),
+                        ),
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: Text(
+                            uiStrings['excludeQereFromSearch']
+                                    ?[settings.locale] ??
+                                'Exclude the Qere (read form) from searches',
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          subtitle: Text(
+                            uiStrings['excludeQereFromSearchSubtitle']
+                                    ?[settings.locale] ??
+                                'The same, for the form the Masoretes direct '
+                                    'be read.',
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          value: settings.excludeQereFromSearch,
+                          onChanged: (val) =>
+                              settings.setExcludeQereFromSearch(val),
+                        ),
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: Text(
+                            uiStrings['autoExpandFirstRef']?[settings.locale] ??
+                                'Auto-expand first verse group',
+                            style: TextStyle(
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          subtitle: Text(
+                            uiStrings['autoExpandFirstRefSubtitle']
+                                    ?[settings.locale] ??
+                                "Automatically open the first book group of concordance refs in the exegesis sheet.",
+                            style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                            ),
+                          ),
+                          value: settings.autoExpandFirstRef,
+                          onChanged: (val) =>
+                              settings.setAutoExpandFirstRef(val),
+                        ),
+                        // 2026-05-07 (v17): "Check for Updates" tile
+                        // removed. It re-ran FetchVerses against the
+                        // already-bundled assets and unconditionally
+                        // showed "You're up to date", making it pure
+                        // theatre. Real PWA updates are driven by the
+                        // service worker (replaced on next reload), and
+                        // the "Clear cache & reload" button further down
+                        // this page already provides an honest force-
+                        // refresh path.
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 16 * s),
+                  _SectionHeader(uiStrings['settingsSectionApp']
+                          ?[settings.locale] ??
+                      'App'),
+                  Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(16 * s),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            uiStrings['interfaceLanguage']?[settings.locale] ??
+                                'Interface Language',
+                            style: TextStyle(
+                              fontFamily: settings.fontFamily,
+                              fontFamilyFallback: kCjkFontFallback,
+                              fontSize: settings.fontSize + 2,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: 8 * s),
+                          DropdownButton<String>(
+                            isExpanded: true,
+                            itemHeight: null,
+                            value: settings.locale,
+                            onChanged: (val) {
+                              if (val != null) settings.setLocale(val);
+                            },
+                            items: [
+                              DropdownMenuItem(
+                                value: 'zh-Hans',
+                                child: Text('简体中文',
+                                    style: TextStyle(
+                                      fontSize: settings.fontSize,
+                                      fontFamily: settings.fontFamily,
+                                      fontFamilyFallback: kCjkFontFallback,
+                                    )),
+                              ),
+                              DropdownMenuItem(
+                                value: 'zh-Hant',
+                                child: Text('繁體中文',
+                                    style: TextStyle(
+                                      fontSize: settings.fontSize,
+                                      fontFamily: settings.fontFamily,
+                                      fontFamilyFallback: kCjkFontFallback,
+                                    )),
+                              ),
+                              DropdownMenuItem(
+                                value: 'en',
+                                child: Text('English',
+                                    style: TextStyle(
+                                      fontSize: settings.fontSize,
+                                      fontFamily: settings.fontFamily,
+                                      fontFamilyFallback: kCjkFontFallback,
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-                // 2026-10-06: the web app and the store builds have no GitHub
-                // updater, so the block above hides itself for them and they
-                // had NO way to ask. This is that way.
-                if (!UpdateService.isSupported) ...[
-                  SizedBox(height: 12 * s),
-                  Card(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 4, vertical: 4 * s),
-                      child: ManualUpdateTile(locale: settings.locale),
+                  // 2026-09-08: the daily update check's switch. It lives
+                  // under App rather than under About — About is where you
+                  // check by hand, this is a standing preference about a
+                  // daily network request, and the two are different
+                  // questions. Hidden entirely on the web, where the PWA
+                  // serves the newest build on reload and there is nothing
+                  // to ask about.
+                  if (UpdateService.isSupported) ...[
+                    SizedBox(height: 12 * s),
+                    // 2026-09-14: 「words sword apk setting里面要有一个检查
+                    // 更新的按键」. It was on the About page and nowhere
+                    // else, which is two screens from where a reader looks
+                    // — the sibling Words app has had it in Settings
+                    // beside the switch since the switch existed.
+                    //
+                    // Three doors now, and they are the same flow: this
+                    // button, Help ▸ Check for updates in the menu bar, and
+                    // the periodic check that raises the banner. All of
+                    // them end in `installUpdateInApp` on Android.
+                    //
+                    // 2026-09-15, from a tablet photo with the whole block
+                    // circled: 「这一块字体感觉很不协调」.
+                    //
+                    // Three things about one subject, in three cards, each
+                    // with its own left edge (12 px, 4 px, and a
+                    // ListTile's own 16) — and the check set in the
+                    // theme's label type while the two below it followed
+                    // the reader's font size. Nothing was individually
+                    // broken, which is why it survived a year of reading:
+                    // it simply did not read as ONE thing.
+                    //
+                    // One card, one inset, one type. The check is still
+                    // the same widget the About page shows; it is only
+                    // told which room it is standing in.
+                    Card(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 4 * s),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: UpdateCheckTile(
+                                locale: settings.locale,
+                                scheme: Theme.of(context).colorScheme,
+                                iconSize: 24,
+                                labelStyle: TextStyle(
+                                  fontSize: settings.fontSize,
+                                  fontFamily: settings.fontFamily,
+                                  fontFamilyFallback: kCjkFontFallback,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            _SettingsSwitch(
+                              settings: settings,
+                              icon: Icons.system_update_alt_rounded,
+                              label: uiStrings['settingsAutoCheckUpdates']
+                                      ?[settings.locale] ??
+                                  'Check for updates automatically',
+                              subtitle:
+                                  uiStrings['settingsAutoCheckUpdatesHint']
+                                      ?[settings.locale],
+                              value: settings.autoCheckUpdates,
+                              onChanged: settings.setAutoCheckUpdates,
+                            ),
+                            // 2026-09-14: the interval, which used to be a
+                            // compiled `Duration(days: 1)`. Under the
+                            // switch and disabled with it — a frequency
+                            // for a check that is off is a control with
+                            // nothing to do, and greying it says so better
+                            // than hiding it, which would leave a reader
+                            // who turned the switch off wondering where
+                            // the choice went.
+                            ListTile(
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 4),
+                              dense: true,
+                              enabled: settings.autoCheckUpdates,
+                              leading: const Icon(Icons.schedule_rounded),
+                              title: Text(
+                                uiStrings['settingsUpdateFrequency']
+                                        ?[settings.locale] ??
+                                    'How often',
+                                style: TextStyle(
+                                  fontSize: settings.fontSize,
+                                  fontFamily: settings.fontFamily,
+                                  fontFamilyFallback: kCjkFontFallback,
+                                ),
+                              ),
+                              // Under the title, not `trailing:` — see the
+                              // cross-version tile above for what a wide
+                              // DropdownButton in a ListTile's trailing
+                              // slot does to the title on a phone.
+                              subtitle: DropdownButton<UpdateCheckFrequency>(
+                                isExpanded: true,
+                                value: settings.updateCheckFrequency,
+                                underline: const SizedBox.shrink(),
+                                onChanged: settings.autoCheckUpdates
+                                    ? (f) {
+                                        if (f != null) {
+                                          settings.setUpdateCheckFrequency(f);
+                                        }
+                                      }
+                                    : null,
+                                items: [
+                                  for (final f in UpdateCheckFrequency.values)
+                                    DropdownMenuItem(
+                                      value: f,
+                                      child: Text(
+                                        uiStrings[_updateFrequencyKey(f)]
+                                                ?[settings.locale] ??
+                                            f.prefValue,
+                                        style: TextStyle(
+                                          fontSize: settings.fontSize,
+                                          fontFamily: settings.fontFamily,
+                                          fontFamilyFallback: kCjkFontFallback,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
+                  ],
+                  // 2026-10-06: the web app and the store builds have no GitHub
+                  // updater, so the block above hides itself for them and they
+                  // had NO way to ask. This is that way.
+                  if (!UpdateService.isSupported) ...[
+                    SizedBox(height: 12 * s),
+                    Card(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 4 * s),
+                        child: ManualUpdateTile(locale: settings.locale),
+                      ),
+                    ),
+                  ],
+                  DiagnosisTile(locale: settings.locale),
+                  // 2026-05-06: Account section moved to TOP of Settings
+                  // (was after Display/Reading/App). User feedback: tapping
+                  // a profile chip on the dashboard navigates here, so
+                  // sync / sign-in controls should be the first thing they
+                  // see — not buried halfway down. Display/Reading/App
+                  // still come right after.
+                  // 2026-05-21 (v1.2.69): "Reading plans" section removed
+                  // along with the rest of the feature.
+                  SizedBox(height: 16 * s),
+                  KeyedSubtree(
+                    key: _notificationsKey,
+                    child: _SectionHeader(
+                        uiStrings['settingsSectionNotifications']
+                                ?[settings.locale] ??
+                            'Notifications'),
                   ),
+                  _NotificationsCard(settings: settings, s: s),
+                  // 2026-05-24 (v1.3.19): _TtsVoiceCard removed with the
+                  // 朗读 feature; 2026-09-07: the AI section (BYOK key +
+                  // model tier) removed with the AI subsystem. Both left a
+                  // doubled gap behind them, which is why this is one
+                  // SizedBox and not three.
+                  SizedBox(height: 16 * s),
+                  KeyedSubtree(
+                    key: _aboutKey,
+                    child: _SectionHeader(uiStrings['settingsSectionAbout']
+                            ?[settings.locale] ??
+                        'About'),
+                  ),
+                  _AboutCard(settings: settings, s: s),
+                  // 2026-05-24 (v1.3.25): PWA install card — only shows
+                  // when the install affordance is meaningful (browser
+                  // not already in installed mode, native build hides
+                  // it entirely).
+                  const _InstallAppCard(),
+                  // 2026-05-24 (v1.3.26): export card — gives the user a
+                  // portable copy of their highlights / bookmarks / notes
+                  // in Markdown or JSON.
+                  const _ExportDataCard(),
+                  SizedBox(height: 12 * s),
+                  // 2026-08 (ported from YsWords v1.4.0): import card — the
+                  // reverse of the export above. Sits directly under it so
+                  // backup and restore read as one pair.
+                  const _ImportDataCard(),
+                  SizedBox(height: 16 * s),
                 ],
-                DiagnosisTile(locale: settings.locale),
-              // 2026-05-06: Account section moved to TOP of Settings
-                // (was after Display/Reading/App). User feedback: tapping
-                // a profile chip on the dashboard navigates here, so
-                // sync / sign-in controls should be the first thing they
-                // see — not buried halfway down. Display/Reading/App
-                // still come right after.
-                // 2026-05-21 (v1.2.69): "Reading plans" section removed
-                // along with the rest of the feature.
-                SizedBox(height: 16 * s),
-                KeyedSubtree(
-                  key: _notificationsKey,
-                  child: _SectionHeader(
-                      uiStrings['settingsSectionNotifications']
-                              ?[settings.locale] ??
-                          'Notifications'),
-                ),
-                _NotificationsCard(settings: settings, s: s),
-                // 2026-05-24 (v1.3.19): _TtsVoiceCard removed with the
-                // 朗读 feature; 2026-09-07: the AI section (BYOK key +
-                // model tier) removed with the AI subsystem. Both left a
-                // doubled gap behind them, which is why this is one
-                // SizedBox and not three.
-                SizedBox(height: 16 * s),
-                KeyedSubtree(
-                  key: _aboutKey,
-                  child: _SectionHeader(uiStrings['settingsSectionAbout']
-                          ?[settings.locale] ??
-                      'About'),
-                ),
-                _AboutCard(settings: settings, s: s),
-                // 2026-05-24 (v1.3.25): PWA install card — only shows
-                // when the install affordance is meaningful (browser
-                // not already in installed mode, native build hides
-                // it entirely).
-                const _InstallAppCard(),
-                // 2026-05-24 (v1.3.26): export card — gives the user a
-                // portable copy of their highlights / bookmarks / notes
-                // in Markdown or JSON.
-                const _ExportDataCard(),
-                SizedBox(height: 12 * s),
-                // 2026-08 (ported from YsWords v1.4.0): import card — the
-                // reverse of the export above. Sits directly under it so
-                // backup and restore read as one pair.
-                const _ImportDataCard(),
-                SizedBox(height: 16 * s),
-              ],
+              ),
             ),
           ),
         );
@@ -1971,78 +2005,51 @@ class _ProjectorCard extends StatelessWidget {
 
     /// One dropdown, built from its (value, label) pairs so the closed
     /// button and the open menu can differ.
-    ///
-    /// `isExpanded` makes the button fill whatever share of the row it
-    /// was given instead of sizing to its widest item — 「American
-    /// Standard Version (Yahweh)」 and its neighbours wanted 709 px of a
-    /// 552 px column. That alone would only move the problem: the
-    /// button's own text would wrap to three lines inside the share.
-    /// So `selectedItemBuilder` gives the CLOSED button one ellipsized
-    /// line, while `items` keeps the full label, which the menu wraps
-    /// and the reader can still finish reading.
+    /// Long option labels stay readable in the closed button as well as
+    /// the menu. Every indexed child uses the selected label, so an inactive
+    /// long option cannot make the closed button unnecessarily tall.
     Widget picker<T>(
       T? value,
       List<(T, String)> options,
       ValueChanged<T?>? onChanged, {
       Widget? hint,
-    }) =>
-        DropdownButton<T>(
-          isExpanded: true,
-          value: value,
-          hint: hint,
-          onChanged: onChanged,
-          selectedItemBuilder: (_) => [
-            for (final (_, text) in options)
-              // Against the chevron, where a settings row's answer
-              // belongs — and where this one sat before it was given a
-              // share of the row to fill.
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  text,
-                  style: label(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-          ],
-          items: [
-            for (final (v, text) in options)
-              DropdownMenuItem(value: v, child: Text(text, style: label())),
-          ],
-        );
+    }) {
+      final selected = options.where((option) => option.$1 == value);
+      final selectedText = selected.isEmpty ? '' : selected.first.$2;
+      return DropdownButton<T>(
+        isExpanded: true,
+        itemHeight: null,
+        value: value,
+        hint: hint,
+        onChanged: onChanged,
+        selectedItemBuilder: (_) => [
+          for (final _ in options)
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text(selectedText, style: label())),
+        ],
+        items: [
+          for (final (v, text) in options)
+            DropdownMenuItem(value: v, child: Text(text, style: label())),
+        ],
+      );
+    }
 
-    // The control gets a SHARE of the row, not whatever it asks for.
-    //
-    // It used to be `Expanded(label), SizedBox, control` — the label
-    // flexed, the control took its natural width. A DropdownButton's
-    // natural width is the width of its WIDEST item, and the companion
-    // dropdown lists every English edition this build ships, which on a
-    // 640 px settings column wanted 709 px. The label's Expanded was
-    // then handed what was left — nothing — so it wrapped to twelve
-    // lines and the row overflowed by 169 px.
-    //
-    // Two flexes instead of one, so neither side can take the row:
-    // three fifths to the label, two to the control, and the control
-    // sits against the right edge where it sat before. Every dropdown
-    // below passes `isExpanded: true` so it fills that share and
-    // ellipsizes inside it rather than sizing to its longest item.
-    // Same rule as the Cross-version search row, one card up.
     Widget row(String key, String fallback, Widget control) => Padding(
           padding: EdgeInsets.only(top: 10 * s),
-          child: Row(
-            children: [
-              Expanded(flex: 3, child: Text(t(key, fallback), style: label())),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: control,
-                ),
-              ),
-            ],
-          ),
+          child: control is DropdownButton
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                      Text(t(key, fallback), style: label()),
+                      const SizedBox(height: 2),
+                      control,
+                    ])
+              : Row(children: [
+                  Expanded(child: Text(t(key, fallback), style: label())),
+                  const SizedBox(width: 12),
+                  control,
+                ]),
         );
 
     final ground = settings.projectionGround;
@@ -2807,7 +2814,8 @@ class _AboutCard extends StatelessWidget {
                 Icon(Icons.menu_book_rounded,
                     color: scheme.primary, size: settings.fontSize + 4),
                 SizedBox(width: 8 * s),
-                Text(
+                Flexible(
+                    child: Text(
                   uiStrings['appName']?[locale] ?? 'SeekSparks',
                   style: TextStyle(
                     fontFamily: settings.fontFamily,
@@ -2816,13 +2824,12 @@ class _AboutCard extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     color: scheme.onSurface,
                   ),
-                ),
+                )),
               ],
             ),
             SizedBox(height: 4 * s),
             Text(
-              uiStrings['appTagline']?[locale] ??
-                  "Study Yahweh's Words",
+              uiStrings['appTagline']?[locale] ?? "Study Yahweh's Words",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: settings.fontFamily,
