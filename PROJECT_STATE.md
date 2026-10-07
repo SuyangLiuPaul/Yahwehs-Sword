@@ -1,3 +1,11 @@
+## October8 — Basic/Advanced web Settings delivered
+
+Web Settings now defaults to Basic, with expandable Advanced for detailed appearance, reading/copy tools, notifications and maintenance/import/export. About remains a compact summary. Version stays 1.7.15; native/store binaries and tags are unchanged. No AI, media or companion capabilities were added to Sword.
+
+PR42 source 4d683d28803c5621ecffe5569a8d906122c82110 passed exact-head CI37687027309 and merged e41678bd7de0e0460711a59c2ced06328b9df479. Earlier c94fbf66 failed because AppMotion was undefined in Sword; the explicit scroll duration repair and final source both passed subsequent full CI.
+
+Canonical no-bump build completed and dev published. The stopped concurrent production upload made the wrapper return nonzero; an official CLI retry of the SAME built directory then published production successfully (deploy6ac6beece73590792485ec4b). Full byte/SHA256 verification across both Sword hosts and sword.yahwehword.com, including startup manifests, matched the canonical build. All ten paired website/domain endpoints matched their respective international/China/Sword builds. The live dev page was visually checked at 390x844 in simplified Chinese: Basic rendered without overflow and Advanced toggled from collapsed to detailed controls. Evidence/logs/screenshots: /Users/pliu0036/Downloads/Yahweh-Settings-Tiers-20261008/. No account/database/security mutation; primary owner PBX override preserved.
+
 ## October6 22:00 Melbourne — Microsoft1.7.12 published and final cache cleanup
 
 Fresh authorized visible Partner Center reload confirms Sword Submission9/1152921505702054468 PUBLISHED: Congrats your product is now updated, latest product available, Store presence Submission9, Start update enabled. This supersedes earlier certification checkpoints. Validated immutable1.7.12.0 package identity/source/hash preserved; no duplicate submission. Screenshot microsoft-sword-1712-published.png in /Users/pliu0036/Downloads/Yahweh-Release-1711. Admin Microsoft latest12 saved after publication; Web/GitHub12 remain verified. Apple/Google review/test qualification gates remain separate.

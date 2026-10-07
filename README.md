@@ -1,5 +1,7 @@
 <h1 align="center">Yahweh’s Sword · 雅伟之剑</h1>
 
+Latest web Settings update: Basic by default, expandable Advanced, deployed to dev/prod at 1.7.15. [Delivery and verification](docs/settings-basic-advanced-2026-10-08.md).
+
 <p align="center">
   <img src="brand/favicon-512.png" alt="SeekSparks App Icon" width="80"/>
 </p>
