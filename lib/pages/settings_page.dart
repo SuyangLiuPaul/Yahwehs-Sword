@@ -237,7 +237,7 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             Scrollable.ensureVisible(target.currentContext ?? context,
-                duration: AppMotion.slow, alignment: 0.05);
+                duration: const Duration(milliseconds: 300), alignment: 0.05);
           }
         });
       }
