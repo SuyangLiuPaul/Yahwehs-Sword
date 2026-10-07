@@ -2457,7 +2457,8 @@ class _NotificationsCardState extends State<_NotificationsCard> {
             ? (uiStrings['notificationsBlocked']?[locale] ??
                 'Permission blocked at the browser level. Re-enable in browser settings, then toggle on here.')
             : (uiStrings['notificationsHint']?[locale] ??
-                'Get gentle daily reminders for verse, reading, and news.');
+                'Gentle daily reminders for the daily verse, Bible evidence and '
+                'the sermon of the day.');
 
     return Card(
       child: Padding(
@@ -2938,7 +2939,7 @@ class _AboutCard extends StatelessWidget {
             SizedBox(height: 4 * s),
             Text(
               uiStrings['resetSettingsNote']?[locale] ??
-                  'Restores fonts, theme, color, dashboard layout, and '
+                  'Restores fonts, theme, color, projection, search, and '
                       'other preferences. Your bookmarks, notes, '
                       'highlights, profile, and language are kept.',
               textAlign: TextAlign.center,
@@ -2976,7 +2977,7 @@ class _AboutCard extends StatelessWidget {
         title: Text(uiStrings['resetSettings']?[locale] ?? 'Reset settings'),
         content: Text(
           uiStrings['resetSettingsConfirm']?[locale] ??
-              'This restores fonts, theme, color, dashboard layout, '
+              'This restores fonts, theme, color, projection, search, '
                   'and other preferences. Your bookmarks, notes, '
                   'highlights, profile, and language stay the same. '
                   'Continue?',
