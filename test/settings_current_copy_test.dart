@@ -1,7 +1,17 @@
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yahwehs_sword/constants/ui_strings.dart';
 
 void main() {
+  test('PWA install instructions use the current manifest name', () {
+    final source = File('lib/pages/settings_page.dart').readAsStringSync();
+    final install = source.substring(
+      source.indexOf('class _InstallAppCard extends'),
+      source.indexOf('/// 2026-05-24 (v1.3.26): export-data card.'),
+    );
+    expect(install, isNot(contains('SeekSparks')));
+    expect(install.replaceAll(r"\'", "'"), contains("Yahweh's Sword"));
+  });
   test('current settings labels and explanations exist in all locales', () {
     for (final locale in ['en', 'zh-Hans', 'zh-Hant']) {
       for (final key in [
