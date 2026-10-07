@@ -1,3 +1,4 @@
+import '../widgets/diagnosis_tile.dart';
 // 2026-05-20 (v1.2.67): `dart:js_interop` was here. See
 // `lib/utils/clear_cache_helper.dart` for the conditional-import
 // pattern that replaced it.
@@ -1662,7 +1663,8 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
                     ),
                   ),
                 ],
-                // 2026-05-06: Account section moved to TOP of Settings
+                DiagnosisTile(locale: settings.locale),
+              // 2026-05-06: Account section moved to TOP of Settings
                 // (was after Display/Reading/App). User feedback: tapping
                 // a profile chip on the dashboard navigates here, so
                 // sync / sign-in controls should be the first thing they
