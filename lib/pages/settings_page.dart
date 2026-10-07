@@ -207,7 +207,7 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
   @override
   void initState() {
     super.initState();
-    _advancedExpanded = kIsWeb && _needsAdvanced(widget.initialSection);
+    _advancedExpanded = _needsAdvanced(widget.initialSection);
     final target = _keyFor(widget.initialSection);
     if (target == null) return;
     // Wait for the first frame so the target has a render box, then
@@ -229,7 +229,7 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
   void didUpdateWidget(covariant _SettingsPageBody oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialSection != oldWidget.initialSection) {
-      if (kIsWeb && _needsAdvanced(widget.initialSection)) {
+      if (_needsAdvanced(widget.initialSection)) {
         _advancedExpanded = true;
       }
       final target = _keyFor(widget.initialSection);
@@ -1727,7 +1727,7 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
                       ?[settings.locale] ??
                   'About'),
             ),
-            _AboutCard(settings: settings, s: s, showTools: !kIsWeb),
+            _AboutCard(settings: settings, s: s, showTools: false),
             // 2026-05-24 (v1.3.25): PWA install card — only shows
             // when the install affordance is meaningful (browser
             // not already in installed mode, native build hides
@@ -1759,23 +1759,7 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (!kIsWeb) ...[
-                    ...sections['help']!,
-                    ...sections['account']!,
-                    ...sections['displayHeader']!,
-                    ...sections['fontSize']!,
-                    ...sections['displayDetails']!,
-                    ...sections['readingHeader']!,
-                    ...sections['theme']!,
-                    ...sections['readingMode']!,
-                    ...sections['readingDetails']!,
-                    ...sections['appHeader']!,
-                    ...sections['language']!,
-                    ...sections['updates']!,
-                    ...sections['companionPreferences']!,
-                    ...sections['about']!,
-                    ...sections['backup']!,
-                  ] else ...[
+                  ...[
                     ...sections['help']!,
                     _SectionHeader(_tierText(
                         settings.locale, '基本设置', '基本設定', 'Basic settings')),

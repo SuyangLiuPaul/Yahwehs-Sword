@@ -1,7 +1,7 @@
 name: yahwehs_sword
 description: "Yahweh's Sword / 雅伟之剑 — Study Yahweh's Words with structured original-language search."
 publish_to: 'none'
-version: 1.7.15+1070015
+version: 1.7.16+1070016
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
