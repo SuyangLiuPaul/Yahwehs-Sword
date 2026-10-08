@@ -451,9 +451,11 @@ List<InlineSpan> buildAnnotatedSpans({
         // reason; a run only happens where the notes share a position,
         // so the range loses nothing.
         final previous = spans.isEmpty ? null : spans.last;
+        // Keep inline note circles subordinate to scripture at every reading size.
         final markerStyle = TextStyle(
-          fontSize: fs * 0.85,
-          fontWeight: FontWeight.w800,
+          fontSize: fs * 0.65,
+          height: 1.0,
+          fontWeight: FontWeight.w600,
           fontFamily: settings.fontFamily,
           fontFamilyFallback: kCjkFontFallback,
           color: isSelected
