@@ -37,7 +37,8 @@ import 'package:yahwehs_sword/utils/version_mapper.dart'
     show localeAwareBookName, toEnglish;
 import 'package:yahwehs_sword/constants/book_groups.dart'
     show oldTestamentBooks, canonicalOtBooks, canonicalNtBooks;
-import 'package:yahwehs_sword/utils/search_scope.dart' show scopeDisplayName;
+import 'package:yahwehs_sword/utils/search_scope.dart'
+    show scopeDisplayName, wholeBooksOfSpec;
 import 'package:yahwehs_sword/utils/search_stats.dart';
 import 'package:yahwehs_sword/utils/strongs_absence.dart';
 import 'package:yahwehs_sword/utils/strongs_result_counts.dart';
@@ -214,23 +215,25 @@ class _CommandPaneState extends State<CommandPane> {
   /// line stops being that.
   String? _tipLineText;
 
-  (bool, bool)? _searchFlags;
+  bool? _searchFlags;
 
   bool get _plainTextQuery {
     final query = _controller.text.trim();
     if (query.isEmpty) return true;
     return !kCommandControls.contains(query[0]) &&
-      !query.contains('*') && !parseCompoundQuery(query).isCompound &&
-      analyseCommandDraft(query).mode != CommandDraftMode.strongs &&
-      !parseCommandVerb(query, _verbContext()).isVerb &&
-      _matchVersion(query) == null && parseReference(query) == null;
+        !query.contains('*') &&
+        !parseCompoundQuery(query).isCompound &&
+        analyseCommandDraft(query).mode != CommandDraftMode.strongs &&
+        !parseCommandVerb(query, _verbContext()).isVerb &&
+        _matchVersion(query) == null &&
+        parseReference(query) == null;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final settings = context.watch<AppSettings>();
-    final flags = (settings.fuzzySearch, settings.pinyinSearch);
+    final flags = settings.fuzzySearch;
     final previous = _searchFlags;
     _searchFlags = flags;
     if (previous == null || previous == flags) return;
@@ -240,8 +243,8 @@ class _CommandPaneState extends State<CommandPane> {
       if (!mounted || _controller.text.trim() != query) return;
       final wb = context.read<WorkbenchProvider>();
       wb.crossVersionMode = settings.crossVersionSearchMode;
-      wb.runSearch(query, locale: settings.locale,
-          ketivQere: settings.ketivQereSearchScope);
+      wb.runSearch(query,
+          locale: settings.locale, ketivQere: settings.ketivQereSearchScope);
     });
   }
 
@@ -687,7 +690,8 @@ class _CommandPaneState extends State<CommandPane> {
   /// undercount, so the header stays at verses rather than print it.
   String _textSummary(String queryLabel, List<Verse> results,
       SearchHighlight hl, String locale) {
-    if (hl.textTerms.isEmpty || hl.strongsNumbers.isNotEmpty ||
+    if (hl.textTerms.isEmpty ||
+        hl.strongsNumbers.isNotEmpty ||
         hl.strongsPrefixes.isNotEmpty) {
       return _summary(queryLabel, results.length, locale);
     }
@@ -697,8 +701,7 @@ class _CommandPaneState extends State<CommandPane> {
       _hitsFor = results;
       _hitsQuery = queryLabel;
       _hitsCount = countTextHits(
-          results.map((v) => sanitizeForSearch(v.scriptureText)),
-          hl.textTerms);
+          results.map((v) => sanitizeForSearch(v.scriptureText)), hl.textTerms);
     }
     final hits = _hitsCount;
     if (hits < results.length) {
@@ -904,11 +907,53 @@ class _CommandPaneState extends State<CommandPane> {
         // nobody can guess. BibleWorks shipped "Code Insertion Buttons"
         // for exactly this reason and they are the only part of its
         // command line that reviewers describe as discoverable.
-        SearchOptionsBar(locale: locale,
-          fuzzy: settings.fuzzySearch, pinyin: settings.pinyinSearch,
-          plainQuery: _plainTextQuery, busy: wb.searching,
-          onFuzzyChanged: settings.setFuzzySearch,
-          onPinyinChanged: settings.setPinyinSearch),
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Wrap(spacing: 8, runSpacing: 4, children: [
+              for (final group in [
+                <String>[],
+                canonicalOtBooks,
+                canonicalNtBooks
+              ])
+                ChoiceChip(
+                  label: Text(uiStrings[group.isEmpty
+                          ? 'searchScopeWhole'
+                          : group == canonicalOtBooks
+                              ? 'oldTestament'
+                              : 'newTestament']?[locale] ??
+                      (group.isEmpty
+                          ? 'Entire Bible'
+                          : group == canonicalOtBooks
+                              ? 'Hebrew Bible (OT)'
+                              : 'Greek Bible (NT)')),
+                  selected: group.isEmpty
+                      ? !wb.hasSearchLimit
+                      : (wb.searchLimitSpec == null
+                                      ? null
+                                      : wholeBooksOfSpec(wb.searchLimitSpec!))
+                                  ?.length ==
+                              group.length &&
+                          ((wb.searchLimitSpec == null ? null : wholeBooksOfSpec(wb.searchLimitSpec!))
+                                  ?.containsAll(group) ??
+                              false),
+                  onSelected: wb.searching
+                      ? null
+                      : (_) async {
+                          final applied =
+                              await wb.setSearchLimitFromBooks(group.toSet());
+                          if (!applied) {
+                            wb.showVerbNotice(locale.startsWith('zh')
+                                ? '当前译本没有这个范围的经文。'
+                                : 'This edition has no verses in that scope.'); }
+                        },
+                ),
+            ])),
+        SearchOptionsBar(
+            locale: locale,
+            fuzzy: settings.fuzzySearch,
+            plainQuery: _plainTextQuery,
+            busy: wb.searching,
+            onFuzzyChanged: settings.setFuzzySearch),
         _operatorStrip(locale),
         // 2026-09-14: `Flexible` + a scroll, because the card is the one
         // child here that can be taller than the pane.
@@ -1379,12 +1424,11 @@ class _CommandPaneState extends State<CommandPane> {
       version: context.read<MainProvider>().currentVersion,
       maxNames: 3,
     );
-    final label =
-        (uiStrings['vlmLimitBanner']?[locale] ??
-                'Limited to {name} ({count} verses in range)')
-            .replaceAll('{name}',
-                name.isEmpty ? (uiStrings['vlmMain']?[locale] ?? 'Main') : name)
-            .replaceAll('{count}', '${wb.searchLimit?.length ?? 0}');
+    final label = (uiStrings['vlmLimitBanner']?[locale] ??
+            'Limited to {name} ({count} verses in range)')
+        .replaceAll('{name}',
+            name.isEmpty ? (uiStrings['vlmMain']?[locale] ?? 'Main') : name)
+        .replaceAll('{count}', '${wb.searchLimit?.length ?? 0}');
     return Material(
       color: scheme.tertiaryContainer,
       child: InkWell(

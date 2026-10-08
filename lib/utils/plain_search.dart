@@ -101,7 +101,6 @@
 library;
 
 import 'package:yahwehs_sword/utils/fuzzy_search.dart';
-import 'pinyin_search.dart';
 import 'package:yahwehs_sword/utils/related_verses.dart' show isCjkChar;
 
 /// Whether [c] separates words rather than belonging to one.
@@ -195,7 +194,7 @@ List<String> plainSearchSegments(String foldedLowerQuery) {
 /// keep working and simply stop skipping. What that costs is recorded on
 /// [plainSearchMatchKind].
 String plainSearchPrefilter(List<String> segments) {
-  if (fuzzySearchEnabled || pinyinSearchEnabled) return '';
+  if (fuzzySearchEnabled) return '';
   var best = '';
   for (final s in segments) {
     if (s.length > best.length) best = s;
@@ -333,5 +332,4 @@ FuzzyMatch plainSearchMatchKind(String key, List<String> segments) {
 /// [plainSearchMatchesLiteral] while the fuzzy switch is off — which is
 /// the shipped default and the state every existing test runs in.
 bool plainSearchMatches(String key, List<String> segments) =>
-    plainSearchMatchKind(key, segments) != FuzzyMatch.none ||
-    (pinyinSearchEnabled && pinyinMatches(key, segments.join()));
+    plainSearchMatchKind(key, segments) != FuzzyMatch.none;

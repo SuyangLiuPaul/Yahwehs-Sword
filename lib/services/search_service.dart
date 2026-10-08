@@ -7,7 +7,6 @@ import 'package:yahwehs_sword/services/originals_service.dart';
 import 'package:yahwehs_sword/utils/search_folding.dart' show foldSearchMarks;
 import 'package:yahwehs_sword/utils/ketiv_qere.dart' show KetivQereSearchScope;
 import 'package:yahwehs_sword/utils/plain_search.dart';
-import '../utils/pinyin_search.dart';
 import '../utils/fuzzy_search.dart' show fuzzySearchEnabled;
 import 'package:yahwehs_sword/utils/strongs_boolean_search.dart';
 import 'package:yahwehs_sword/utils/strongs_proximity.dart';
@@ -122,7 +121,7 @@ class SearchService {
     String? currentBook,
     bool Function()? cancelled,
   }) async {
-    if (!pinyinSearchEnabled && !fuzzySearchEnabled) {
+    if (!fuzzySearchEnabled) {
       if (cancelled?.call() ?? false) return null;
       return scanText(
           verses: verses,
