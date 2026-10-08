@@ -91,3 +91,11 @@ These are source inspection entries, not individual screenshot approvals.
 - `lib/pages/wheel_sheets.dart`
 - `lib/pages/word_list_page.dart`
 - `lib/pages/workbench_page.dart`
+
+## Owner-authorized dev/prod rollout — 2026-10-08
+
+The owner subsequently requested dev/prod deployment of this maintenance patch. Sword source `a7db6f768d1cadc4fcfa5df9587b3bb5080af0ad` now serves on dev and prod; version remains 1.7.16. The canonical no-bump release wrapper was used with a temporary serialized CLI wrapper to avoid competing slow uploads. Dev deploy: `6ac70219066351542a3b8b63`; prod: `6ac70349f314894daea991e9`.
+
+Full SHA-256 checks of main.dart.js, flutter_bootstrap.js and version.json matched both sites' built files. Main SHA-256: `604aaadbc0d2e869982cb5c316c71556c15730f9acefede6d1218b481e032b1a`. Startup manifest checks passed (201155 bytes, seven font families). Live Settings was visually inspected on dev and prod at desktop width, and prod at 390 px phone width; icons/insets aligned and diagnostic actions wrapped without overflow.
+
+Evidence: `/Users/pliu0036/Downloads/Yahweh-UI-Consistency-20261008/web-live-verification.json`, deployment log and live screenshots. All nine checked website/domain endpoints matched their respective Words international, Words China or Sword builds. Canonically generated changelog was retained in evidence and only its backed-up source file restored after build/deploy. Unrelated owner PBX edits were preserved. No tag/version/native/store change or remote CI/main merge is claimed for this maintenance branch.
