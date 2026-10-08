@@ -1,3 +1,9 @@
+## 2026-10-08 — UI consistency maintenance (source only)
+
+Typography, icons, utility-card alignment and spacing corrections are on
+`fix/ui-consistency-20261008`. See `docs/ui-consistency-2026-10-08.md` for
+coverage and validation limits. No new release, tag or website deployment.
+
 ## October8 — Basic/Advanced web Settings delivered
 
 Web Settings now defaults to Basic, with expandable Advanced for detailed appearance, reading/copy tools, notifications and maintenance/import/export. About remains a compact summary. Version stays 1.7.15; native/store binaries and tags are unchanged. No AI, media or companion capabilities were added to Sword.

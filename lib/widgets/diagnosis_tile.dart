@@ -95,8 +95,7 @@ class _DiagnosisTileState extends State<DiagnosisTile> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(ok
-            ? t('Report sent.', '反馈已发送。',
-                '回饋已傳送。')
+            ? t('Report sent.', '反馈已发送。', '回饋已傳送。')
             : t('Could not send. Please try again or contact support.',
                 '发送失败，请重试或联系支持。', '傳送失敗，請重試或聯絡支援。'))));
   }
@@ -116,7 +115,19 @@ class _DiagnosisTileState extends State<DiagnosisTile> {
                             style: Theme.of(context).textTheme.titleMedium),
                         const SizedBox(height: 8),
                         SelectableText(data?['diagnosisId'] as String? ?? '…',
-                            scrollPhysics: kSelectableTextPhysics),
+                            scrollPhysics: kSelectableTextPhysics,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontFamily: 'monospace',
+                                  fontSize: (Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .fontSize! *
+                                          0.85)
+                                      .clamp(14.0, double.infinity),
+                                )),
                         const SizedBox(height: 8),
                         Text(t(
                             'Random ID for this installation or browser. Shared only when you send feedback. Reinstalling or clearing browser data may change it.',
@@ -127,7 +138,8 @@ class _DiagnosisTileState extends State<DiagnosisTile> {
                               'Storage unavailable: this ID lasts for this session.',
                               '存储不可用：此编号仅在本次运行有效。',
                               '儲存不可用：此編號僅在本次執行有效。')),
-                        Wrap(spacing: 8, children: [
+                        const SizedBox(height: 12),
+                        Wrap(spacing: 8, runSpacing: 8, children: [
                           TextButton.icon(
                               onPressed: data == null || _reportBusy
                                   ? null

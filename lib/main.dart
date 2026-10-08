@@ -666,7 +666,10 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
               'Helvetica',
               'sans-serif',
             ],
-            textTheme: ThemeData.light().textTheme.copyWith(
+            textTheme: ThemeData.light().textTheme.apply(
+                  fontFamily: settings.fontFamily,
+                  fontFamilyFallback: kCjkFontFallback,
+                ).copyWith(
                   bodyLarge: ThemeData.light().textTheme.bodyLarge?.copyWith(
                         fontFamily: settings.fontFamily, fontFamilyFallback: kCjkFontFallback,
                       ),
@@ -759,7 +762,10 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
               'Helvetica',
               'sans-serif',
             ],
-            textTheme: ThemeData.dark().textTheme.copyWith(
+            textTheme: ThemeData.dark().textTheme.apply(
+                  fontFamily: settings.fontFamily,
+                  fontFamilyFallback: kCjkFontFallback,
+                ).copyWith(
                   bodyLarge: ThemeData.dark().textTheme.bodyLarge?.copyWith(
                         fontFamily: settings.fontFamily, fontFamilyFallback: kCjkFontFallback,
                         color: Color(0xFFCCCCCC),
