@@ -968,10 +968,10 @@ class AppSettings extends ChangeNotifier {
   }
 
   Future<void> setFuzzySearch(bool enabled) => _setSearchMode(
-      fuzzyEnabled: enabled, pinyinEnabled: enabled ? false : _pinyinSearch);
+      fuzzyEnabled: enabled, pinyinEnabled: false);
 
   Future<void> setPinyinSearch(bool enabled) => _setSearchMode(
-      fuzzyEnabled: enabled ? false : _fuzzySearch, pinyinEnabled: enabled);
+      fuzzyEnabled: _fuzzySearch, pinyinEnabled: false);
 
   // One expansion mode, or neither. Update both runtime matchers before
   // notifying, so a live query never observes both modes enabled.
@@ -1381,12 +1381,12 @@ class AppSettings extends ChangeNotifier {
     folding.setSearchIgnoresPointing(_searchIgnoresPointing);
     _fuzzySearch = prefs.getBool(_kFuzzySearch) ?? false;
     final storedPinyin = prefs.getBool(_kPinyinSearch) ?? false;
-    // Older releases allowed both. Preserve the fuzzy setting and normalize
-    // that legacy combination; pinyin-only choices remain unchanged.
-    _pinyinSearch = storedPinyin && !_fuzzySearch;
+    // Pinyin search was retired. Clear its legacy preference on every upgrade;
+    // retain the independent fuzzy choice.
+    _pinyinSearch = false;
     fuzzy.setFuzzySearchEnabled(_fuzzySearch);
     pinyin.setPinyinSearchEnabled(_pinyinSearch);
-    if (storedPinyin && _fuzzySearch) {
+    if (storedPinyin) {
       await prefs.setBool(_kPinyinSearch, false);
     }
     _excludeKetivFromSearch = prefs.getBool(_kExcludeKetivFromSearch) ?? false;

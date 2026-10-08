@@ -1,3 +1,13 @@
+## 2026-10-08 — UI maintenance delivered to dev/prod websites
+
+Owner-authorized rollout completed on Sword dev and prod, with full built-file SHA-256/manifest verification and desktop/phone live Settings inspection. Version stays 1.7.16; native/store artifacts and tags are unchanged. See `docs/ui-consistency-2026-10-08.md` deployment addendum and `Yahweh-UI-Consistency-20261008` evidence. The earlier source-only entry below describes the initial scope before the later deployment request.
+
+## 2026-10-08 — UI consistency maintenance (source only)
+
+Typography, icons, utility-card alignment and spacing corrections are on
+`fix/ui-consistency-20261008`. See `docs/ui-consistency-2026-10-08.md` for
+coverage and validation limits. No new release, tag or website deployment.
+
 ## October8 — Basic/Advanced web Settings delivered
 
 Web Settings now defaults to Basic, with expandable Advanced for detailed appearance, reading/copy tools, notifications and maintenance/import/export. About remains a compact summary. Version stays 1.7.15; native/store binaries and tags are unchanged. No AI, media or companion capabilities were added to Sword.
