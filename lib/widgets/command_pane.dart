@@ -908,8 +908,8 @@ class _CommandPaneState extends State<CommandPane> {
         // for exactly this reason and they are the only part of its
         // command line that reviewers describe as discoverable.
         Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Wrap(spacing: 8, runSpacing: 4, children: [
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+            child: Wrap(alignment: WrapAlignment.center, spacing: 8, runSpacing: 4, children: [
               for (final group in [
                 <String>[],
                 canonicalOtBooks,
