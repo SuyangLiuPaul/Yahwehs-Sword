@@ -17,7 +17,7 @@ brace group — so it gets unwrapped rather than shipped raw, which would
 put literal backslash-par through the reader.
 """
 from __future__ import annotations
-import csv, io, json, re, subprocess
+import csv, io, json, re, subprocess, sys
 from pathlib import Path
 
 EV = Path('/private/tmp/seeksparks-eaglesview.WWxd2D/msiextracted')
@@ -82,6 +82,11 @@ def main():
                        '(eaglesviewsoftware.com).',
         'entries': thayer,
     }, ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf-8')
+
+    # Restore documented edition notes and the author-approved correction
+    # after reimporting the historical EV package; fail on changed wording.
+    subprocess.run([sys.executable, str(Path(__file__).resolve().parent /
+                    'follow_eaglesview_lexicon.py'), '--write'], check=True)
 
     print(f'names   {len(names)}  -> assets/bible_names.json '
           f'({Path("assets/bible_names.json").stat().st_size/1000:.0f} KB)')
