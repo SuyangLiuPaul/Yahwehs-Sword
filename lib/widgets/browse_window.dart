@@ -57,7 +57,12 @@ import 'package:yahwehs_sword/utils/version_mapper.dart'
 import 'package:yahwehs_sword/widgets/workbench_chrome.dart' show WbVersionTag;
 import 'package:yahwehs_sword/utils/safe_item_scroll.dart' show scrollToSafely;
 import 'package:yahwehs_sword/widgets/verse_notes_block.dart'
-    show superscriptNumber, VerseNotesBlock, notesInReadingOrder;
+    show
+        superscriptNumber,
+        VerseNotesBlock,
+        notesInReadingOrder,
+        kFootnoteNumberSizeFactor,
+        kFootnoteNumberWeight;
 
 /// The one word gap in the Browse pane.
 ///
@@ -1374,12 +1379,20 @@ class _TranslationLine extends StatelessWidget {
                       triggerMode: TooltipTriggerMode.tap,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 1),
-                        child: Text(
-                          superscriptNumber(_noteOrdinal(row.text ?? '', unit)),
-                          style: TextStyle(
-                            fontSize: t.chrome * 0.85,
-                            fontWeight: FontWeight.w700,
-                            color: wb.link,
+                        // Keep the tooltip hit area when its visible number shrinks.
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: t.chrome * 0.85,
+                            minHeight: t.chrome * 1.2,
+                          ),
+                          child: Text(
+                            superscriptNumber(
+                                _noteOrdinal(row.text ?? '', unit)),
+                            style: TextStyle(
+                              fontSize: t.text * kFootnoteNumberSizeFactor,
+                              fontWeight: kFootnoteNumberWeight,
+                              color: wb.link,
+                            ),
                           ),
                         ),
                       ),

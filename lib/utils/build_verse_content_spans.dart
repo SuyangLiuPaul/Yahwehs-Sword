@@ -7,7 +7,7 @@ import 'package:yahwehs_sword/constants/text_patterns.dart';
 import 'package:yahwehs_sword/constants/ui_strings.dart';
 import 'package:yahwehs_sword/constants/workbench_theme.dart' show WbMetrics;
 import 'package:yahwehs_sword/widgets/verse_notes_block.dart'
-    show superscriptNumber;
+    show superscriptNumber, kFootnoteNumberSizeFactor, kFootnoteNumberWeight;
 import 'package:yahwehs_sword/utils/font_catalog.dart' show kCjkFontFallback;
 import 'package:yahwehs_sword/utils/verse_text_absence.dart';
 
@@ -453,9 +453,9 @@ List<InlineSpan> buildAnnotatedSpans({
         final previous = spans.isEmpty ? null : spans.last;
         // Keep inline note circles subordinate to scripture at every reading size.
         final markerStyle = TextStyle(
-          fontSize: fs * 0.65,
+          fontSize: fs * kFootnoteNumberSizeFactor,
           height: 1.0,
-          fontWeight: FontWeight.w600,
+          fontWeight: kFootnoteNumberWeight,
           fontFamily: settings.fontFamily,
           fontFamilyFallback: kCjkFontFallback,
           color: isSelected
