@@ -146,6 +146,13 @@ jobs:
             echo "::error::AAB still declares REQUEST_INSTALL_PACKAGES (a plugin manifest adds it?)"; exit 1
           fi
 
+      - name: Verify signed phone bundle
+        run: |
+          f=build/app/outputs/bundle/intlRelease/app-intl-release.aab
+          jarsigner -verify "$f" > "$RUNNER_TEMP/phone-aab-signature.txt"
+          grep -q 'jar verified' "$RUNNER_TEMP/phone-aab-signature.txt"
+          sha256sum "$f"
+
       - uses: actions/upload-artifact@v7
         with:
           name: Yahwehs-Sword-play-aab
