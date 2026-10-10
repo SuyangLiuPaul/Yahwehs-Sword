@@ -164,3 +164,4 @@ jobs:
           releaseFiles: build/app/outputs/bundle/intlRelease/app-intl-release.aab
           track: ${{ inputs.track }}
           status: ${{ inputs.release_status }}
+          changesNotSentForReview: true
