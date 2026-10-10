@@ -1,0 +1,95 @@
+{
+  "checked_at": "2026-10-10T06:22:47.681935+00:00",
+  "sites": [
+    {
+      "site_id": "7ae9dbe7-c297-4240-817e-a8e7f8cf6cfc",
+      "deploy_id": "6ac9d939fb5a9c32ab51ff81",
+      "deploy_state": "ready",
+      "published_at": "2026-10-10T06:22:06.446Z",
+      "source_sha": "f84c714c78b168a64e55fb19c04495d2e246e703",
+      "url": "https://sword.yahwehword.com",
+      "files": {
+        "main.dart.js": {
+          "bytes": 10374497,
+          "sha256": "52923e70ac802f3c6ae8685067082e3521dce5382691f14ed54934789ed145f1",
+          "matches_build": true
+        },
+        "flutter_bootstrap.js": {
+          "bytes": 11706,
+          "sha256": "89b805e3a81824326df12c79c32ff403b37bef8b9e2c6dce75aaf78b65b20661",
+          "matches_build": true
+        },
+        "index.html": {
+          "bytes": 22947,
+          "sha256": "4bcdb63ec07800bc8d4008908b9ba75a88cc11b5e559bc49092e46a71d82133b",
+          "matches_build": true
+        },
+        "app_shell_sw.js": {
+          "bytes": 12264,
+          "sha256": "41be976da4bad2991a2a95aaac4c8da35c2225da50cff87ea21aa9b74027afe7",
+          "matches_build": true
+        },
+        "assets/AssetManifest.bin": {
+          "bytes": 201155,
+          "sha256": "ebfc4dd1d4bb66db088469e91187fdeeecd52d39d1fd208beea98b14b403cbbd",
+          "matches_build": true
+        },
+        "assets/AssetManifest.bin.json": {
+          "bytes": 268210,
+          "sha256": "02940448d8293b2c1891a27f6b92c1a56822546cf05bb15015fb41c35db897a1",
+          "matches_build": true
+        },
+        "version.json": {
+          "bytes": 103,
+          "sha256": "6af41c7f5b540d22f07ba7ecf0960bab368effc90d9442d97e53cb379ecc209b",
+          "matches_build": true
+        }
+      }
+    },
+    {
+      "site_id": "94de1ce4-b58e-4368-84f4-34165e7f6be5",
+      "deploy_id": "6ac9d9398528b3d4608989cb",
+      "deploy_state": "ready",
+      "published_at": "2026-10-10T06:21:39.258Z",
+      "source_sha": "f84c714c78b168a64e55fb19c04495d2e246e703",
+      "url": "https://seeksparks-dev.netlify.app",
+      "files": {
+        "main.dart.js": {
+          "bytes": 10374497,
+          "sha256": "52923e70ac802f3c6ae8685067082e3521dce5382691f14ed54934789ed145f1",
+          "matches_build": true
+        },
+        "flutter_bootstrap.js": {
+          "bytes": 11706,
+          "sha256": "89b805e3a81824326df12c79c32ff403b37bef8b9e2c6dce75aaf78b65b20661",
+          "matches_build": true
+        },
+        "index.html": {
+          "bytes": 22947,
+          "sha256": "4bcdb63ec07800bc8d4008908b9ba75a88cc11b5e559bc49092e46a71d82133b",
+          "matches_build": true
+        },
+        "app_shell_sw.js": {
+          "bytes": 12264,
+          "sha256": "41be976da4bad2991a2a95aaac4c8da35c2225da50cff87ea21aa9b74027afe7",
+          "matches_build": true
+        },
+        "assets/AssetManifest.bin": {
+          "bytes": 201155,
+          "sha256": "ebfc4dd1d4bb66db088469e91187fdeeecd52d39d1fd208beea98b14b403cbbd",
+          "matches_build": true
+        },
+        "assets/AssetManifest.bin.json": {
+          "bytes": 268210,
+          "sha256": "02940448d8293b2c1891a27f6b92c1a56822546cf05bb15015fb41c35db897a1",
+          "matches_build": true
+        },
+        "version.json": {
+          "bytes": 103,
+          "sha256": "6af41c7f5b540d22f07ba7ecf0960bab368effc90d9442d97e53cb379ecc209b",
+          "matches_build": true
+        }
+      }
+    }
+  ]
+}
