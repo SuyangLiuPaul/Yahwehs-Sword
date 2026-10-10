@@ -1,3 +1,7 @@
+## 2026-10-10 — Consistent footnote numbers
+
+Inline and note-card circled numbers now share 55% of the local scripture font size and w600; explanation text remains85%. Sword comparison markers use the same rule without reducing the tooltip hit area. See docs/footnote-number-parity-2026-10-10.md for checks, today’s feature comparison and delivery evidence. Maintenance1.7.16 only; no native/tag update.
+
 ## 2026-10-10 — Offline media web delivery complete
 
 Downloads and cold-start fixes merged; Words then Sword websites published, all eight Ready with full build/live hashes matched. See docs/offline-media-downloads-2026-10-10.md and offline-media-web-delivery-2026-10-10.json. No version/tag/native store upload; physical device checks remain explicitly listed.
