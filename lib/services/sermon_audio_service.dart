@@ -55,13 +55,8 @@ class SermonAudioPart {
 /// moving to a mirror is a rebuild rather than an edit to 589 rows, and
 /// the manifest is regenerable from the church's index page in minutes.
 ///
-/// WHAT WORKS WHERE. The host sends no `Access-Control-Allow-Origin`.
-/// A media element — which is what `just_audio` compiles to on web — is
-/// not subject to CORS unless it sets `crossOrigin`, so PLAYBACK works
-/// everywhere. `fetch`/XHR against these URLs does not, which is why
-/// audio cannot join the web offline pack the way the other categories
-/// do, and why native can download and web can only stream. The UI says
-/// so rather than failing quietly.
+/// Web downloads use the same-origin CDC media proxy. Playback uses a
+/// restored local file/blob when available, and streams otherwise.
 class SermonAudioService {
   SermonAudioService._();
   static final SermonAudioService instance = SermonAudioService._();
