@@ -1,3 +1,4 @@
+import '../widgets/sermon_offline_downloads.dart';
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
@@ -512,6 +513,11 @@ class _SermonDetailPageState extends State<SermonDetailPage> {
               ],
             ),
             const SizedBox(height: 14),
+            Wrap(children: [
+              SermonOfflineButton(
+                  sermonId: s.id, title: s.title, locale: settings.locale),
+              SermonDownloadsLink(locale: settings.locale),
+            ]),
             _LanguageToggle(
               sermon: s,
               currentLang: _lang,
@@ -533,6 +539,7 @@ class _SermonDetailPageState extends State<SermonDetailPage> {
             if (SermonAudioService.instance.partsFor(s.id)
                 case final parts when parts.isNotEmpty)
               SermonAudioPlayer(
+                sermonId: s.id,
                 key: ValueKey('sermon-audio-${s.id}'),
                 parts: parts,
                 locale: settings.locale,

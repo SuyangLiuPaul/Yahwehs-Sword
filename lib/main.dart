@@ -1,3 +1,4 @@
+import 'services/offline_audio_downloads.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
 import 'package:flutter/material.dart';
@@ -75,6 +76,10 @@ void main() {
   // properly.
   runZonedGuarded<void>(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    await OfflineAudioDownloads.instance
+        .init()
+        .timeout(const Duration(seconds: 4))
+        .catchError((_) {});
     // bwh47: put any edition the reader imported back in the catalog
     // BEFORE anything asks what versions exist.
     //

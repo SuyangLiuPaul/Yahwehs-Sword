@@ -225,8 +225,9 @@
       var unregisterCount = 0;
       var swPromise = ('serviceWorker' in navigator)
         ? navigator.serviceWorker.getRegistrations().then(function(regs) {
-            unregisterCount = regs.length;
-            return Promise.all(regs.map(function(r) {
+            var stale = regs.filter(function(r) { return !r.active || r.active.scriptURL.indexOf('app_shell_sw.js') === -1; });
+            unregisterCount = stale.length;
+            return Promise.all(stale.map(function(r) {
               return r.unregister().catch(function() {});
             }));
           }).catch(function() { return; })
@@ -234,7 +235,7 @@
 
       var cachePromise = (window.caches && caches.keys)
         ? caches.keys().then(function(keys) {
-            return Promise.all(keys.map(function(k) {
+            return Promise.all(keys.filter(function(k) { return k.indexOf('sermon-media-') !== 0 && k.indexOf('seeksparks-shell-') !== 0; }).map(function(k) {
               return caches.delete(k).catch(function() {});
             }));
           }).catch(function() { return; })
@@ -242,6 +243,12 @@
 
       Promise.all([swPromise, cachePromise]).then(function() {
         if (unregisterCount > 0) maybeReload();
+        if ('serviceWorker' in navigator) {
+          fetch('version.json', {cache:'no-store'}).then(function(r){return r.json();})
+            .catch(function(){return {version:'dev'};}).then(function(v){
+              return navigator.serviceWorker.register('app_shell_sw.js?v='+encodeURIComponent(v.version || 'dev'));
+            }).catch(function(){});
+        }
       });
     })();
   </script>

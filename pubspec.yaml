@@ -7,6 +7,8 @@ environment:
   sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
+  crypto: ^3.0.5
+  path_provider: ^2.1.4
   flutter:
     sdk: flutter
   get: ^4.6.6
@@ -62,6 +64,7 @@ dependencies:
   # 589 recordings have been public on the church's own site since
   # 2022. We ship the URLs, not the audio.
   just_audio: ^0.9.40
+  just_audio_windows: ^0.2.3
   # 2026-05-24 (v1.2.97): web favicon swap. AppIconServiceWeb uses
   # the modern package:web DOM bindings (not dart:html) to mutate
   # <link rel="icon"> when the user changes primaryColor. Already
@@ -76,7 +79,6 @@ dependencies:
   # in lib/ or test/ fifteen months on, so they went too.
 
 dev_dependencies:
-  crypto: ^3.0.5
   flutter_test:
     sdk: flutter
   # Microsoft Store packaging only (`dart run msix:create --store`, see

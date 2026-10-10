@@ -1,3 +1,4 @@
+import '../services/offline_audio_downloads.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -13,12 +14,9 @@ import 'package:yahwehs_sword/services/sermon_audio_service.dart';
 /// matters because these are 8–35 MB files and a page that started
 /// buffering on open would spend a reader's data before they asked.
 ///
-/// WHY IT DOES NOT LOAD A DURATION UP FRONT. The host sends no
-/// `Access-Control-Allow-Origin`, so on web nothing may `fetch` these
-/// URLs — only a media element may play them. A duration probe is a
-/// fetch. So the size in megabytes is shown instead until playback
-/// starts and the element reports a real duration, and the size is what
-/// a reader deciding on mobile data actually wants anyway.
+/// Size is shown before playback instead of probing a large recording.
+/// Explicit downloads use the same-origin church proxy on web; playback
+/// chooses a saved local file/blob when available, otherwise streams.
 ///
 /// FAILURE DEGRADES TO THE TEXT. The transcript is on the same screen
 /// and is the thing the reader came for; a dead host must therefore
@@ -57,10 +55,12 @@ class SermonAudioPlayer extends StatefulWidget {
     super.key,
     required this.parts,
     required this.locale,
+    required this.sermonId,
   });
 
   final List<SermonAudioPart> parts;
   final String locale;
+  final String sermonId;
 
   @override
   State<SermonAudioPlayer> createState() => _SermonAudioPlayerState();
@@ -81,7 +81,8 @@ class _SermonAudioPlayerState extends State<SermonAudioPlayer> {
   }
 
   String _s(String key, String fallback) =>
-      uiStrings[key]?[widget.locale] ?? sermonAudioStrings[key]?[widget.locale] ??
+      uiStrings[key]?[widget.locale] ??
+      sermonAudioStrings[key]?[widget.locale] ??
       fallback;
 
   SermonAudioPart get _part => widget.parts[_index];
@@ -99,7 +100,19 @@ class _SermonAudioPlayerState extends State<SermonAudioPlayer> {
     });
     try {
       if (!_prepared) {
-        await _player.setUrl(SermonAudioService.urlFor(_part));
+        try {
+          await OfflineAudioDownloads.instance.init();
+        } catch (_) {/* Storage failure does not disable streaming. */}
+        final local = OfflineAudioDownloads.instance
+            .sourceFor('${widget.sermonId}:${_part.part}');
+        if (local != null && !kIsWeb) {
+          await _player.setFilePath(local);
+        } else {
+          await _player.setUrl(local ??
+              (kIsWeb
+                  ? mediaProxyPath(SermonAudioService.urlFor(_part))
+                  : SermonAudioService.urlFor(_part)));
+        }
         _prepared = true;
       }
       await _player.play();
@@ -167,9 +180,7 @@ class _SermonAudioPlayerState extends State<SermonAudioPlayer> {
                 final waiting = state.waiting;
                 return IconButton(
                   key: const ValueKey('sermonAudioToggle'),
-                  onPressed: waiting
-                      ? null
-                      : (playing ? _player.pause : _play),
+                  onPressed: waiting ? null : (playing ? _player.pause : _play),
                   icon: waiting
                       ? const SizedBox(
                           width: 20,
@@ -239,8 +250,8 @@ class _SermonAudioPlayerState extends State<SermonAudioPlayer> {
                 return const SizedBox(height: 8);
               }
               final pos = snap.data ?? Duration.zero;
-              final value = (pos.inMilliseconds / total.inMilliseconds)
-                  .clamp(0.0, 1.0);
+              final value =
+                  (pos.inMilliseconds / total.inMilliseconds).clamp(0.0, 1.0);
               return Row(children: [
                 Text(_clock(pos),
                     style: TextStyle(
@@ -287,13 +298,19 @@ class _SermonAudioPlayerState extends State<SermonAudioPlayer> {
 /// `ui_strings.dart`. Fold them in on a quiet merge.
 const Map<String, Map<String, String>> sermonAudioStrings = {
   'sermonAudioTitle': {
-    'zh-Hans': '录音', 'zh-Hant': '錄音', 'en': 'Recording',
+    'zh-Hans': '录音',
+    'zh-Hant': '錄音',
+    'en': 'Recording',
   },
   'sermonAudioPlay': {
-    'zh-Hans': '播放', 'zh-Hant': '播放', 'en': 'Play',
+    'zh-Hans': '播放',
+    'zh-Hant': '播放',
+    'en': 'Play',
   },
   'sermonAudioPause': {
-    'zh-Hans': '暂停', 'zh-Hant': '暫停', 'en': 'Pause',
+    'zh-Hans': '暂停',
+    'zh-Hant': '暫停',
+    'en': 'Pause',
   },
   'sermonAudioFailed': {
     'zh-Hans': '此讲道的录音暂时无法播放；讲稿仍可阅读。',
@@ -307,9 +324,9 @@ const Map<String, Map<String, String>> sermonAudioStrings = {
     'en': 'Recording provided and hosted by Christian Disciples Church.',
   },
   'sermonAudioSourceWeb': {
-    'zh-Hans': '录音由 Christian Disciples Church 提供并托管；网页版只能在线收听。',
-    'zh-Hant': '錄音由 Christian Disciples Church 提供並託管；網頁版只能線上收聽。',
+    'zh-Hans': '录音由 Christian Disciples Church 提供并托管；可在讲道页面下载录音，以便在此浏览器离线收听。',
+    'zh-Hant': '錄音由 Christian Disciples Church 提供並託管；可在講道頁面下載錄音，以便在此瀏覽器離線收聽。',
     'en': 'Recording provided and hosted by Christian Disciples Church. '
-        'On the web it streams only — it cannot be saved for offline use.',
+        'Download audio from the sermon page for offline listening in this browser.',
   },
 };
