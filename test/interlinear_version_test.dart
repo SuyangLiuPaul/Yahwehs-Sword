@@ -476,5 +476,6 @@ void main() {
 /// word and its comma, that an implied number keeps its parentheses.
 String _renderedText(WidgetTester tester) => tester
     .widgetList<RichText>(find.byType(RichText))
-    .map((r) => r.text.toPlainText())
+    // Layout uses nonbreaking separators; content assertions compare spaces.
+    .map((r) => r.text.toPlainText().replaceAll('\u00a0', ' '))
     .join(' ');

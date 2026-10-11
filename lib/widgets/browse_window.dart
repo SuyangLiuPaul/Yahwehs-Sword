@@ -1889,7 +1889,8 @@ class _HoverWordState extends State<_HoverWord> {
   /// name. Flutter has no baseline-shift, so the size drop plus the hue
   /// is what keeps it from reading as part of the sentence.
   InlineSpan _num(String text, Color color, {String? target}) => TextSpan(
-        text: ' $text',
+        // Avoid a wrapped separator producing an overlapping web hit area.
+        text: '\u00a0$text',
         recognizer:
             target != null && widget.onTap != null ? _numberTap(target) : null,
         style: TextStyle(

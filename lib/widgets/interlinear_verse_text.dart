@@ -165,7 +165,9 @@ class _InterlinearVerseTextState extends State<InterlinearVerseText> {
             ),
         for (final n in numbers)
           TextSpan(
-            text: ' ${n.text}',
+            // Keep the leading separator with its number. A wrapped space
+            // creates a paragraph-wide web semantics hit box over other links.
+            text: '\u00a0${n.text}',
             recognizer: n.lexicalNumber != null && widget.onTapNumber != null
                 ? _numberTap(run, n.lexicalNumber!)
                 : null,
