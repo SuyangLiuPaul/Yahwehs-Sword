@@ -69,4 +69,62 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     settings.dispose();
   });
+  for (final version in TaggedTextService.taggedVersions) {
+    testWidgets('$version actual Hebrews word routes its lexical numbers',
+        (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final settings = AppSettings();
+      final runs = await tester.runAsync(() => TaggedTextService.forVerse(
+          version: version, englishBook: 'Hebrews', chapter: 7, verse: 27));
+      expect(runs, isNotEmpty);
+      final run = runs!.firstWhere((r) => r.lexicalNumbers.contains('G2250'));
+      final taps = <(TaggedRun, String)>[];
+      for (final scale in [1.0, 1.6]) {
+        await tester.pumpWidget(ChangeNotifierProvider.value(
+            value: settings,
+            child: MaterialApp(
+                home: Builder(
+                    builder: (context) => Scaffold(
+                        body: MediaQuery(
+                            data: MediaQueryData(
+                                textScaler: TextScaler.linear(scale)),
+                            child: Center(
+                                child: SizedBox(
+                                    width: 280,
+                                    child: InterlinearVerseText(
+                                        runs: [run],
+                                        showNumbers: true,
+                                        style: WordStudyStyle.resolve(
+                                            embedded: false,
+                                            scheme:
+                                                Theme.of(context).colorScheme,
+                                            wb: WbColors.of(context),
+                                            type: WbType.of(context)),
+                                        onTapNumber: (r, n) =>
+                                            taps.add((r, n)))))))))));
+        await tester.pumpAndSettle();
+        final finder = find
+            .descendant(
+                of: find.byType(InterlinearVerseText),
+                matching: find.byType(RichText))
+            .first;
+        final paragraph = tester.renderObject<RenderParagraph>(finder);
+        final text = paragraph.text.toPlainText();
+        for (final number in run.lexicalNumbers) {
+          final start = text.indexOf(number);
+          expect(start, isNonNegative);
+          final boxes = paragraph.getBoxesForSelection(TextSelection(
+              baseOffset: start, extentOffset: start + number.length));
+          expect(boxes, isNotEmpty);
+          await tester
+              .tapAt(paragraph.localToGlobal(boxes.first.toRect().center));
+          await tester.pump();
+          expect(taps.last, (run, number));
+        }
+        expect(tester.takeException(), isNull);
+      }
+      await tester.pumpWidget(const SizedBox());
+      settings.dispose();
+    });
+  }
 }
