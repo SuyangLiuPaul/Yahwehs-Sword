@@ -1,3 +1,7 @@
+## October 11 — 1.7.21 web/APK preparation
+
+Latest source and Chinese Genesis display correction are prepared for owner-authorized dev/prod and signed APK delivery. See docs/delivery-1.7.21-2026-10-11.md for gates and limits. Submitted store 1.7.17 packages remain intact; no 1.7.21 store submission is authorized by this website/APK task.
+
 ## October8 — Basic/Advanced web Settings delivered
 
 Web Settings now defaults to Basic, with expandable Advanced for detailed appearance, reading/copy tools, notifications and maintenance/import/export. About remains a compact summary. Version stays 1.7.15; native/store binaries and tags are unchanged. No AI, media or companion capabilities were added to Sword.
