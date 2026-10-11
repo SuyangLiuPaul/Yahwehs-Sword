@@ -99,7 +99,7 @@ void main() {
       (tester) async {
     await _mount(tester, locale: 'zh-Hans', version: 'cuvs-yhwh');
 
-    expect(_renders('创世纪 1:1'), isTrue,
+    expect(_renders('创世记 1:1'), isTrue,
         reason: 'the reference chip must localise the book name');
     expect(_renders('Genesis'), isFalse,
         reason: 'no surface may print the raw English data key');
@@ -111,7 +111,7 @@ void main() {
       (tester) async {
     await _mount(tester, locale: 'zh-Hant', version: 'cuvs-yhwh-tr');
 
-    expect(_renders('創世紀 1:1'), isTrue);
+    expect(_renders('創世記 1:1'), isTrue);
     expect(_renders('Genesis'), isFalse);
   });
 
@@ -121,7 +121,7 @@ void main() {
     await _mount(tester, locale: 'zh-Hans', version: 'kjv');
 
     expect(_renders('Genesis 1:1'), isTrue);
-    expect(_renders('创世纪'), isFalse);
+    expect(_renders('创世记'), isFalse);
   });
 
   test('the scoped-archive header has a slot for the book name', () {
@@ -136,7 +136,7 @@ void main() {
     expect(
       uiStrings['evidenceForBook']!['zh-Hans']!.replaceAll(
           '{book}', localeAwareBookName('Genesis', 'zh-Hans', 'cuvs-yhwh')),
-      '经文实证 — 创世纪',
+      '经文实证 — 创世记',
     );
   });
 

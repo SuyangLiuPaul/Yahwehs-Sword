@@ -5,6 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:yahwehs_sword/utils/version_mapper.dart';
 
 void main() {
+  test('Genesis display spelling matches frozen and saved book aliases', () {
+    expect(sameBookName('创世记', '创世纪'), isTrue);
+    expect(sameBookName('創世記', '創世紀'), isTrue);
+    expect(sameBookName('Genesis', '創世記'), isTrue);
+    expect(sameBookName('Genesis', 'Exodus'), isFalse);
+  });
+
   group('localizedReferenceLabel', () {
     test(
         'external Sirach citation has three language labels without inventing a canonical book',
@@ -32,7 +39,7 @@ void main() {
     });
 
     test('verse range is preserved after localization', () {
-      expect(localizedReferenceLabel('Genesis 1:1-3', 'zh-Hans'), '创世纪 1:1-3');
+      expect(localizedReferenceLabel('Genesis 1:1-3', 'zh-Hans'), '创世记 1:1-3');
     });
 
     test('whole-chapter reference (no verse) is preserved', () {
@@ -44,7 +51,7 @@ void main() {
       // Simplified locale, matching localeAwareBookName's own
       // currentVersion precedence.
       expect(localizedReferenceLabel('Genesis 1:1', 'zh-Hans', 'cuvs-tr'),
-          '創世紀 1:1');
+          '創世記 1:1');
     });
 
     test('multi-book reference localizes each segment', () {
@@ -75,7 +82,7 @@ void main() {
   group('the label never narrows the reference', () {
     test('a chapter range keeps both ends', () {
       expect(localizedReferenceLabel('Genesis 6-9', 'en'), 'Genesis 6-9');
-      expect(localizedReferenceLabel('Genesis 6-9', 'zh-Hans'), '创世纪 6-9');
+      expect(localizedReferenceLabel('Genesis 6-9', 'zh-Hans'), '创世记 6-9');
       expect(localizedReferenceLabel('Isaiah 1-66', 'zh-Hant'), '以賽亞書 1-66');
     });
 

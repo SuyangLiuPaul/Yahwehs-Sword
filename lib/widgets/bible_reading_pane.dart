@@ -78,7 +78,7 @@ import 'package:yahwehs_sword/utils/floating_toast.dart' show showFloatingToast;
 import 'package:yahwehs_sword/utils/missing_chapter_message.dart'
     show missingChapterMessage;
 import 'package:yahwehs_sword/utils/version_mapper.dart'
-    show translateBookName, toEnglish, localeAwareBookName;
+    show translateBookName, toEnglish, localeAwareBookName, sameBookName;
 import 'package:yahwehs_sword/widgets/highlights_sheet.dart';
 import 'package:yahwehs_sword/widgets/originals_sheet.dart';
 import 'package:yahwehs_sword/widgets/verse_widget.dart';
@@ -3604,7 +3604,7 @@ void _navigateToBibleReference({
   final localBook =
       translateBookName(ref.englishBook, mainProvider.currentVersion);
   final chapterMatches = mainProvider.verses
-      .where((v) => v.book == localBook && v.chapter == ref.chapter)
+      .where((v) => sameBookName(v.book, localBook) && v.chapter == ref.chapter)
       .toList()
     ..sort((a, b) => a.verse.compareTo(b.verse));
   if (chapterMatches.isEmpty) return;
@@ -4515,7 +4515,7 @@ void _showHighlightsSheet({
             translateBookName(englishBook, mainProvider.currentVersion);
         final match = mainProvider.verses.where(
           (v) =>
-              v.book == localBook && v.chapter == chapter && v.verse == verse,
+              sameBookName(v.book, localBook) && v.chapter == chapter && v.verse == verse,
         );
         if (match.isEmpty) return;
         // pendingJump handshake — see lib/utils/jump_to_reference.dart
@@ -4539,7 +4539,7 @@ void _navigateToConcordanceRef({
       translateBookName(ref.englishBook, mainProvider.currentVersion);
   final match = mainProvider.verses.where(
     (v) =>
-        v.book == localBook && v.chapter == ref.chapter && v.verse == ref.verse,
+        sameBookName(v.book, localBook) && v.chapter == ref.chapter && v.verse == ref.verse,
   );
   if (match.isEmpty) return;
   // pendingJump handshake — see lib/utils/jump_to_reference.dart

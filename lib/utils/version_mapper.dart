@@ -3,10 +3,22 @@ import 'package:yahwehs_sword/constants/book_name_mapping.dart'
 import 'package:yahwehs_sword/utils/reference_parser.dart'
     show BibleReference, parseReference;
 
+/// Display spelling may differ from frozen bundle keys or saved references.
+/// Compare their canonical identity without rewriting scripture or saved data.
+bool sameBookName(String left, String right) =>
+    left == right || toEnglish(left) == toEnglish(right);
+
 String translateBookName(String? book, String version) {
   if (book == null) return '';
   final en = zhToEn(book) ?? book;
-  return toLocale(en, version);
+  final localized = toLocale(en, version);
+  // Frozen Chinese bundles and saved reader state still use the legacy key.
+  // Presentation uses localeAwareBookName; lookups accept both via sameBookName.
+  if (en == 'Genesis') {
+    if (localized == '创世记') return '创世纪';
+    if (localized == '創世記') return '創世紀';
+  }
+  return localized;
 }
 
 /// Returns the book name to display in cross-reference / aggregate

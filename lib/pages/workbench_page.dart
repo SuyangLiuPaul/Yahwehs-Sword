@@ -101,7 +101,7 @@ import 'package:yahwehs_sword/services/sermon_service.dart';
 import 'package:yahwehs_sword/services/synopsis_service.dart';
 import 'package:yahwehs_sword/utils/keyboard_shortcuts.dart';
 import 'package:yahwehs_sword/utils/version_mapper.dart'
-    show localeAwareBookName;
+    show localeAwareBookName, sameBookName;
 import 'package:yahwehs_sword/widgets/bible_reading_pane.dart';
 import 'package:yahwehs_sword/widgets/command_pane.dart';
 import 'package:yahwehs_sword/widgets/passage_report_sheet.dart'
@@ -2683,7 +2683,7 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
   void _moveBrowseCursor(String localBook, int chapter, int target) {
     final mp = context.read<MainProvider>();
     for (final v in mp.verses) {
-      if (v.book == localBook && v.chapter == chapter && v.verse == target) {
+      if (sameBookName(v.book, localBook) && v.chapter == chapter && v.verse == target) {
         mp.updateCurrentVerse(verse: v);
         _wb.focusVerse(v);
         return;
