@@ -18,7 +18,7 @@ import 'package:yahwehs_sword/services/strongs_service.dart';
 import 'package:yahwehs_sword/utils/clipboard_helper.dart';
 import 'package:yahwehs_sword/utils/jump_to_reference.dart' show prepareJumpToVerse;
 import 'package:yahwehs_sword/utils/version_mapper.dart'
-    show translateBookName, localeAwareBookName, toEnglish;
+    show translateBookName, localeAwareBookName, toEnglish, sameBookName;
 import 'package:yahwehs_sword/widgets/collapsible_english_ref.dart';
 import 'package:yahwehs_sword/widgets/concordance_topics_section.dart';
 import 'package:yahwehs_sword/widgets/home_icon_button.dart';
@@ -146,7 +146,7 @@ class _StrongsEntryPageState extends State<StrongsEntryPage> {
       ConcordanceRef ref, MainProvider mp, String locale) {
     final localBook = translateBookName(ref.englishBook, mp.currentVersion);
     final match = mp.verses.where((v) =>
-        v.book == localBook && v.chapter == ref.chapter && v.verse == ref.verse);
+        sameBookName(v.book, localBook) && v.chapter == ref.chapter && v.verse == ref.verse);
     if (match.isEmpty) {
       if (!mounted) return;
       final msg = uiStrings['strongsRefNotInVersion']?[locale] ??

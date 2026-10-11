@@ -23,7 +23,7 @@ import '../constants/text_patterns.dart';
 import '../constants/ui_strings.dart';
 import '../utils/reference_parser.dart';
 import '../utils/responsive.dart';
-import '../utils/version_mapper.dart' show translateBookName;
+import '../utils/version_mapper.dart' show translateBookName, sameBookName;
 import 'package:yahwehs_sword/services/app_icon_service.dart';
 import 'workbench_page.dart';
 
@@ -243,7 +243,7 @@ class _LoadingPageState extends State<LoadingPage> {
         : translateBookName(parsed.englishBook, activeVersion);
     final targetVerse = parsed.verseStart ?? 1;
     for (final v in widget.verses) {
-      if (v.book == localBook &&
+      if (sameBookName(v.book, localBook) &&
           v.chapter == parsed.chapter &&
           v.verse == targetVerse) {
         return v;
@@ -251,7 +251,7 @@ class _LoadingPageState extends State<LoadingPage> {
     }
     // Same book/chapter, any verse — better than no match.
     for (final v in widget.verses) {
-      if (v.book == localBook && v.chapter == parsed.chapter) {
+      if (sameBookName(v.book, localBook) && v.chapter == parsed.chapter) {
         return v;
       }
     }
