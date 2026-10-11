@@ -21,6 +21,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'tagged_number_picker.dart';
+import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -1567,7 +1569,7 @@ class _TaggedLine extends StatelessWidget {
       runSpacing: kBrowseRunSpacing,
       children: [
         for (final (i, r) in runs.indexed)
-          if (r.isTagged)
+          if (r.isTagged || r.implied.isNotEmpty || r.additional.isNotEmpty)
             _HoverWord(
               // A Strong's query marks the word carrying the
               // number — the tagging already knows which one.
@@ -1577,7 +1579,9 @@ class _TaggedLine extends StatelessWidget {
               // same popup, only the script differs.
               word: OriginalWord(
                 text: r.originalText ?? r.text,
-                strongs: r.strongs,
+                strongs: r.strongs.isNotEmpty
+                    ? r.strongs
+                    : [...r.additional, ...r.implied].first,
                 translit: r.transliteration,
                 // Preserve the source scheme in every hovered column, even
                 // when SBLGNT is a comparison rather than the primary Bible.
@@ -1599,6 +1603,7 @@ class _TaggedLine extends StatelessWidget {
               entry: glosses[r.strongs],
               grammar: r.grammar,
               implied: r.implied,
+              additional: r.additional,
               showNumbers: showNumbers,
               translation: true,
               translationText: r.text,
@@ -1714,6 +1719,7 @@ class _HoverWord extends StatefulWidget {
     required this.focus,
     this.grammar = const [],
     this.implied = const [],
+    this.additional = const [],
     this.showNumbers = false,
     this.translation = false,
     this.translationText,
@@ -1761,6 +1767,7 @@ class _HoverWord extends StatefulWidget {
   /// yahwehdehua.net prints them, so they read as context rather than as
   /// this word's identity.
   final List<String> implied;
+  final List<String> additional;
 
   /// Print the Strong's numbers inline after the word. Off, the line is
   /// ordinary prose; on, it is an interlinear you can still read.
@@ -1778,6 +1785,34 @@ class _HoverWord extends StatefulWidget {
 
 class _HoverWordState extends State<_HoverWord> {
   bool _hovering = false;
+  final Map<String, TapGestureRecognizer> _numberRecognizers = {};
+
+  @override
+  void dispose() {
+    for (final r in _numberRecognizers.values) {
+      r.dispose();
+    }
+    super.dispose();
+  }
+
+  TapGestureRecognizer _numberTap(String number) =>
+      _numberRecognizers.putIfAbsent(
+          number,
+          () => TapGestureRecognizer()
+            ..onTap = () {
+              final primary = number == widget.word.strongs;
+              widget.onTap?.call(BrowseHover(
+                word: primary
+                    ? widget.word
+                    : OriginalWord(text: '', strongs: number),
+                reference: widget.reference,
+                verse: widget.verse,
+                grammar: primary ? widget.grammar : const [],
+                occurrence: primary
+                    ? widget.occurrence
+                    : '${widget.occurrence}:$number',
+              ));
+            });
 
   BrowseHover _asHover() => BrowseHover(
         word: widget.word,
@@ -1853,8 +1888,10 @@ class _HoverWordState extends State<_HoverWord> {
   /// One inline number, set small and raised — a superscript in all but
   /// name. Flutter has no baseline-shift, so the size drop plus the hue
   /// is what keeps it from reading as part of the sentence.
-  InlineSpan _num(String text, Color color) => TextSpan(
+  InlineSpan _num(String text, Color color, {String? target}) => TextSpan(
         text: ' $text',
+        recognizer:
+            target != null && widget.onTap != null ? _numberTap(target) : null,
         style: TextStyle(
           // Resolved here rather than passed down: _num is called from
           // a span builder, not from build().
@@ -1912,7 +1949,21 @@ class _HoverWordState extends State<_HoverWord> {
           widget.onHover?.call(null);
         },
         child: GestureDetector(
-          onTap: widget.onTap == null ? null : () => widget.onTap!(_asHover()),
+          onTap: widget.onTap == null
+              ? null
+              : () async {
+                  final numbers = inlineStrongsNumbers(
+                          strongs: widget.word.strongs,
+                          implied: widget.implied,
+                          additional: widget.additional)
+                      .map((t) => t.lexicalNumber)
+                      .whereType<String>()
+                      .toList();
+                  final number = await chooseTaggedNumber(context,
+                      text: widget.translationText ?? widget.word.text,
+                      numbers: numbers);
+                  if (mounted && number != null) _numberTap(number).onTap!();
+                },
           behavior: HitTestBehavior.opaque,
           child: Container(
             decoration: wordMarkDecoration(mark, wb, diff: widget.diff),
@@ -1958,6 +2009,7 @@ class _HoverWordState extends State<_HoverWord> {
                     strongs: widget.word.strongs,
                     grammar: widget.grammar,
                     implied: widget.implied,
+                    additional: widget.additional,
                   ))
                     _num(
                         t.text,
@@ -1966,7 +2018,8 @@ class _HoverWordState extends State<_HoverWord> {
                           StrongsNumberKind.grammar => wb.strongsGrammar,
                           StrongsNumberKind.implied =>
                             wb.strongsLexical.withValues(alpha: 0.6),
-                        }),
+                        },
+                        target: t.lexicalNumber),
                   // Chinese has no inter-word space, so without this the
                   // number collides with the next character: 亚伯拉罕G11的.
                   // The originals line does not need it — its own script
