@@ -596,3 +596,7 @@ that bite most often:
   **and** absent from `pubspec.yaml`, so no build can pick them up; do not
   "restore" them into a worktree or a build tree. The NASB the reader sees is
   the separate, tracked, bundled `assets/nasb.json` (`pubspec.yaml:85`).
+
+## October11 website1.7.18 delivery
+
+Sword dev/prod websites delivered from checked main853d4c93; full resource SHA256, actual dev download retention and production cold query/download verified. Details and explicit physical/offline limits: docs/web-recovery-1.7.18-2026-10-11.md. Native/store1.7.17 remains separate and unchanged.
