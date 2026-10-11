@@ -4,7 +4,7 @@
 // The person sheet is the only place the family tree round-trips to the
 // text, and it used to call `localeAwareBookName(book, locale)` with the
 // version argument omitted. So a reader on 和合本繁 with a Simplified UI
-// tapped 创世纪 1:26 and landed on a page headed 創世紀 — one book, two
+// tapped 创世记 1:26 and landed on a page headed 創世記 — one book, two
 // spellings, inside a single round-trip. The rest of the app (notes,
 // highlights, evidence cards, search) already keys on the version.
 //
@@ -72,8 +72,8 @@ void main() {
   testWidgets('a Traditional version prints the Traditional book name '
       'even under a Simplified UI locale', (tester) async {
     await _pump(tester, locale: 'zh-Hans', version: 'cuv-tr');
-    expect(find.text('創世紀 1:26'), findsOneWidget);
-    expect(find.text('创世纪 1:26'), findsNothing);
+    expect(find.text('創世記 1:26'), findsOneWidget);
+    expect(find.text('创世记 1:26'), findsNothing);
   });
 
   testWidgets('an English version prints the English book name '
@@ -85,7 +85,7 @@ void main() {
   testWidgets('a Simplified version prints the Simplified book name',
       (tester) async {
     await _pump(tester, locale: 'en', version: 'cuvs-yhwh');
-    expect(find.text('创世纪 1:26'), findsOneWidget);
+    expect(find.text('创世记 1:26'), findsOneWidget);
   });
 
   testWidgets('the reference chip is the sheet\'s one link-coloured thing',

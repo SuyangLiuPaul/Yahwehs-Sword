@@ -129,11 +129,11 @@ void main() {
     // that is what `parseReference` takes back when the citation is
     // tapped; what is PRINTED goes through the same localiser as every
     // other reference in the app. This page used to print the stored
-    // form, so a Chinese reader got 创世纪 in the prose of a note and
+    // form, so a Chinese reader got 创世记 in the prose of a note and
     // `Genesis 5:25` in the citation directly under it.
     expect(find.textContaining('187'), findsWidgets);
-    expect(find.text('创世纪 5:25'), findsOneWidget);
-    expect(find.text('创世纪 5:27'), findsOneWidget);
+    expect(find.text('创世记 5:25'), findsOneWidget);
+    expect(find.text('创世记 5:27'), findsOneWidget);
 
     await unmount(tester);
   });
@@ -167,7 +167,7 @@ void main() {
     await settle(tester);
     expect(tester.takeException(), isNull);
 
-    expect(find.text('创世纪 50:26'), findsOneWidget);
+    expect(find.text('创世记 50:26'), findsOneWidget);
     // He ends the chain, so there is no age at begetting and no "lived
     // after that". An empty row would say the text was asked and stayed
     // silent; no row says the question does not arise.

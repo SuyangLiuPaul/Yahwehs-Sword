@@ -126,7 +126,7 @@ void main() {
       expect(spec.label, 'Genesis');
       expect(
         scopeDisplayName(spec: spec, locale: 'en', version: 'cuvs-yhwh'),
-        '创世纪',
+        '创世记',
       );
       expect(
         scopeDisplayName(spec: spec, locale: 'zh-Hans', version: 'bsb'),
