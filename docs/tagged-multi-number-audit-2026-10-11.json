@@ -1,0 +1,2368 @@
+{
+  "scope": "Git-tracked JSON in runtime taggedVersions; static candidates, not per-token device verification",
+  "versions": {
+    "bib": {
+      "files": 27,
+      "verses": 7941,
+      "tokens": 293790,
+      "multi_distinct_lexical": 0,
+      "multi_dictionary_backed": 0,
+      "implied_only": 0,
+      "additional_s2": 0,
+      "missing_dictionary_numbers": 0,
+      "grammar_range_in_lexical_fields": 0,
+      "hebrews_verses": 303
+    },
+    "sblgnt": {
+      "files": 27,
+      "verses": 7957,
+      "tokens": 158658,
+      "multi_distinct_lexical": 8,
+      "multi_dictionary_backed": 8,
+      "implied_only": 0,
+      "additional_s2": 0,
+      "missing_dictionary_numbers": 0,
+      "grammar_range_in_lexical_fields": 0,
+      "hebrews_verses": 303
+    },
+    "cuvs-yhwh": {
+      "files": 66,
+      "verses": 31102,
+      "tokens": 367046,
+      "multi_distinct_lexical": 60603,
+      "multi_dictionary_backed": 60578,
+      "implied_only": 416,
+      "additional_s2": 749,
+      "missing_dictionary_numbers": 72,
+      "grammar_range_in_lexical_fields": 72,
+      "hebrews_verses": 303
+    },
+    "bsb": {
+      "files": 66,
+      "verses": 31086,
+      "tokens": 386063,
+      "multi_distinct_lexical": 46593,
+      "multi_dictionary_backed": 46593,
+      "implied_only": 166,
+      "additional_s2": 0,
+      "missing_dictionary_numbers": 0,
+      "grammar_range_in_lexical_fields": 0,
+      "hebrews_verses": 303
+    },
+    "kjvs": {
+      "files": 66,
+      "verses": 31102,
+      "tokens": 347549,
+      "multi_distinct_lexical": 3768,
+      "multi_dictionary_backed": 3768,
+      "implied_only": 1,
+      "additional_s2": 0,
+      "missing_dictionary_numbers": 0,
+      "grammar_range_in_lexical_fields": 0,
+      "hebrews_verses": 303
+    },
+    "lxxwh": {
+      "files": 66,
+      "verses": 30763,
+      "tokens": 617566,
+      "multi_distinct_lexical": 13,
+      "multi_dictionary_backed": 13,
+      "implied_only": 0,
+      "additional_s2": 0,
+      "missing_dictionary_numbers": 0,
+      "grammar_range_in_lexical_fields": 0,
+      "hebrews_verses": 303
+    },
+    "cuvs-plus": {
+      "files": 66,
+      "verses": 31029,
+      "tokens": 345399,
+      "multi_distinct_lexical": 21050,
+      "multi_dictionary_backed": 21050,
+      "implied_only": 0,
+      "additional_s2": 0,
+      "missing_dictionary_numbers": 0,
+      "grammar_range_in_lexical_fields": 0,
+      "hebrews_verses": 303
+    },
+    "csb": {
+      "files": 66,
+      "verses": 31061,
+      "tokens": 481815,
+      "multi_distinct_lexical": 12122,
+      "multi_dictionary_backed": 12122,
+      "implied_only": 3991,
+      "additional_s2": 0,
+      "missing_dictionary_numbers": 0,
+      "grammar_range_in_lexical_fields": 0,
+      "hebrews_verses": 303
+    },
+    "bsb-yhwh": {
+      "files": 66,
+      "verses": 31083,
+      "tokens": 388621,
+      "multi_distinct_lexical": 39288,
+      "multi_dictionary_backed": 39288,
+      "implied_only": 6640,
+      "additional_s2": 0,
+      "missing_dictionary_numbers": 0,
+      "grammar_range_in_lexical_fields": 0,
+      "hebrews_verses": 303
+    },
+    "asv-yhwh": {
+      "files": 66,
+      "verses": 31071,
+      "tokens": 346795,
+      "multi_distinct_lexical": 0,
+      "multi_dictionary_backed": 0,
+      "implied_only": 0,
+      "additional_s2": 0,
+      "missing_dictionary_numbers": 0,
+      "grammar_range_in_lexical_fields": 0,
+      "hebrews_verses": 303
+    }
+  },
+  "files_sha256": {
+    "assets/tagged/bib/1_Corinthians.json": "e487c987a7220d7e133a79d4bd1de80dabe5906858da302cca313a2159792175",
+    "assets/tagged/bib/1_John.json": "ee6880c26e20134389a4f4a101eecbce337d1acb51ba89479caf5c3db87d519c",
+    "assets/tagged/bib/1_Peter.json": "682cdb25d725996ca8a0829371b4f258e768dbba4621b63a1608bf6be01a9816",
+    "assets/tagged/bib/1_Thessalonians.json": "4ca8e72c96a64be3a738d7fd98f7a595cb546540fa9cd3a4f63dd302ac92f493",
+    "assets/tagged/bib/1_Timothy.json": "8550a5a63dddca0f5d9aefdccc318136f4646d63ee59ab7a772b73016ed50e1e",
+    "assets/tagged/bib/2_Corinthians.json": "a740bf5d826abe858772b4094d74fc3057fc20878b096a07a2ff1ca7bf8f41b2",
+    "assets/tagged/bib/2_John.json": "a36c38373ba92c5efe6385eba62aa5bb8e0341d55ca3749259dc92f8440e732d",
+    "assets/tagged/bib/2_Peter.json": "2242d3f54e9bb832e294206e50b345574a50e98000d76af63db09ef70019db4a",
+    "assets/tagged/bib/2_Thessalonians.json": "8117c895e43c2e2fa3a17b13b9483009da8182852ded93a9130273cb7a99abe9",
+    "assets/tagged/bib/2_Timothy.json": "0386cf6f55f0e1b3f23d932c7ff9f588490e458cd85e48281bac47060396e851",
+    "assets/tagged/bib/3_John.json": "75e6b99c7e13c4dc7927fc57d7acdd299b30251cce845aeff296223ec3862c1d",
+    "assets/tagged/bib/Acts.json": "58d5e139911be9d7ae4130a8287a02f4f5ef4af17bb69083114eb2a0680b3888",
+    "assets/tagged/bib/Colossians.json": "fd9f6a3af1c0035ed9e5cb70b304c591ccea6599931174b25872b2e73ebef52a",
+    "assets/tagged/bib/Ephesians.json": "ef155bc6fe61d7180c453f5b438ca8b26a447081358f6dc90f21a1a110378f87",
+    "assets/tagged/bib/Galatians.json": "86ab1eb310b0cdeb2b8f8ea1c48328a6befdb4a7394073c19a43cb753b607ad8",
+    "assets/tagged/bib/Hebrews.json": "269417c97b56fdcf7432eb7d622d3267cc87be4e0fbfd68c55865dc90d054e46",
+    "assets/tagged/bib/James.json": "885d0f8074623fa441f3c8192181fea6720b6ceb205d030de68d052d2b2db2b5",
+    "assets/tagged/bib/John.json": "f882f66991e9f44de35fd12f4f73a2886484397e88e915cc6468f33ce61b359b",
+    "assets/tagged/bib/Jude.json": "add0f1d3c570eba22ef356441cafa1d7cc57075e447f297520cc549754334d81",
+    "assets/tagged/bib/Luke.json": "bddf3c590de9db3a7dc2024273ff028581979f47871e8c4cb8fa51241378e155",
+    "assets/tagged/bib/Mark.json": "0f8cb2eca92b224e86b4d46c2942c6e0ed9652067883273000228905fd5989d0",
+    "assets/tagged/bib/Matthew.json": "542791bc7a5ca4d257bf786f61549ea5ec0f6cfdce35ba63b48241e930f48f2b",
+    "assets/tagged/bib/Philemon.json": "36fb135bd1d06c831d82a48c9def3dc6f42d885cbd87e91c30029869dc1ebf20",
+    "assets/tagged/bib/Philippians.json": "367fda6971b7c436745239a3037da48fd562a863503ba78e12529167da1867d2",
+    "assets/tagged/bib/Revelation.json": "6d7ebda1f3ceb7e51f5752d09800b0b64341a43e875fb90cd33bdcbaaa4ff398",
+    "assets/tagged/bib/Romans.json": "1201307c7bfecdf54ccbbed513d0bad381e2106b8e078fd80ed795383df51813",
+    "assets/tagged/bib/Titus.json": "e68adad6cf248a029d8a7178f1967c46ef95cf40d49a62786753ea6a31009a00",
+    "assets/tagged/sblgnt/1_corinthians.json": "e59724a24124881e5ab153f7fa386b247933bf3137de4125a426837129cbf843",
+    "assets/tagged/sblgnt/1_john.json": "cc0043584c36fdc4ca1a3c8ef7f8a63d7993d1b04dc4dc85d1fe35d2f6abecc4",
+    "assets/tagged/sblgnt/1_peter.json": "64bf2dc8d593a238044c74e3e7685b11e6d2d8e7045b5e593f46fb1c54895032",
+    "assets/tagged/sblgnt/1_thessalonians.json": "8473e47dea48275d12ffc16bb685ff6f50a7cd1a02d83898c99821729d6f8bf5",
+    "assets/tagged/sblgnt/1_timothy.json": "0d13ccc913d5e6e28a17fc295cd0d8373880989f2a5d1cecf366ee2732553333",
+    "assets/tagged/sblgnt/2_corinthians.json": "5e64386b9b0472fa6d2bdc15445ea3cd2c856f3ecb3e86b93fc8c0b82af084d6",
+    "assets/tagged/sblgnt/2_john.json": "9c5ca8f516f4c60e212fd53d1d1edb25ae3e5c37740f6f0bcedcd70848d30f77",
+    "assets/tagged/sblgnt/2_peter.json": "a612829acc285df23c9a6a11f1cfa8af7335c8b76e61fccd0ac637ed1418e699",
+    "assets/tagged/sblgnt/2_thessalonians.json": "4a89ed5e91053ec017000d906e02165acf6f904c845e5beb1f65a82b82043275",
+    "assets/tagged/sblgnt/2_timothy.json": "05cb0c88a44e0c2f151b005c006898a4b7e0bb3982d3d34ab32d01ec129666a8",
+    "assets/tagged/sblgnt/3_john.json": "9580b300c91179a09f21ab81e693b07f545fb83d6137310642d1340fbb64b91a",
+    "assets/tagged/sblgnt/acts.json": "3094701ec1197f075563ebac18ba6151dac2a90d8a5aca9ef35d0f0b48246505",
+    "assets/tagged/sblgnt/colossians.json": "7f3361df9a71df9e8f84d606f8225496b6c917c7a576e54cab1e3e70361f5c85",
+    "assets/tagged/sblgnt/ephesians.json": "ed534e390fdec4cfe6ed1d55d74d85418119926939612b6f02bd3f477b052db4",
+    "assets/tagged/sblgnt/galatians.json": "34b4a826a373129990d1ce692c95e73fba3dbdc24d54c1c88780186c32d9ad2f",
+    "assets/tagged/sblgnt/hebrews.json": "abbd96faa0c539d8293fe5ecc44a0adeca10938bad0c5ba20ac8f08963bce86a",
+    "assets/tagged/sblgnt/james.json": "15b9538800068a37bed768ca791c4b71280c5ac819196f27c777f6d3d3838996",
+    "assets/tagged/sblgnt/john.json": "a2a8b0b12e81913c3970d0c1e10b8ba2bef761321b871bb634d141a6a01af12f",
+    "assets/tagged/sblgnt/jude.json": "2d2da49efbb8d506fad9de9190e7d3d50cb829a7507522159f882be2022dcd64",
+    "assets/tagged/sblgnt/luke.json": "6b726c6d243c879455b8cfa6ae97e46cd3c2913d80781948d775e3ed9ff5f641",
+    "assets/tagged/sblgnt/mark.json": "aad04b8912e4748766963d998d0432a4fc0e192346a6b6d9de169deea4792667",
+    "assets/tagged/sblgnt/matthew.json": "28cedda61d35376d6f21d4cb0aa7ad649a4402cd59c1b7f4c9559baf56f4340d",
+    "assets/tagged/sblgnt/philemon.json": "4677f4ebd2c9af7d12e055cbfc13647f5aef3e2f088b71f4301f4019fc5b8f70",
+    "assets/tagged/sblgnt/philippians.json": "5bd1f6442f7ab6b6900b809939b1e8264d1e2c4c8b3bbf1f2934e8da81908728",
+    "assets/tagged/sblgnt/revelation.json": "60502f92fb10f8f278d3d0562a6070906007415ae247cd7f02c8d9a51a317a28",
+    "assets/tagged/sblgnt/romans.json": "facbb910f70e7f31250ffc66db0845753f02c4ba35199385e5f940e98bfdb026",
+    "assets/tagged/sblgnt/titus.json": "af08adf333adf29f669b22c09f69d64c8e28f099c119b064638678e453fd05df",
+    "assets/tagged/cuvs-yhwh/1_chronicles.json": "0178d725ec4860d6a4e5472bc4c43299c2e1a7bcb9a371d9ffe5cda6e4a30c21",
+    "assets/tagged/cuvs-yhwh/1_corinthians.json": "d4bc1cdac064fa5075db73b7f319866e0350032710b907ada305ce5a6d5ee686",
+    "assets/tagged/cuvs-yhwh/1_john.json": "a72be8a5b15469b28bfcd7d60cb2487bfa4e56fda3caae029ff553e0e309541e",
+    "assets/tagged/cuvs-yhwh/1_kings.json": "16b7724f98a3511cfc2172e21966b20ebab21512f1d9b16928f028029870ec41",
+    "assets/tagged/cuvs-yhwh/1_peter.json": "5b95f52f33f525c54f62806840208bca02df3d6989ec534578ae83ecfc0f352d",
+    "assets/tagged/cuvs-yhwh/1_samuel.json": "626659f6bceed4d0ca9f21a9e836faff629c93e9048a6a0a54d328ea08fe298f",
+    "assets/tagged/cuvs-yhwh/1_thessalonians.json": "7617c5486f4990aede162c574f338c92b76a0096ba5c460a5809b3150e32cd64",
+    "assets/tagged/cuvs-yhwh/1_timothy.json": "03cf20be369f9f4a0b5fe0c513908104eabd6f98d0878e8277669b610d355dae",
+    "assets/tagged/cuvs-yhwh/2_chronicles.json": "18b5859f7dd9f04b41c1746f7b2a71c6ef3437f98aaad3bc77ef67a5fc5e18e2",
+    "assets/tagged/cuvs-yhwh/2_corinthians.json": "2e0ce4df2ae59fe7fa99b9d1a60cc9c9e23b7a3702779004683d846901d76e0b",
+    "assets/tagged/cuvs-yhwh/2_john.json": "31011fbb80d11b2f92982fd91bd5450b5ac0957594f1c1ab3f82e486380ef846",
+    "assets/tagged/cuvs-yhwh/2_kings.json": "a064d007b18b90e3bad68ce032219adfdb8d12ab268c5a28e2d1e33c6b4f6312",
+    "assets/tagged/cuvs-yhwh/2_peter.json": "8a04c1a5fbe987559d23821f471330da5b134dc338985cf650180aa2c3a1cd09",
+    "assets/tagged/cuvs-yhwh/2_samuel.json": "fb7eb5d8c3a6de26db3b3ab96f929acd143294be2f7f74650e8cdfc9bfd67d3f",
+    "assets/tagged/cuvs-yhwh/2_thessalonians.json": "1e4bc76661436c34b6f826b5d07404c4ae5c757c82df8923ad8247f5aac5fe7f",
+    "assets/tagged/cuvs-yhwh/2_timothy.json": "747d754eff78089b6d1cb92c3fa5551c92b1be4f5f5b684f160d3fa8aa362596",
+    "assets/tagged/cuvs-yhwh/3_john.json": "dce715fdf88fe1245b52a118f9879a7ef245525eb771d12ee36790dd03f33888",
+    "assets/tagged/cuvs-yhwh/acts.json": "d3add893f9bf15427cbbe91485ee3c085482a598436ab05ecf69c0c1ba8f3875",
+    "assets/tagged/cuvs-yhwh/amos.json": "9a5f2ed45e367498bbf846f2320d22789ccf1dc374e1d5707d2b778693bc14d8",
+    "assets/tagged/cuvs-yhwh/colossians.json": "6af984dfe594ebacfb1279d871c952d2d54339fcfab43aa121a1f03d55118104",
+    "assets/tagged/cuvs-yhwh/daniel.json": "3b139390cf93e410d5c486b1614e917e9e934df4b6ae6bd83b16e69d25812b4d",
+    "assets/tagged/cuvs-yhwh/deuteronomy.json": "a63f8984a221d295b23aa20bf9e407ea988be2da679598994b12545a32f62218",
+    "assets/tagged/cuvs-yhwh/ecclesiastes.json": "2459a8da0986126ae8952dfe9ba4f34fc00d73aea5ea49717f1c3a78dbd59e5d",
+    "assets/tagged/cuvs-yhwh/ephesians.json": "f666642414565abd67f059cda63d15c29e44bf0b73459dae0345d8e67f4d4369",
+    "assets/tagged/cuvs-yhwh/esther.json": "7a873fd489eafe1205094206d872ac98c46bd9e3e62d5a76f69f97465bb9895d",
+    "assets/tagged/cuvs-yhwh/exodus.json": "56bb6027f9b2002217ca2f6236cf75acdc6452b347ed9cd5578180b857f0ca36",
+    "assets/tagged/cuvs-yhwh/ezekiel.json": "6b3a65ed36c29d20c1704ea6ce1edc359462ff3eef03e7c35196ecfb33842c8b",
+    "assets/tagged/cuvs-yhwh/ezra.json": "3be92d47310123f0bc856dbe6b14fb27abfc352d3cd3e50ff707edcf8ec16fc0",
+    "assets/tagged/cuvs-yhwh/galatians.json": "95526b98011a754611460810aaaf249ec6210607d821d61a3156887cb2c27092",
+    "assets/tagged/cuvs-yhwh/genesis.json": "315f02e692d1241c6573727c521aaf8a27de283bdadbbefca7cb1d06e541ebc0",
+    "assets/tagged/cuvs-yhwh/habakkuk.json": "f223604c770dff08bbec95e2d95f4ddf4ae5ed68fc2985df94900bda15f522e5",
+    "assets/tagged/cuvs-yhwh/haggai.json": "c4202eb4db2ec28c7115d19d3053f1f95a4e398969ab799152987a3ea6795f8c",
+    "assets/tagged/cuvs-yhwh/hebrews.json": "fea377d2c285da8cca5d1195c0b8783b11e01280f9d1dd71398e2b6a867ad542",
+    "assets/tagged/cuvs-yhwh/hosea.json": "3d80cbaac9ac6f9613861504bb43c2eb1be324570af26e05a8d4392a11c8dcf8",
+    "assets/tagged/cuvs-yhwh/isaiah.json": "ca54cd0074871475d2e6f8d81058751ad387e70fde47789641f84947f5433757",
+    "assets/tagged/cuvs-yhwh/james.json": "98aac5dba1c09463e48c07f67a4e984cc0b34ecbe14284829a55e86628b5075f",
+    "assets/tagged/cuvs-yhwh/jeremiah.json": "cca74ebef89a73145f4f84681ad29409b2b7222a78375579d359aa8b28da4600",
+    "assets/tagged/cuvs-yhwh/job.json": "b7cd3b8f1a984275a4d53da5578d973429b6efac91cac29a425352b01a31466b",
+    "assets/tagged/cuvs-yhwh/joel.json": "1f8ca543cd9c624fe855b4d32430f27693bd3b811a12c64b9f6259f12c45a8d4",
+    "assets/tagged/cuvs-yhwh/john.json": "5b8e0dfe69c276398b6e187233288de4ba4f0bca01d889dcb8712d9e3fcd0d3e",
+    "assets/tagged/cuvs-yhwh/jonah.json": "c0e388d77b991153ce4e73b6b6b068a6446332126ec622b9dadaa681d890e0d9",
+    "assets/tagged/cuvs-yhwh/joshua.json": "011ba8b7bff289ca375bad9edf9d797959ee70ef2051beb9ae6703d675d63328",
+    "assets/tagged/cuvs-yhwh/jude.json": "a81e9e24af73b4e386a61be5d8802b8604fd1fc775f2c8322ac8c89f43f3b986",
+    "assets/tagged/cuvs-yhwh/judges.json": "be00e1309059b215b79a116c3c6b5ec04e03f5e0753eff5548554bdb92ae3557",
+    "assets/tagged/cuvs-yhwh/lamentations.json": "8f10b821425d02508bcecf3dce4e6dbd0de8e5b62cc1153d0a10f9dbbaa7d2ce",
+    "assets/tagged/cuvs-yhwh/leviticus.json": "06cfc35bd2f0c2df4ceccf697460f5e916949c93979539a82ee4fe382eca10f9",
+    "assets/tagged/cuvs-yhwh/luke.json": "85de5871158a13ecaa766831cf32d60f45122fd7e0c40c2b73566c0744078410",
+    "assets/tagged/cuvs-yhwh/malachi.json": "c328254272608d70379c8636f892ae233ad6f3b531aa07c3255ab0343154751f",
+    "assets/tagged/cuvs-yhwh/mark.json": "c1683e9d326ff612e800ca2a66d18b4bce1012dc8f9c4111ec6da6b892a16c16",
+    "assets/tagged/cuvs-yhwh/matthew.json": "a8e3a47405f4d2da6627c67f144d503192ea39be7f0ac6d911164fba057c6b46",
+    "assets/tagged/cuvs-yhwh/micah.json": "8bf106c44a54adff704c462cd823645b203f36bdf6eeaf6a6f5d910b1bf77da8",
+    "assets/tagged/cuvs-yhwh/nahum.json": "7891ada4bac3ab97d48444968cb035293421bfc911f7f39f6d8b72c18389f4fa",
+    "assets/tagged/cuvs-yhwh/nehemiah.json": "76e04cf7dc6fb393d467e2d4c2a473673f8e2c67ac2f0f24d42f5a4a50b145f5",
+    "assets/tagged/cuvs-yhwh/numbers.json": "0b8815575957673ca62cf6b3d408ebb83e018c81cf71c6bbbcdcb608b30ba5ae",
+    "assets/tagged/cuvs-yhwh/obadiah.json": "451cbe51edb943d0da50fe2c8ec7ecf6f1ebd0854c23b0c797d40dc7a4fbf76f",
+    "assets/tagged/cuvs-yhwh/philemon.json": "b293613d8b85e6f845a65edb30c481e7e84f31e810ea42e946dc8a8a298650bb",
+    "assets/tagged/cuvs-yhwh/philippians.json": "0a6fefdea320a86dec17323cd6f5bccd0ab6ae0cff65edf0171c44e82efa0c35",
+    "assets/tagged/cuvs-yhwh/proverbs.json": "5ea67ab5fc1853cb30250718df763bdcc86e074d74ade2be706e4174dc045c70",
+    "assets/tagged/cuvs-yhwh/psalms.json": "ab04f2a91a69a3a91a8e321e1075221a21830002437b3d4eef4a19f6a831bec4",
+    "assets/tagged/cuvs-yhwh/revelation.json": "24f34a24fce740a36a9d83d638ea88a9f94ac5c5fa93ef72084ce503327523cc",
+    "assets/tagged/cuvs-yhwh/romans.json": "eff8a2f6fb08e1445beaa354c8713c8b85bce4263bc05bd8ed8edce2661a9119",
+    "assets/tagged/cuvs-yhwh/ruth.json": "56189483907815a1096ff832e5ab16a863e344c8eb0f290b1b065586a61b166c",
+    "assets/tagged/cuvs-yhwh/song_of_solomon.json": "8361e69cd86b54e715182ee86151855c0f1ac3273c0dd9c8786de787da0af4b0",
+    "assets/tagged/cuvs-yhwh/titus.json": "d905da114f6baae5ce3e2bfefe35338d2f5f076210706872bb55c9a5a1629d09",
+    "assets/tagged/cuvs-yhwh/zechariah.json": "68c02b9ce7e5782fa826bb54bba71c71e837f11b83d04fb366175f5fbb50be21",
+    "assets/tagged/cuvs-yhwh/zephaniah.json": "96f3bb9f499f51632da22ec0c51e285fe20fabddc81902825120be7aa2c1677f",
+    "assets/tagged/bsb/1_chronicles.json": "71fc34e56e970165cb53e9ce7120c8e7378a80b2542441b7fd3dcc5be60a82f9",
+    "assets/tagged/bsb/1_corinthians.json": "5685c309fa1e628062ae11063b0412675a95a19fb5083b7b8a40b58ba5f7f416",
+    "assets/tagged/bsb/1_john.json": "4a1ae120f5a234c025e70f6e7283e5510ed5acbe1bbfa341f209a86f95990598",
+    "assets/tagged/bsb/1_kings.json": "85b396a5b1dfe537ab41f4c36b00cf8e4793c725ef06bea60527441f121cc96b",
+    "assets/tagged/bsb/1_peter.json": "d706595d729e0899ba8adb28e6c39a6a25b05fcc3934d63d186fd9638cc805c1",
+    "assets/tagged/bsb/1_samuel.json": "af3083480b7b388651a4f2f356e7949aba70c33f780cb3d006a0f5848947bf61",
+    "assets/tagged/bsb/1_thessalonians.json": "48ae279311450528b09820e445ca61581d21bb42a9d9f8eb709a85ef785e1eec",
+    "assets/tagged/bsb/1_timothy.json": "873fef455d18ee8c42a22a8af7465ba2d2e993992698f6ab6c2c296ee7715b55",
+    "assets/tagged/bsb/2_chronicles.json": "9c110a625bc106018a2f910040b73d880d3ac42e03132067b0a3f000207bc56f",
+    "assets/tagged/bsb/2_corinthians.json": "50dfe0ffcbc2a863da746f831b646150d360b701c103439409cb3671e57a43e5",
+    "assets/tagged/bsb/2_john.json": "7456e8428d5d9c46fba4c5b7b9f7f5c14571d536613363f700798d9912a3496a",
+    "assets/tagged/bsb/2_kings.json": "ebc165235d4f52ca63dbb992d2d8f25eafd879464be16c21a929e85f8552f40a",
+    "assets/tagged/bsb/2_peter.json": "445250f84a45d35a9c2155903d7d37da501bf59117d564cfc231c1e38c9541db",
+    "assets/tagged/bsb/2_samuel.json": "20ab4094a6f42873038f2acbed5c4497b51dac0cdaab74c28f1738512b75bfca",
+    "assets/tagged/bsb/2_thessalonians.json": "4bd6b4a97c5607d9a917c5e169550d66d2a332f43e48945a0e8f8a5f4ffced35",
+    "assets/tagged/bsb/2_timothy.json": "4d17593a11f03839cfa28d3f6601dd61415a3833fb57991e581e2ecd55ad5108",
+    "assets/tagged/bsb/3_john.json": "a018fda0c3f7d6b944d74329c03b766400db689f89b572a871e6ae7ca81a63e7",
+    "assets/tagged/bsb/acts.json": "e707dc3e46d68f4f3e938bc806a0f96961e69ad57ce996ce140a790152639ec6",
+    "assets/tagged/bsb/amos.json": "fe09ea0a25930e0bfd91aa703602c5560ee9e7bcdcf2791643d69791904c0a92",
+    "assets/tagged/bsb/colossians.json": "4d3ecc75ff5a2d4e67575e8334d08cc4f271d9cc0430e729634a9907a99698c8",
+    "assets/tagged/bsb/daniel.json": "074a91f74e7480262e195014a3e83113dde5828975cf1b2c64d24aad116dc9fc",
+    "assets/tagged/bsb/deuteronomy.json": "f223c0c96895161f61ac86f4af3e79a98760652e91d406893a7a9dd14cf37dc6",
+    "assets/tagged/bsb/ecclesiastes.json": "61df307da7a194c81b1f32034a8b6881d46a087cfdfdcf2b0d09054775a9c3ec",
+    "assets/tagged/bsb/ephesians.json": "8389f4c9e956b12770e83fa6a40f949c5210bc3bb1187e4ea5d8f0fbc95002cb",
+    "assets/tagged/bsb/esther.json": "816f40cbdc5bb0c1bc02e2bd2333eced1739fbebae030b0c3f1cf60b1bf8d799",
+    "assets/tagged/bsb/exodus.json": "d70757076897de8633532fd45446a1908b299144f4e00498faf7390ff4b840ff",
+    "assets/tagged/bsb/ezekiel.json": "b0cdaa33559df62139ffab11083595bfdad06a677a1262d79c92205fedd2d09f",
+    "assets/tagged/bsb/ezra.json": "f692671b4a03a285d98404acc35f3a47c01e72cb0c11a89705b9ca56390821fa",
+    "assets/tagged/bsb/galatians.json": "d5519c99acbbfbcc1d731cbd700011e13e0d6050063987b7402106e52834b2b1",
+    "assets/tagged/bsb/genesis.json": "207776e66e70c90bcc30176f211076e11b3676d6cea49bfba68e9d8ffea0b70b",
+    "assets/tagged/bsb/habakkuk.json": "43d6400aac9efb9bb9e0e53af842ef27f7c326bf63441f2fa1308a25fbab764f",
+    "assets/tagged/bsb/haggai.json": "0d5b3c296f7a13ff1cacde366ec7d636ea3bedb1adbb6fe9393bb394fb67ae02",
+    "assets/tagged/bsb/hebrews.json": "eada6320ac2b339d57527a2d228b70ee9f7c0af32e00af161dbc738a8fcfaff5",
+    "assets/tagged/bsb/hosea.json": "af9a3d0c1fce2274558db3d1a2c514c86586fab2bc37788685fd0d0742ea317e",
+    "assets/tagged/bsb/isaiah.json": "d4296b3ac78238300d2fd6cae75ae75799e4c219b0146fb1f59bcb72cc89069e",
+    "assets/tagged/bsb/james.json": "148628f434ccaee4c19b3cde8867b9df4f9090bfad0b55e327be4c5707e6de85",
+    "assets/tagged/bsb/jeremiah.json": "95c5d8aa046eb3dd31610968b45623c44a8bf9ed843d8be40ec1c185dc30f29f",
+    "assets/tagged/bsb/job.json": "90d7531a29bc7703cd9abbe7122a5bb54feeb481365134b80ff698a0e5eef597",
+    "assets/tagged/bsb/joel.json": "42f528e1c2cbe8cc50342ae721f48018758a7e571342a552a14298157a95e58d",
+    "assets/tagged/bsb/john.json": "1935928f32ba8609522305344cb5ee24aaabbff1cb67f31bc58c821342656785",
+    "assets/tagged/bsb/jonah.json": "2c32c082d24155825cc44c8a4e61b0aa0d56ad502b37de43647a4e59aa42e338",
+    "assets/tagged/bsb/joshua.json": "66f592c106593f17022a8f3e6dd144b3d37b83ce9ffec71e2a647e34e6bae9a0",
+    "assets/tagged/bsb/jude.json": "4c4af433cab6e2fa8cc3d7ca83ca69a12cc07381fc61e533c8b682f0dca1d949",
+    "assets/tagged/bsb/judges.json": "ad2b3f1404b3eb26c14cfe52c28746b0d5469b2b8b810f4af54e96bbbd4c1b77",
+    "assets/tagged/bsb/lamentations.json": "d1bea655b07f41a1a1aefa35e9f2ea7f9d56c0ebe52b1c573dd562c0d95c8f70",
+    "assets/tagged/bsb/leviticus.json": "2aa4086aa3d67de507025f6112714b1086fe7258246fe993d028534de6e3da37",
+    "assets/tagged/bsb/luke.json": "981db1055a6fcbaf5ee1aeb530b2bf391ab32f6c3048412ba1e2c5b5f2e4870a",
+    "assets/tagged/bsb/malachi.json": "213fae920695d860193f7d4707b5603562454a7d7ff34f3464fbdd09d8a62c25",
+    "assets/tagged/bsb/mark.json": "c6ed43941a342451336721d3ac089d21507a161826b055be161ea09898fc744d",
+    "assets/tagged/bsb/matthew.json": "47f5b78e2b8faba9cfa960c7c685b28c6aa291d4fced065164c7b44ff5c7a57a",
+    "assets/tagged/bsb/micah.json": "48dbe967bbf0bb0e4412ac2be5b367e3810f226ac72cea91fd63e038fdd196c8",
+    "assets/tagged/bsb/nahum.json": "63e232bf8e50ab1f670b7765072eb903717c20677a65168910a1c370ed3b4039",
+    "assets/tagged/bsb/nehemiah.json": "0de3c9e018dfee31d0eb4c448d9df1928b3a482461df5cae4e2fcc0cf1ade8f6",
+    "assets/tagged/bsb/numbers.json": "105d2a65f3e6007ad0bd33886c6bc9e0dcec02683480bb1bac27ca52faea8ec0",
+    "assets/tagged/bsb/obadiah.json": "563fbab8a0df531bacbe3f57ba87a286a4ee7493d4ba5650a360b5e152ca4765",
+    "assets/tagged/bsb/philemon.json": "9df477e382fd1337f85aea05e6d019a105e755c52a6b8b851c59cb6c455b5f97",
+    "assets/tagged/bsb/philippians.json": "6cf8c2525d664c20e8263fa8deba5429453699f86c4353e70a67a0cb4a301789",
+    "assets/tagged/bsb/proverbs.json": "89d2ffec9a2fe3eaeeb1827a63899baaa9a17adcf7ed4e3aeec498db0f095516",
+    "assets/tagged/bsb/psalms.json": "6e6d994aa2660735b24179d7bfc06e52bba4b68d63817dba017ee779e3f7df2d",
+    "assets/tagged/bsb/revelation.json": "d03a004078986d6d2b4c495d989ae424899311bf23e13243a16549a8879bf4f8",
+    "assets/tagged/bsb/romans.json": "aa16a8d380298aae49f01e484abc904031714d03b45dcf42136dbca6e1fd1cab",
+    "assets/tagged/bsb/ruth.json": "cda6a8c3f4ad7f7a96048337440365b576c35f7f2e4d2c23e2f0da32d15fc121",
+    "assets/tagged/bsb/song_of_solomon.json": "6d7eb899d87cd3edbad14e1bdf66e8b9bb6dddcdd3016a72eddf07a9947ff420",
+    "assets/tagged/bsb/titus.json": "2030fe43adec90fc86157ce553cdd8567ee51c7cc68b5060ed1292fcb92cdb5b",
+    "assets/tagged/bsb/zechariah.json": "093fb5145cb9ec0ea9546db698aaa7e95a90be8477580042495f21661b2764dd",
+    "assets/tagged/bsb/zephaniah.json": "aea021180ef175294c9f26dc92126cde351dbd1df57294734a884a6a775e811a",
+    "assets/tagged/kjvs/1_chronicles.json": "266dead8c450f960429cde6e3d56990143c70a32fcdbf9e25a1f405e69d8ed35",
+    "assets/tagged/kjvs/1_corinthians.json": "deecbe1dfec70d2afd28fee721f15b60d88a3a56b2f0c7773e3a7034512dd8df",
+    "assets/tagged/kjvs/1_john.json": "81e42254c8a4fc4958b791464905e486ed2111a21c155cad9b3496e00aa79130",
+    "assets/tagged/kjvs/1_kings.json": "19cd0550cfd9c54c749c3c52dafa9020f19d765c0ce547a56b2fabffdc5004d6",
+    "assets/tagged/kjvs/1_peter.json": "3be8a8b289cb7f32f7e4b9054d6ea7e844df19932e37ba5b7b883f1b0d362642",
+    "assets/tagged/kjvs/1_samuel.json": "4ab347039f5bf0f2e1c08e6f8ac0717e917b690b49d4a6d2c7e03219acf8e931",
+    "assets/tagged/kjvs/1_thessalonians.json": "276b60a962c3b77e1bb7f2c00aede27b8ccd02cc0199c6a0d8a2388d64654cbe",
+    "assets/tagged/kjvs/1_timothy.json": "b68958c1d3c9426b86ca1f4b09a77fceeb65066f652114450a93f274154cf883",
+    "assets/tagged/kjvs/2_chronicles.json": "0283748ec7eadac4febb26a8e17d57d636d0898ddf888f019bc068fde4bafb45",
+    "assets/tagged/kjvs/2_corinthians.json": "3771a3d729214267c9f2a8f8e73342b18e33a20c354ce54c5d227dc667f7a22d",
+    "assets/tagged/kjvs/2_john.json": "69035340e857e110aab9f1816f78ff0865d95d391347cab9a3104366429dfa54",
+    "assets/tagged/kjvs/2_kings.json": "a2acacdaa43e7ed3107c175e9372be6514cce73e0c05d05d0c49d606ee14c71c",
+    "assets/tagged/kjvs/2_peter.json": "f9809bd2d101badd2fecfcbf0cdbee1f7aa0088d9d4ed8142026cf276980fb9d",
+    "assets/tagged/kjvs/2_samuel.json": "c76369bfd862ff0e3b0c80d0a387eaa759b3f3f474a81f63b37beabc1cfc428c",
+    "assets/tagged/kjvs/2_thessalonians.json": "2b5adbf57c8845f961be23c0dbc6f1cfb27a8748e23746b407c1dd93b2e97e04",
+    "assets/tagged/kjvs/2_timothy.json": "4105329faebebe334395f982391c8efc9cb00f8b81c8a8a3726ad0c002d471ea",
+    "assets/tagged/kjvs/3_john.json": "6e2c4233ebb514ca3b954a5591508c03945d11b85abd38912558504b37a1f984",
+    "assets/tagged/kjvs/acts.json": "ac7006d90273f9e2b3b746b28658de51da68cd6e7928c0857ec70cd290dc16bd",
+    "assets/tagged/kjvs/amos.json": "b5f0ffacf7d01882b3015cc2299eb89d7ae6f686fee570094040ecffdd30e63c",
+    "assets/tagged/kjvs/colossians.json": "6653ff945ad2fbde258631b0b8497ac689c44a39e31fab96dcd8d317e8dfd2b4",
+    "assets/tagged/kjvs/daniel.json": "e773f0ad5484c104c3defaccadc0d9671bdd210cb100f76319549a80acfd0182",
+    "assets/tagged/kjvs/deuteronomy.json": "bac4126c66e5dedad301986527826412acc4e70bba18b34a7ce02761a35d62c9",
+    "assets/tagged/kjvs/ecclesiastes.json": "66f6ae604c4697f4fe7fd4a052454d89693a1c43ebc381433931e524f18d1584",
+    "assets/tagged/kjvs/ephesians.json": "5b289def1b6912cd78d2476194bac30b9cb59010c5665bdab6cfe08ac9fbf10b",
+    "assets/tagged/kjvs/esther.json": "ce1b9c5d5539fdd0c0d3ce3a510d6f5c269579db6a830e69525c8d0a44993075",
+    "assets/tagged/kjvs/exodus.json": "9c2f1a9fe54d6073f042c60778dfc059364f1d28feb1ca84ff54cb2e8905a3a6",
+    "assets/tagged/kjvs/ezekiel.json": "20fac70d1c898835198ddff0cdfbe996bc9c464dddd384ca17e44ff585dde251",
+    "assets/tagged/kjvs/ezra.json": "c68cf396c0c893ceebdc3967afd004b1d50362126ab2a9a7e76da405924ec34a",
+    "assets/tagged/kjvs/galatians.json": "597b8f54530b067850183c2c94c5237885f9492a737597e03700a5f550882769",
+    "assets/tagged/kjvs/genesis.json": "bdc4d3d2380b175104390ab29a725ccd0e0f40bd5bf64927aaf2714f097b23d6",
+    "assets/tagged/kjvs/habakkuk.json": "f915966272291e99600171f03e255071756342ed52ea3d24c634c111c1bae32f",
+    "assets/tagged/kjvs/haggai.json": "ba99a92918ecaba7f01bd2a4553d5b737f44e6b331536a76ebc90caa596bfc4b",
+    "assets/tagged/kjvs/hebrews.json": "9c8fd6b3572a2057c366751188e726035e2e1aba4f90c1d32907e24504e70957",
+    "assets/tagged/kjvs/hosea.json": "fb3254bb8c7b517f4fddba64428ed44d62812100f27972484ee2b066a0354d7c",
+    "assets/tagged/kjvs/isaiah.json": "5abbf63f1fa1c935e1f1bfe3779bf410a96be9c4bb475590d7bd92f23dd0dec0",
+    "assets/tagged/kjvs/james.json": "8be653a984466d67f9661ffa8bdfba5b82fd0d7786d9c851bdc129cd3774fb41",
+    "assets/tagged/kjvs/jeremiah.json": "18929def6e2e0eb6b4bff79e67fa2f659aeae155a876f6d432effb6271a8c72e",
+    "assets/tagged/kjvs/job.json": "58b5e771d4ac55c9a05aec406881d6e1234e987af26ba1e3c85e0e1a88893859",
+    "assets/tagged/kjvs/joel.json": "ac1d55a3c8b9f714d1ecde6827c9c56e8827f6a815276b34d8b33c998dd99547",
+    "assets/tagged/kjvs/john.json": "65903532849ebffd5613d74abd90ef6aa8f06d9407ad75e439c22d19bec976db",
+    "assets/tagged/kjvs/jonah.json": "73e43bd5ccf7728cee845851eade460237d11fee3fccbed8915f16661a01b1ee",
+    "assets/tagged/kjvs/joshua.json": "361d43b2ffa45f625b1bb71bbfa35e97a6d4a8b467d2d8cf9f011f34b88d95d4",
+    "assets/tagged/kjvs/jude.json": "2fcf0a3c96ef19c7b060788fb11d942c453909bf2298c926d35aeb8bb62017f6",
+    "assets/tagged/kjvs/judges.json": "8af5faa7d91d73f365f39a75293cfd9c730a14a3492d6170ba88498fb9d58e7f",
+    "assets/tagged/kjvs/lamentations.json": "b9e83f362bdf60f4ba252cb2994ea06a1825877f5da7585e4370b567e46bcdf7",
+    "assets/tagged/kjvs/leviticus.json": "5544f789438af7aad89755514cd9fad3b18d0a171a1fdf051c2ec80763901368",
+    "assets/tagged/kjvs/luke.json": "f8fe7e5eacdcf69534ab4116d4b74c9eef6619b6e97cb7ad1a567803e5be2654",
+    "assets/tagged/kjvs/malachi.json": "80e052bcfd3fc9a09155aa9de9db16975dfced07d1b95b0b43209fb3b8601aee",
+    "assets/tagged/kjvs/mark.json": "83bd07a41f77a5ff1e5b35836e711c5476a6d19a35d7f57fba20ea035c335262",
+    "assets/tagged/kjvs/matthew.json": "2c256abd57fc8db4ad9e00b3c6ad8eb93a72d86a35e2cb8f8af02a6f465bafd5",
+    "assets/tagged/kjvs/micah.json": "6355c48510a56d1612c6d0a04f0b8c34d0dc26c0424e34993f9c8f8aaec9c102",
+    "assets/tagged/kjvs/nahum.json": "11190e5ecd7e82e6bc847fb3569e956b4d5090d661fd069bf1da3f409dd75069",
+    "assets/tagged/kjvs/nehemiah.json": "4f26d095323c414fe9c1ffe5871fef14fdee071919e0dc9370f4540a67939cfc",
+    "assets/tagged/kjvs/numbers.json": "caa3d9d079208669bb860236b59b66ebdc975ce8023a6076cc5343b65202d451",
+    "assets/tagged/kjvs/obadiah.json": "3dd657b3075a348284629252d0599ab0883ec24fb474fa026e171475f54fee05",
+    "assets/tagged/kjvs/philemon.json": "31d2acef0054e90f273b0e725ec42dca2cb2bbd9a184483284421513be44c6be",
+    "assets/tagged/kjvs/philippians.json": "5c57bcfca0eb37389a62cb897830eeb61a14a6537413023d12fe127141019be2",
+    "assets/tagged/kjvs/proverbs.json": "43ce08f1e501c04f6175e1c1b5c6aec8e48ae10ed384b8a24e416fcdb94bb497",
+    "assets/tagged/kjvs/psalms.json": "7fcd34b15360d839bb559fd3984e5aa7b5c7643f60997d7f9c05401d432aba54",
+    "assets/tagged/kjvs/revelation.json": "1dbd6841be96b1b58a627f01abe1c7e1f15cd5923cf868cce714c7c818bd83da",
+    "assets/tagged/kjvs/romans.json": "f002ca15e0ac810763746a5137cf9dc6c56e606d4895383a2d0fa91b4d34aba0",
+    "assets/tagged/kjvs/ruth.json": "5de8a9c6937cb0f7a66202a6ea438e0d76c0ef17a53b6080e7ed4545269cdfe5",
+    "assets/tagged/kjvs/song_of_solomon.json": "59ccad4fcc4c80b60d1c2b1163a0f9effedbadbfaa1403cd935ecc3bb324133b",
+    "assets/tagged/kjvs/titus.json": "894bc8a0049c1ae1864d781fcae70856e7384b8576392252addad868ed67e992",
+    "assets/tagged/kjvs/zechariah.json": "3898f8b1b07fc21a68d74fef2fb053b7eb8a232d16ea7e7faf8da01efe255cc0",
+    "assets/tagged/kjvs/zephaniah.json": "9bd64d39ce0eb4940cf4eda3c386655547a9415ea177bc1d41e97811a09eba93",
+    "assets/tagged/lxxwh/1_chronicles.json": "c6c438e74eacd19d7851d24d6e9ec4a79a21278e50a2e962a207efcfa39a9f18",
+    "assets/tagged/lxxwh/1_corinthians.json": "0a3ee7c617c066727a1d200a869a6b9f6c33d2897ec717234d025ac555efb00e",
+    "assets/tagged/lxxwh/1_john.json": "0473d2570cb1b6435e06cba3a7d2b1d54d55313acac33fcfac61333c754accf4",
+    "assets/tagged/lxxwh/1_kings.json": "2441534aabd466bde7e278b5972f02439238f64888695ec8a4b71e4433d7cb79",
+    "assets/tagged/lxxwh/1_peter.json": "0f536bb722d23946b88102b8fc2ba60bed05678e7bdc48829082888c8627a9ad",
+    "assets/tagged/lxxwh/1_samuel.json": "a97e47d1a9abfb98a109b7abcf1e5b3b08f018c4521ef8ba00024068c9a3cee1",
+    "assets/tagged/lxxwh/1_thessalonians.json": "0980ec0c63166e959d32b4572002d9b858a4660f319495a1a07a18b71977f891",
+    "assets/tagged/lxxwh/1_timothy.json": "301f047cf51a87b8b4031a1e71d2d98aa01621844e01f3901d065a6fef9a7903",
+    "assets/tagged/lxxwh/2_chronicles.json": "0e4e58d517c4335965083213abb43c160857a3a524622d3216a29b6d072a4128",
+    "assets/tagged/lxxwh/2_corinthians.json": "31526fb2e2000056e5fc1189b83fc5c55bda2ade9d4619e135107c4a9efde971",
+    "assets/tagged/lxxwh/2_john.json": "e4dc7be3bf896c9bdabdb9802dbc5d1eab4af29b1738c47e9681230f94a37ac8",
+    "assets/tagged/lxxwh/2_kings.json": "fe977acebe01488fe98889f5dc0455820d8f3212a0428e71819db0c961c18807",
+    "assets/tagged/lxxwh/2_peter.json": "90a5b3adfbf73ecd02e96c87223d4baaaf64d41edb3d9c51252ea8980bbc9c35",
+    "assets/tagged/lxxwh/2_samuel.json": "8bf6ef92e38b13e50440298eb5ba20f2021f4233bb24827e39d8660f1068f0d7",
+    "assets/tagged/lxxwh/2_thessalonians.json": "1ba4d88c048e35096f82e672186bc5f54f716160b32f4ee473767ce9d88efe80",
+    "assets/tagged/lxxwh/2_timothy.json": "1641313453ef2162d3269ebb0cf440c906a80e759801f0e897da1a0f7747c749",
+    "assets/tagged/lxxwh/3_john.json": "23c09220a675eaafcdabecd370b81429b824922bcca1fd7ad8ebda1c9b27f810",
+    "assets/tagged/lxxwh/acts.json": "2f52335db26d76271af073025633ef1aa030402718f2e117e72935f677a50548",
+    "assets/tagged/lxxwh/amos.json": "fb950fd72c0f2e47aed9f687bf514b5d7175196e043511a91d2c9e7f283ef646",
+    "assets/tagged/lxxwh/colossians.json": "32efdd1c7062395d1582011ca662d775b03de55b0fa6575a59f30376974b5743",
+    "assets/tagged/lxxwh/daniel.json": "c97b8f416c06692c098726a9456cb2f1290967c65087f2f539c0a38f44983317",
+    "assets/tagged/lxxwh/deuteronomy.json": "392ebf6dafe0d0c2b2b6461b59c0d7413ae406eb5e46131540d86ef619f0233e",
+    "assets/tagged/lxxwh/ecclesiastes.json": "4ce4da2886c92ac02286fed17a6f8dc0bd1a359140274aa1ee5edb6966471ba2",
+    "assets/tagged/lxxwh/ephesians.json": "20b61a5176b75df5ac70f7867bb4d78a5ee9676bd60e2436b9b0b582829b635c",
+    "assets/tagged/lxxwh/esther.json": "19eb6f620ef435fddf30d077880a94392bcc532fcc048558f34ebd433d45ed66",
+    "assets/tagged/lxxwh/exodus.json": "23b976f813663f1f789a5e7de9d060964121fe02b1eccd6cdd9be76ba162e1cc",
+    "assets/tagged/lxxwh/ezekiel.json": "d5e6e34c01a3d9ab9b2384da98f5f7b6ac6632b9c4af442a3c4e3fb2f9209573",
+    "assets/tagged/lxxwh/ezra.json": "830cedb7105ea66eeeb103971ba6bf74e4b1a448eeb6ae6505e23097ca195d02",
+    "assets/tagged/lxxwh/galatians.json": "88074b323fe71a2dba3c8db5d3bb203047fe3060179fea092f2653a8e588f255",
+    "assets/tagged/lxxwh/genesis.json": "e3ab3371f59e1febfced4feabf7e4d6dbd0c7187f3e3c9861e7039cde1f9c90f",
+    "assets/tagged/lxxwh/habakkuk.json": "8a688b901d146c9555bc45e8046648eb013df54ec73bd9d34dcc9991c8ef5de4",
+    "assets/tagged/lxxwh/haggai.json": "d4977c43a33fbcb63ebbffa1d2da2dbad4dd1c1c988a77b39cab04840547b008",
+    "assets/tagged/lxxwh/hebrews.json": "1fd53c3899d81965d0cfc6fb96b43942341dadade4b15535e2fa1a43dd8b8934",
+    "assets/tagged/lxxwh/hosea.json": "04ebc5aaca68df5fe37120882e3b3c626d4ff7d14f14d1c946729cc4f1eb1bb5",
+    "assets/tagged/lxxwh/isaiah.json": "b679d8ce1b2d22827004b2f93e6f16cd18d2250b5a4b9aa612d9cb1b73380753",
+    "assets/tagged/lxxwh/james.json": "106a405837d2f9679748e10d80bb4d3c6e3191fb886121f9092c86bb36b68bf3",
+    "assets/tagged/lxxwh/jeremiah.json": "4621ecc86bdbd6863424600fd44d9f5914e39924f70f74b522611e0a15f82370",
+    "assets/tagged/lxxwh/job.json": "3552da39d56bfdc6c031f6067a7347b052b319c52b75b1e65a9ab3d4eb279790",
+    "assets/tagged/lxxwh/joel.json": "b79efafc1f43a02b89f3c9e713be7f51197ab3a998ccae672fb82cc5cde0c00e",
+    "assets/tagged/lxxwh/john.json": "d6e22dbc9b1e57f801ea92c565415fe55340c31138ec0304b6c9c210f60278a1",
+    "assets/tagged/lxxwh/jonah.json": "7191eacc23cacc66f60e045e05b6a3dbce928b04630a2b926aba683a600807b2",
+    "assets/tagged/lxxwh/joshua.json": "de4cd8d903a267d25bdedcd24c8d091e24d9c618cb3644c6246093a9d4d8ce3f",
+    "assets/tagged/lxxwh/jude.json": "bbf796535947587a17cb6dd687ad0f5eb887eae5da351fe6e415c7dd71f8fa6a",
+    "assets/tagged/lxxwh/judges.json": "bb2b59049b54c262ebfebd783578a56fc9fac29e709d5bf788efa615014f1bda",
+    "assets/tagged/lxxwh/lamentations.json": "5ab72b65c2debb489321b9eb2d2b9f584dc5aa7198dc6153a4fb2e52323dfd56",
+    "assets/tagged/lxxwh/leviticus.json": "01901a75e2771902e0650f69d0a2128ea2122e4a70eb4bad4af094764f46b130",
+    "assets/tagged/lxxwh/luke.json": "45c8c2623feacdf0e0f8522085ea644d63dfd6252fa7a8e9edecd4214cb1dd6a",
+    "assets/tagged/lxxwh/malachi.json": "0b43cb2d094d0f03a14ab4ed5cffcbc649db6ff64614ae04cfc0b41625e70966",
+    "assets/tagged/lxxwh/mark.json": "d968c16b4bccb04f9f383261a057812eef7c71ee8e13980462e5215d7a2693b9",
+    "assets/tagged/lxxwh/matthew.json": "1c60de75963086da71f4698529434b829ff4a23775ab5fbb1ef9fcf464e89268",
+    "assets/tagged/lxxwh/micah.json": "5d4902107e95c20c185621e671cec038ea789fa78e819b8961a362935289d7a6",
+    "assets/tagged/lxxwh/nahum.json": "e57737d5aa09fac5d05f44bf1336f1846930da7a3c45a3c942d05b1cfd88fbe0",
+    "assets/tagged/lxxwh/nehemiah.json": "de475438f4be3216fbaec372f7e6759f66ee884264382fa1711afc27e4b4fdeb",
+    "assets/tagged/lxxwh/numbers.json": "9cef1699eae95d8af70f0d3108fe058260dc2d22050020eba2a5c318fefd600d",
+    "assets/tagged/lxxwh/obadiah.json": "1d10fe664fc3987869a1fa889472146cd22bf06e945b5fc3a5f2d6132be69512",
+    "assets/tagged/lxxwh/philemon.json": "e3426ae376576d941be044b43ede24b98ecb6261345943e3fd32d2be99961325",
+    "assets/tagged/lxxwh/philippians.json": "b675f3cddae6b512b45db0e722fb858b4cf16278680da457476dca4dd3b439c0",
+    "assets/tagged/lxxwh/proverbs.json": "593b7e2f8da929ad342bb13c1129b5bd116b0194b80052fa06c9bfa24fc2366a",
+    "assets/tagged/lxxwh/psalms.json": "8cdfe5ca21460476f9c2794655c0ef66786f8b161b07f22436b288bceedef494",
+    "assets/tagged/lxxwh/revelation.json": "21277c2b6c87547de2754e6094ebb69dce6148339ad1a619a4e4e27b73d8f898",
+    "assets/tagged/lxxwh/romans.json": "aa8c086d7376d6825bbc34e4895c0fabc51043fc31d1b4e66a8a8f84693ea2ca",
+    "assets/tagged/lxxwh/ruth.json": "cc9d35791b5f965d83fa28b389e8399cf0ea95aae175a4d689486afe3e5dc1f7",
+    "assets/tagged/lxxwh/song_of_solomon.json": "7103a00f50c7be5edeae910ac609fd43508e885d5b415df7b94692e0bc9d08d3",
+    "assets/tagged/lxxwh/titus.json": "1710c70cb6a6e8085d3f591f6d8f96f5196161dc40959087faaa1b43d68d10b4",
+    "assets/tagged/lxxwh/zechariah.json": "28083fafdc9bc7c00826bfcdaf1f87af4c320c6c517fa27c0622a9bfeb1e9c64",
+    "assets/tagged/lxxwh/zephaniah.json": "a52f3e0b1054e092a079ef2ef40b8aad8c57ea195def0921c003b2548c6ff6d0",
+    "assets/tagged/cuvs-plus/1_chronicles.json": "52605379120d4c6419b0e327398d326c32453b9e91fee9fb89ac888d1f998efb",
+    "assets/tagged/cuvs-plus/1_corinthians.json": "a841afc4cbc17e408a543b97efb55b49eb7c9cbdebb73dc2468561108693533e",
+    "assets/tagged/cuvs-plus/1_john.json": "0c7b34d9ef7552dc3baea70e51168d5aef46b284abe3f5793fd425fd7a50826c",
+    "assets/tagged/cuvs-plus/1_kings.json": "e5fb5f4e782561dd5bc6b9c00fc0ddddd9dc9ef3cb100e0b98c7b254dc258c8c",
+    "assets/tagged/cuvs-plus/1_peter.json": "303556e5e578ce01fe96e2c99ff377221a6e4aeebaf6956ff2c5cb035f371808",
+    "assets/tagged/cuvs-plus/1_samuel.json": "0bdb7acc95aa6601e9e9b64bd578ed57ea4e3449dc0fe5b7487d1541c7d5024a",
+    "assets/tagged/cuvs-plus/1_thessalonians.json": "b17226240294e277b68bdbc266d1645cccd843b820ca9c2f2c2332d2242a8d7b",
+    "assets/tagged/cuvs-plus/1_timothy.json": "947de900eaa59b4c28cac6d327cd2c510dc99215b2cfee1cc5f7653dc7c57e19",
+    "assets/tagged/cuvs-plus/2_chronicles.json": "37bd2722bec3bd62f09d16f648fab8bcbbc865567ffe7a58ce042f046e814aef",
+    "assets/tagged/cuvs-plus/2_corinthians.json": "688d327223f6c4d074de361e759a4c3a3974f028bfca38105e61ccdbc8692eda",
+    "assets/tagged/cuvs-plus/2_john.json": "92225cd8e3a3978a3f7177122b2bbe1424ffb3d55baebfb8b9c0c118724baf48",
+    "assets/tagged/cuvs-plus/2_kings.json": "8700b5d68388a0d23a2eb455328ef87471110dd81aaabd06d340a9a16839ecaa",
+    "assets/tagged/cuvs-plus/2_peter.json": "2303a143365538fa8a23f3995fb8ebdf5c2619c9722db129012a0022f98665e7",
+    "assets/tagged/cuvs-plus/2_samuel.json": "2fdf9bb5688a466281f3fcfafdfcbf289636886583dd9b937118466a6d348b42",
+    "assets/tagged/cuvs-plus/2_thessalonians.json": "2747fe098bdd0c2199c67e98fff81211432ed760f7a4b2396ace1059f9f79f66",
+    "assets/tagged/cuvs-plus/2_timothy.json": "ba5720dc91db914dd40a1aeaafaa525af0383115ab5341dbbec41e4584331a0e",
+    "assets/tagged/cuvs-plus/3_john.json": "d58a14b605fe943688b8abd6fcab0533b55792d54eb32f3b86f0f0d3a99f268d",
+    "assets/tagged/cuvs-plus/acts.json": "e72792d27279b03dca9b5e782f6320300203d639015ff3ae6c0d51d33049130c",
+    "assets/tagged/cuvs-plus/amos.json": "b552ae585da06d9d12d2fe309ff9d206ce97618f7bc0703b9b4286d8e99a2d9f",
+    "assets/tagged/cuvs-plus/colossians.json": "053022436d9e5feecd320b91309e67e24da81f4eba6ecc63821c79b900397914",
+    "assets/tagged/cuvs-plus/daniel.json": "230dedb4682574bc9dc35ef1898cd9b37d4df960c718abb6af8b84c625177679",
+    "assets/tagged/cuvs-plus/deuteronomy.json": "bfbbf680bb7c568d4ad6b9586e57071dc7c62999b3744bb987a3b12d9e565b70",
+    "assets/tagged/cuvs-plus/ecclesiastes.json": "dd1a6b3674a515a40526ca2bf5f829dfa9ca659c95b8c68f6c636b7b8be0e4b7",
+    "assets/tagged/cuvs-plus/ephesians.json": "2583715c3a441cc9e4b097e70c75c51ba8ea1a2f2fc3ab307ab8d07bbb352aa0",
+    "assets/tagged/cuvs-plus/esther.json": "a0f5969cebedc5f64b11b2df9116d28fbadcf077fa7760a37adeefa2555cd5a3",
+    "assets/tagged/cuvs-plus/exodus.json": "8ef91436035286a1f3af0f5f48acf06447170fbc5addb23ec7f3508645eca8dc",
+    "assets/tagged/cuvs-plus/ezekiel.json": "fe8f3c5039ec7fc7b70ef962e7c04756f009a9a389058d5849b4d6479cddd73c",
+    "assets/tagged/cuvs-plus/ezra.json": "b83f8b6105e7fa539c534da67013010f7e5cdeba1a24f603f266972dabb5edf8",
+    "assets/tagged/cuvs-plus/galatians.json": "da61318be80c16eca78b88472794b616e03cc62b449368be8eb1d366772ddecb",
+    "assets/tagged/cuvs-plus/genesis.json": "3a7f08277ed7ecdeb21ecc1c2590204bdfc6d067ddfaceffd40560c2e6d8c6b7",
+    "assets/tagged/cuvs-plus/habakkuk.json": "273354729d18d57bf2230c7643c5d3a7db8ea71bad9e3b012fe43246bd9fbe02",
+    "assets/tagged/cuvs-plus/haggai.json": "4ef39fa2a73ee98c31ae11976f37e30a7e7b39b6ea15cad8ece35c10fb8e0bb4",
+    "assets/tagged/cuvs-plus/hebrews.json": "d0143b05011d31f093b09aaaf08113644372fa3b2d3224b0c476d94fba1f2f8f",
+    "assets/tagged/cuvs-plus/hosea.json": "88bdf2b81ef796205dd1c1cdd0111047bd914f93d911ba26da9e1aa0ec11d8c8",
+    "assets/tagged/cuvs-plus/isaiah.json": "ab0cbb0b0162a59284fb656d10a9f9078a36b0d6d76f55936781736edc6418bc",
+    "assets/tagged/cuvs-plus/james.json": "a3b38ab6f73a356a036f49121868dfed986fc624b4203e1946232117e146f125",
+    "assets/tagged/cuvs-plus/jeremiah.json": "c2931f53e9367cde244ee7ef2a4781bbafdad35a086a972b8e50773fc07bb4f3",
+    "assets/tagged/cuvs-plus/job.json": "0209afe5cb0fc2a8904a577e05a388576555a9b5c2de0c8f52bc8d2f276fc173",
+    "assets/tagged/cuvs-plus/joel.json": "f606a39710a71edaaf8e849adf1c34b6d35abe78ad658c60bd8b6894ed7b3f71",
+    "assets/tagged/cuvs-plus/john.json": "6564899bbcc4fa22ea7d9b8a5f1e33935cea3cff0ffcde76bb9544f46704c436",
+    "assets/tagged/cuvs-plus/jonah.json": "e5b99dab483b8eab1004a66da32313353b70fa209e168c4eb580896839e16e05",
+    "assets/tagged/cuvs-plus/joshua.json": "48bb5dae51741961ddafdc3502e239c9365851f3f7cf658eae444b6c8996589b",
+    "assets/tagged/cuvs-plus/jude.json": "2cd0c967f5dd2384dcaa578a2aece9e24ce79c92726b2748137e249c1cf30511",
+    "assets/tagged/cuvs-plus/judges.json": "7f8e596892ec3793d6ef43ab255794bb558dda0e67aa865e9297f0a482c1a18a",
+    "assets/tagged/cuvs-plus/lamentations.json": "506099a9a7b280e2e25a8922d66971ec382b43842190412ef4ce8de084879184",
+    "assets/tagged/cuvs-plus/leviticus.json": "274f11eeb14c990f0509db114c436d4a6e73a42836bc70abeabff7da102e9afc",
+    "assets/tagged/cuvs-plus/luke.json": "f7ea356d9dbd7df773c8f0675877b159b24c1df4abd87732967fb5407b39bafd",
+    "assets/tagged/cuvs-plus/malachi.json": "7c38bedaa9720f74ce2a2486f973fc7276c514d0c616d1fbad2dce43030538d0",
+    "assets/tagged/cuvs-plus/mark.json": "b1030ec220ca9f1af467fe63802680ce468d42742b45dcd90b73e2f209fc23b1",
+    "assets/tagged/cuvs-plus/matthew.json": "57cad2bbd1ce8f1cb5077e1c6d99863b184beaa5e6332b0f535cc3c4b0db81b7",
+    "assets/tagged/cuvs-plus/micah.json": "48993065158764cb97d4a0e725f927dc2ba1061138796821d3feac5b51613f9b",
+    "assets/tagged/cuvs-plus/nahum.json": "3f9fb9c9080e67b0690aa59e2b01524b32a22429bd5251503cf396c73b41f27a",
+    "assets/tagged/cuvs-plus/nehemiah.json": "5daba285ac2f7928c4d636cc42d51148c543985f90e7ce17fc30c1e1a471827c",
+    "assets/tagged/cuvs-plus/numbers.json": "217072b330d13c16fa1620d979cf5e57ec43efe30633027ecc1f5664072aac93",
+    "assets/tagged/cuvs-plus/obadiah.json": "065f651960ebd2087fdd8e85d1d5fe97fed074e6e5279fd0d959f640fe29e240",
+    "assets/tagged/cuvs-plus/philemon.json": "c298c9e9c4bee9fff452aef247155fe1672105dc1b5911eb0cf20c70ff24bbcd",
+    "assets/tagged/cuvs-plus/philippians.json": "dc143c856d75b7830382cccd0af1b0bbe2b2000ada54a55c68ffd3dde528b85d",
+    "assets/tagged/cuvs-plus/proverbs.json": "a7318bf1e6fc6f93b481cff5679ed8a52d2e664b4f3bb664a111bbbeab94298e",
+    "assets/tagged/cuvs-plus/psalms.json": "c9e9e7823b838b09fb9ec6637678099a36c7d0a0dd5b89880b293d2fc35a586b",
+    "assets/tagged/cuvs-plus/revelation.json": "ae09f5cf3dde269511773c91474f8e58b6f8f771f70d48c83b312ae278452bc3",
+    "assets/tagged/cuvs-plus/romans.json": "55c6ac5609d4a837622546a6ef534c9d6850b202e574ee5a14ad8d4546495fea",
+    "assets/tagged/cuvs-plus/ruth.json": "8fde642b39a1c675adb568c019a1aa0f58cc4efc8353911c8ff8ea04fc0f9819",
+    "assets/tagged/cuvs-plus/song_of_solomon.json": "679cbc22192d49040cfe975c516ab88847888f874245e36afae3a4e2c1bd517c",
+    "assets/tagged/cuvs-plus/titus.json": "4998173ab1e2886bbcea44db98269516abfe8354b61536ed0eadce6ee329fcd9",
+    "assets/tagged/cuvs-plus/zechariah.json": "80f96912dc8067bab05e7c807e2f8cc850fe7312bd8a512db268fdd4ce9fdbd6",
+    "assets/tagged/cuvs-plus/zephaniah.json": "55eb94be0f8908e00624f881b20bbc16dc305c0425c2353a47bb8b1640657175",
+    "assets/tagged/csb/1_chronicles.json": "16f4e577c04fb0bf42a468b10b581e19a5ad3a9726b21c7637f6ef8df96edcc5",
+    "assets/tagged/csb/1_corinthians.json": "cb800241271aa648120197599d29ee09888be61a0c2b431a85e3800384cfd5bc",
+    "assets/tagged/csb/1_john.json": "bb0194357c772437face69a7b33514f27f951e9e5ae9d396e5db6ee13b0f7743",
+    "assets/tagged/csb/1_kings.json": "2ff4ac104acf6dad4e2d4bc544e2f20607c38190283c8ef2ccb4d5e75a0a38b5",
+    "assets/tagged/csb/1_peter.json": "71d494045c63f4570b2349d2e8af1c023cffb9964b0a5c0aa06869a50143839a",
+    "assets/tagged/csb/1_samuel.json": "1fdeee167c6d844f30aa7c782b30db727630b0b92d00e5d966ecb24749033fb6",
+    "assets/tagged/csb/1_thessalonians.json": "ee3d91ee9e408809a458a47023e2d10845d15bc2ae1bbf3a84b28dd30ce2304f",
+    "assets/tagged/csb/1_timothy.json": "ebfd4f245c67f566519668cb3603dcddc7a6bba2507e8b42ca13e98ebb5fbc53",
+    "assets/tagged/csb/2_chronicles.json": "6e80f2cc6f9a6294904fa673ab72e4fceb78a9153d609515647cf6f39c6cb02d",
+    "assets/tagged/csb/2_corinthians.json": "4d217cc6c6edc22104b87233098e6d247df9e44af6b18252bc0fa2a584f0c7d0",
+    "assets/tagged/csb/2_john.json": "058e785918b723f19fc9bd40e01c50596b90deb9fd40afc3cbd15ab5bc98713c",
+    "assets/tagged/csb/2_kings.json": "155186f14fb5f2349b199547b1df8d19dbaf915daa9b405ed57e1b344c99438a",
+    "assets/tagged/csb/2_peter.json": "516420e125296aa1b3dbe7510b71dd865081cd5e340807f3fbf5f73be1c33547",
+    "assets/tagged/csb/2_samuel.json": "afab23bb9bcfe021eb45e3416559f3f31c7eb3eb9b457872cf022083778df4c0",
+    "assets/tagged/csb/2_thessalonians.json": "99f6e81b1f242dda78892527e2ced8e7d47bc433dc9ceb9e9ddc00bed57d3853",
+    "assets/tagged/csb/2_timothy.json": "442b9fc7180c3c3c415158ce96bd751f3f3e0aeb462d88a8ba4394e6f1707acf",
+    "assets/tagged/csb/3_john.json": "a59ef2918d92a8494d29cafadd937bbf1c9aebc53abbde90ce3d51ef786995b0",
+    "assets/tagged/csb/acts.json": "67fa25a2f3857bddf4ad0f0ab327e73f813c187b563efa438c9e6cb0cbc3f7a4",
+    "assets/tagged/csb/amos.json": "432bfd276862799723111a2eebd7e17eeba81abbb6f2962a33e410a5db0b5897",
+    "assets/tagged/csb/colossians.json": "0012eb94899434c52b5481dd8d82c6a0bacf8440595a5a1a66cf3f2fe310e91c",
+    "assets/tagged/csb/daniel.json": "deed4e7fe4a71880b6f0ec79ab2bbf42fdad7db4495bc858018634a46d8be4e5",
+    "assets/tagged/csb/deuteronomy.json": "73513ab58d4f4fc894dbbbfd7f6b8f97849074f9ac9a0f05e6d1995585c3a842",
+    "assets/tagged/csb/ecclesiastes.json": "727bf43cb0c8a0d46017bfa07d3229240457242a60291d24e6bddee098435e19",
+    "assets/tagged/csb/ephesians.json": "2ca7242c8e05d65e8fa6deb08de54efaabe435fc2d8253c3d9e2eba9abd056e6",
+    "assets/tagged/csb/esther.json": "c5b146f6a0112ddd36185162868b1b8102862a6c7025fd5ed9e654f8903363ad",
+    "assets/tagged/csb/exodus.json": "2079239a6e219fe8f34a2470626cd9eec323b139d3e9943f13adaeb0892c96a7",
+    "assets/tagged/csb/ezekiel.json": "13771d780e8cd9a9c08592460c6e4b2d03c2820013e6b2b27309de6162a8816f",
+    "assets/tagged/csb/ezra.json": "8772131f1b6965a213f1e9fdcd850c1f52d682aefe8ed367554c4dca2bf625f0",
+    "assets/tagged/csb/galatians.json": "43f647d584cf8e3322e32306fc2931cfe072213c69d20000b38bf9d4a243f598",
+    "assets/tagged/csb/genesis.json": "9c319e1bc108b3a17f589cb7e7f178a6603c86141b087f18ab2295e418af9af5",
+    "assets/tagged/csb/habakkuk.json": "81a6de6419f22e3b1a4d16836022c44d25bd1da70cbcc03a2bb2e82267c41250",
+    "assets/tagged/csb/haggai.json": "cf1bc19219ae1a858acd3101de22f379f7dba14ff18c8584bdb3723ab088465f",
+    "assets/tagged/csb/hebrews.json": "ac3da078e0ca6b9d1fa4fa7396d98fa53e85cdaa0e3622363037a1bccd9824e0",
+    "assets/tagged/csb/hosea.json": "031a4b248f0eb40efaa67614ebff913593c8399a95bea449ab1708e4bd7f439c",
+    "assets/tagged/csb/isaiah.json": "96a05ec67c2826ef303cfd7439057be6e63da50b435c734a6212c1ba36da0806",
+    "assets/tagged/csb/james.json": "ae52a57329700e05d4664dd3a93f4524532c7916a249b9218268d80e57074dc2",
+    "assets/tagged/csb/jeremiah.json": "822ea7afdb74b9ddd97e4789de6e79a22cf9b4303955a306a107b73e4d252ead",
+    "assets/tagged/csb/job.json": "70553c8abad204021a7da7fbe02d4fe5fce97b044d6b8908d7b854dfa1cf9eef",
+    "assets/tagged/csb/joel.json": "86889fd472690c16a63f468acca46f91175da3cff2b5303f7696f09893b52d30",
+    "assets/tagged/csb/john.json": "626438d3dc4fa058f4ef613528454d0515dcbf5fe17535b47e06b5add48571e6",
+    "assets/tagged/csb/jonah.json": "9c9f7dbfe10b88fe72157ef28c899eb103a4f8b28294be807e4a3b50746b1075",
+    "assets/tagged/csb/joshua.json": "6f0ed9a97d62454baf01503763f05ae92f516668c959ddb309e280153d785625",
+    "assets/tagged/csb/jude.json": "8a6d64c3a8d327742c2ac670c7df7192c97f80b0fd8a464c12c74c997d7206a0",
+    "assets/tagged/csb/judges.json": "42c037d1a5a8d51868998831dc70f4e44e71022475174809a449ca758db3744d",
+    "assets/tagged/csb/lamentations.json": "3b111d6e0b552b8b176221b50895d0fab6eec794b2ee5de09cb769f288e98143",
+    "assets/tagged/csb/leviticus.json": "4adee2f4e7b8a2ec5524ca82ad400d3e07f8e8a91db77591165061417dee11d5",
+    "assets/tagged/csb/luke.json": "723aff50ca98f8e75f3b3b7922373d68b574d294a69c95135e93bd44ce31bf5f",
+    "assets/tagged/csb/malachi.json": "d33fe9c5a8ccc3d620d72250b2994efa76907c296d4597bb22ab709c9d9f7a32",
+    "assets/tagged/csb/mark.json": "1d5867cc9d13a6214c0abe580357a4058764d1ee2be7e5f4a384947224a01496",
+    "assets/tagged/csb/matthew.json": "ae4065460a54085409e0dc6d6a2d380daabf69ec964df18ada1a0006a14d9e5a",
+    "assets/tagged/csb/micah.json": "edb968b1d0660aee9acf51f4bd25188232da81782fdf2ba6ba8f1c30d9e4495c",
+    "assets/tagged/csb/nahum.json": "b5e6e9449fde7589357becc3474f279da541f4f13f08e41bf93804d19ba388fd",
+    "assets/tagged/csb/nehemiah.json": "c3efd6b0345f38a0682def270a53b12a6795ddc1e8c2608c4962f5334ea8d1d1",
+    "assets/tagged/csb/numbers.json": "215f0c1cca6d1b451d785bad84907e38008336dd1474a3fc21849a0655f8a730",
+    "assets/tagged/csb/obadiah.json": "d4414c4ead448ee5f5f9be03383aa69f63c3335e956894d8f59ea81a2e872f14",
+    "assets/tagged/csb/philemon.json": "d06a54528e9f3ed684de590bbea0dabe6c588eebd618c72dbc10a69824a79040",
+    "assets/tagged/csb/philippians.json": "2d60f941dfd2c9b61e2e4a7c2494f39cf74f7f2de57fbf7c350a7e61696bb598",
+    "assets/tagged/csb/proverbs.json": "550044ef293ec7a6a733a34509c3890271b386b3173990c0c4d4c76cae727cb8",
+    "assets/tagged/csb/psalms.json": "f7130544f09023cdec98c4b83032a0c0825c90803b71347b0aa0cc69b0639681",
+    "assets/tagged/csb/revelation.json": "7de1a2ebe4580abd8a3c466a71d4f0f1c2a8b6471de863d5aadfd773110ebffc",
+    "assets/tagged/csb/romans.json": "5142d56c5fdc5c06af5ee6c387ad2dd20bf042d748dc226622a57629fbd3dc46",
+    "assets/tagged/csb/ruth.json": "f4c975233909cae7dd80fa45a5a27b4921f6d709d138ad85b67a501771b152b4",
+    "assets/tagged/csb/song_of_solomon.json": "11102a89534327ffa398d94f517d97c58ce4c5742607037791b96c920c290d52",
+    "assets/tagged/csb/titus.json": "ce5b50399ce9e44ae4f6975f65112307f4daddd47add8f2e5bd21b9ba5123db5",
+    "assets/tagged/csb/zechariah.json": "c17a0890e5fa7f58055371cdcfed02d417729d73ef07ccc61c8eb6e21ec1dd1d",
+    "assets/tagged/csb/zephaniah.json": "60f4db89b6c848731c324d209ccc2f0891e5d4cb59d395f44a0de29060fe5b33",
+    "assets/tagged/bsb-yhwh/1_chronicles.json": "4b9d59d50971793329252a4cfd35b712520f0b525e2109ae09968a97d8cab5fa",
+    "assets/tagged/bsb-yhwh/1_corinthians.json": "e58cf9d19679f76c0311eb1723295715909756470520af35d4f6dfca255ec850",
+    "assets/tagged/bsb-yhwh/1_john.json": "1782ea1a4598c38ada0d7d898acbf9acdcad10a716cde4e80504023f71a47e7e",
+    "assets/tagged/bsb-yhwh/1_kings.json": "295306e5a15ab06cde430209855f7167387961777b9f5271088b2bf8fcc35f30",
+    "assets/tagged/bsb-yhwh/1_peter.json": "93ff99ea13d5ab7bed6cb444ed1ecfa47a1c809f402af64f570acd6a4cff4143",
+    "assets/tagged/bsb-yhwh/1_samuel.json": "87c3ca994ff2832669a77b5f50d4f88c121132a6af60a968ed517fc5d2a4e878",
+    "assets/tagged/bsb-yhwh/1_thessalonians.json": "cbac016aa4829fcb36386770660137f60caa5a12e41781dce3f895931388a33c",
+    "assets/tagged/bsb-yhwh/1_timothy.json": "c551cd27660827f51caf48bc0113b4f04b79458890968949bbe9593c61d677ea",
+    "assets/tagged/bsb-yhwh/2_chronicles.json": "4e9aad5b1d5cd03f1029b73b96ea1f86c98e074f49039ab4fc62ae984432c0cc",
+    "assets/tagged/bsb-yhwh/2_corinthians.json": "2bc4e006f0515666651667d6eeae48b6155b93f982edf9d34a2d7e0d90ea4e79",
+    "assets/tagged/bsb-yhwh/2_john.json": "86b995e13f9e3db5dbe9207d50439d313932e92c4fb05e1c66240770a2c517e1",
+    "assets/tagged/bsb-yhwh/2_kings.json": "86ff52cc488d8d96056ef73035bc15b22600abfc3cd253b2b1f4f44c66db60df",
+    "assets/tagged/bsb-yhwh/2_peter.json": "2112ed3b4b11049d460c54be8126be234ca2b3e76ea56d8cc913ce746776d208",
+    "assets/tagged/bsb-yhwh/2_samuel.json": "e2ab52efa4804110ed3cbfa9f8007d3f0694693a6473876a85c309863b4b60db",
+    "assets/tagged/bsb-yhwh/2_thessalonians.json": "d7e02392c674eee06c798f17e05c2a71906c5712d8f59d760382d16dd16b5bc7",
+    "assets/tagged/bsb-yhwh/2_timothy.json": "a218cd006fc468a854b2f8cc04ad9fdbf405e9b1013823ceab4d53a246bc2c48",
+    "assets/tagged/bsb-yhwh/3_john.json": "44cc6b5a73aef8cbb749d56f752b9c3a0448adb200cd738a76ca8551112d5de4",
+    "assets/tagged/bsb-yhwh/acts.json": "16fd3fb7253099ebb57240f1760324fae4b1cc2dc3d395fae4779d16ce569af3",
+    "assets/tagged/bsb-yhwh/amos.json": "392fc3fdd218be9abe4f174abd0c3bf33d7d38d95d78cba3662ce60481872a8b",
+    "assets/tagged/bsb-yhwh/colossians.json": "2a1290e1c6e5f486d2cf1dbce853805bea37ef536751eae9ad95fbc982d81ece",
+    "assets/tagged/bsb-yhwh/daniel.json": "3939c7df1cc03dc1ba6ed2a76038dbe3bf5345eba62dbf7a53bf19efade6e5b5",
+    "assets/tagged/bsb-yhwh/deuteronomy.json": "60d7562832a61daebec852e059ccaad781477761e288a8204e302313a8c45705",
+    "assets/tagged/bsb-yhwh/ecclesiastes.json": "43b54f234d81e58fef95979645667154bb0f009768b7987ba1ce5f858558dfe1",
+    "assets/tagged/bsb-yhwh/ephesians.json": "e62908d5ce48f1011f1f7eb1993ab53c53e0e8bfae986da4d8e2c736f634c07d",
+    "assets/tagged/bsb-yhwh/esther.json": "9b06012de716633d0c32c590c7376a798e1faf67afed3a4dbc98947c31f69aaa",
+    "assets/tagged/bsb-yhwh/exodus.json": "04d288be28f3cec9dd9f02da6ea69ee11e17dead7f75f0148bc6e2f2e69e73fd",
+    "assets/tagged/bsb-yhwh/ezekiel.json": "ff3f87898618b7878d17307e7ea69601c57a194c4a054c6f09a4fda1e93e48e6",
+    "assets/tagged/bsb-yhwh/ezra.json": "42075f6c1ee73448a847874fc0acd0383f6de541bc73aac0290affa1f81bd3f1",
+    "assets/tagged/bsb-yhwh/galatians.json": "e403378dbf881ecfad4cf96e302e5ba25a91e3dc3e51121f178f5283c966d614",
+    "assets/tagged/bsb-yhwh/genesis.json": "8a920e833b7835158d1ca57f4c4f4f2787130a190fe8d746a43eca64313dc0cf",
+    "assets/tagged/bsb-yhwh/habakkuk.json": "8d2f88560eeb60e9663e0fab5101bcb65d417d0bd7ca9d1ce653cb5978d026fd",
+    "assets/tagged/bsb-yhwh/haggai.json": "a0adf15090ef8e96ecd7032782d250eb1a7ada5e755d5c219d46df6266917abb",
+    "assets/tagged/bsb-yhwh/hebrews.json": "ecd9332390ef2547a3d43e7d327cbcd3a1a0f48e83ba28343a3243f00d48f12f",
+    "assets/tagged/bsb-yhwh/hosea.json": "cd3c68a1cdf59137b797b5daefd0db35097cb6e199bd25530c48a513e86ad8f3",
+    "assets/tagged/bsb-yhwh/isaiah.json": "8a237dd01e16d6cae47c5453c03f6d4f7085bede64535aa90ac8755f482dec9a",
+    "assets/tagged/bsb-yhwh/james.json": "d86e8ad4d63a6afab2660e060601156b2df1a8d698aac3a4dc0ee031ba129a87",
+    "assets/tagged/bsb-yhwh/jeremiah.json": "806934df38298266ebbbe6702e49db286b5cbbe3866010a0b3164bab4a775144",
+    "assets/tagged/bsb-yhwh/job.json": "379ed6b1a26e4bec0a13409201e5a7efc2d6e3a66475cd559c3f4f8b1028517b",
+    "assets/tagged/bsb-yhwh/joel.json": "5d995c0eac1ddba9394a7b3dd4c8f8a52f811e048a974a99aa50225ad6e73e94",
+    "assets/tagged/bsb-yhwh/john.json": "ed66a9d8f260b8c3db71d3e69a7b42f6142027d3030dcaff670d1eb4aed322fb",
+    "assets/tagged/bsb-yhwh/jonah.json": "04ae0e2eb8b57d2a56decf43674d71a1af548af779844800d7e3eea15710e4f0",
+    "assets/tagged/bsb-yhwh/joshua.json": "641b745a0a393195e769cdc8d995fcb650ceb07ead120494750011071db0b4cc",
+    "assets/tagged/bsb-yhwh/jude.json": "7da870e70cd66c669b22d25e0e695d37289661afcb8e980cb3b3052410255ed3",
+    "assets/tagged/bsb-yhwh/judges.json": "c7ecbb7e59ce01fa534d51aae0c1e0dfa35239435081ad4620704978d58e5312",
+    "assets/tagged/bsb-yhwh/lamentations.json": "ebc84c5ef7ce53356509677841b27de183ca16586cf27de215ff749da7d4ece8",
+    "assets/tagged/bsb-yhwh/leviticus.json": "0c1a767ce00e56d03913ada5c09a46600d1b3e50ad501b9f3b939252109ff525",
+    "assets/tagged/bsb-yhwh/luke.json": "f680f347460be4e927d02e8291a8ff8e3cff7c355e89aff57782bd498935433c",
+    "assets/tagged/bsb-yhwh/malachi.json": "5f30ab69b9e690f9b4660cbf154e3af437ea9b9a87b21beab779fcb052efb4c6",
+    "assets/tagged/bsb-yhwh/mark.json": "b22ff24a066ff56f97ef3d55dbf2b653dcbc0022f7d153f3b482c0ffe2d4b399",
+    "assets/tagged/bsb-yhwh/matthew.json": "38a84a1d7cf23c473a69d6d405a1c00395a46e622c44cd2d8ad87ed8a9871110",
+    "assets/tagged/bsb-yhwh/micah.json": "12342e632a99b4bb53d98c370226f831060ffe2ac2cca47cf7ca3652cfd614c0",
+    "assets/tagged/bsb-yhwh/nahum.json": "cde7236be2db151b470125fb1e4f9ba3bcdc8b52ff9bc90e66c2deb0639266e0",
+    "assets/tagged/bsb-yhwh/nehemiah.json": "064e302a3b2ee742873b5d16c6b7d17fdf236084e508e96daf8e8958e5cbfca8",
+    "assets/tagged/bsb-yhwh/numbers.json": "ff78f0da00b9a59c7140ee3e5ca0a4a44fc980e1d66e37d34ac4a9a8070d072e",
+    "assets/tagged/bsb-yhwh/obadiah.json": "dea2e948988510c022887fce8905b6ab1f26e76ba6e4c0c4ece260c4b65a25c5",
+    "assets/tagged/bsb-yhwh/philemon.json": "20112e1e246aa9fb0312883766b86deabca48dc3cd90d32571c844296f12f364",
+    "assets/tagged/bsb-yhwh/philippians.json": "637f726d5a79b64fd97fc6e0ec3ab118435164b205bf84548bc68aa411dd47e8",
+    "assets/tagged/bsb-yhwh/proverbs.json": "f45bec9d7c7b2dfd0e9b5ba4bad4014bd28a26b03a6903fa864a276ccbd0893d",
+    "assets/tagged/bsb-yhwh/psalms.json": "d3358a16a50cc5bb9619b027619207630b76a518e571b962072663c50b31db80",
+    "assets/tagged/bsb-yhwh/revelation.json": "d4b530021e3fa987b4df796090ef2e99c9339c7c12d481c43d81b43844e624f4",
+    "assets/tagged/bsb-yhwh/romans.json": "c0a80854fb8ec3d0e40ca7992b6d55d612183bc0f294e47f6d5979d22f6bd9c2",
+    "assets/tagged/bsb-yhwh/ruth.json": "3af2b9fad99cca2152d5998be49e953dbc26bea0937d2991a7f8e00be25b0107",
+    "assets/tagged/bsb-yhwh/song_of_solomon.json": "5826d9e9343e21c1b9cedd283e1e41e1a0167f4bd8a0f74aeb623888328e0ef5",
+    "assets/tagged/bsb-yhwh/titus.json": "0a8d4b4475fd0276858f6e297f5698ff81932c27f3e5e7704a1a64b6c894d391",
+    "assets/tagged/bsb-yhwh/zechariah.json": "8b5f631d2a78fb4d2cc096da3d37aaabae2676fb22244b2bae68d24c9d7c7749",
+    "assets/tagged/bsb-yhwh/zephaniah.json": "9fd54aa88c0b800b192100e579b3c03ecfee7266026fac5560a99f714422f949",
+    "assets/tagged/asv-yhwh/1_chronicles.json": "95bf90cd82449f8bca51e2242088e406c7fc4264464ac47418bb7fe6c2507d1d",
+    "assets/tagged/asv-yhwh/1_corinthians.json": "8c98088941a74543e51a7c0d952a02cf9f4a13bf4d6f213c78af8f598c2cd699",
+    "assets/tagged/asv-yhwh/1_john.json": "bf64b33571373dc6d7699454b4b6e95b847f033724d1f0551c53e10da4d7673a",
+    "assets/tagged/asv-yhwh/1_kings.json": "01d11f88d13ea6a8a76fcbf86d4381c3ec4a782dcfe3e43ef010b663056c2cdc",
+    "assets/tagged/asv-yhwh/1_peter.json": "9440be62199db38c4a75e85c3320b3016ed44637c2d404bf31580ff16803135a",
+    "assets/tagged/asv-yhwh/1_samuel.json": "b42eb118a1b8d047b9eb8906a56a5bd5216aa900e3fdc7ecd29d7252f992a9d8",
+    "assets/tagged/asv-yhwh/1_thessalonians.json": "def2275f92ba04df36192c7b7e917d12518de05885f4bf55dd5a2a06bb90157f",
+    "assets/tagged/asv-yhwh/1_timothy.json": "548ffac85230a3f83a9d2985d994e46b2a76e2c5050d01b1fe909a4707f9ff01",
+    "assets/tagged/asv-yhwh/2_chronicles.json": "d9eb8ee5e83968d0c4ed79c09d0f4a9a544e5dd4eebbc17f3a7d86830ff0fb17",
+    "assets/tagged/asv-yhwh/2_corinthians.json": "162837df280d7fa838736feef87f1aa644e1db0a66796dd84f3c99a6ebdff0e1",
+    "assets/tagged/asv-yhwh/2_john.json": "53b6a20c2ebe9db849a66d3fb13ca562562968efe702d0f52005150e2a8c7283",
+    "assets/tagged/asv-yhwh/2_kings.json": "4415ff36b1071284c45d2141a237173c17754f5f88cd1b0019236bea528f2ee6",
+    "assets/tagged/asv-yhwh/2_peter.json": "c62eac99d393f5440da0583158057ab5c6fefcc230e6691f26df3b61d772c51a",
+    "assets/tagged/asv-yhwh/2_samuel.json": "13e773b39b1f5db554f672fb8daa8f0d062c914e4821ee1324cbd07c2ebec563",
+    "assets/tagged/asv-yhwh/2_thessalonians.json": "97df7dc470fceb68718684a0fc91b8c311677297ce7662fb1c01c28e297c7b1a",
+    "assets/tagged/asv-yhwh/2_timothy.json": "43580d433ec86be80edde9756df2276fadbdc2936d804f6cde79ceb1f259c17c",
+    "assets/tagged/asv-yhwh/3_john.json": "e4b992315ebe77eb6f1675f3a081a901274bc622def1174f36c137cec7fc7643",
+    "assets/tagged/asv-yhwh/acts.json": "3d8b5309ea4c22855258c38e11c5630bca2c2987b37b0ed422babc19f0df9236",
+    "assets/tagged/asv-yhwh/amos.json": "8243fe09b00132536f9930f3a573ce33c57d3f7d2ba238c63e73809e7ad78030",
+    "assets/tagged/asv-yhwh/colossians.json": "0116e10606c15ca909d0a0fd3ae46cdbc59a9f81a5f8db94b6ea241bfd69fdac",
+    "assets/tagged/asv-yhwh/daniel.json": "861e391d00a07216e29dd685d4d1427a49161a890e2c29052afddb1803a56278",
+    "assets/tagged/asv-yhwh/deuteronomy.json": "53227db979bbc3e7bbf7da47e05cbb845785f147807b88f1b48abb1b2ae76fb8",
+    "assets/tagged/asv-yhwh/ecclesiastes.json": "718326eb185439012320e62de0ab42a6d9b569068d0bc2d2b46d4c664706db15",
+    "assets/tagged/asv-yhwh/ephesians.json": "6312aafb6c3e3c4fc284680fa758d45accdaeb10524407573997e12e0a926206",
+    "assets/tagged/asv-yhwh/esther.json": "8af6d2ec6bbb3f9ae1556f91e3b110cd426054c557915dbe4143ac77ccbf75db",
+    "assets/tagged/asv-yhwh/exodus.json": "2c407ac97daf6b3b23f3a7e552808cf6960ffbdae4554698fef56f258450cbd4",
+    "assets/tagged/asv-yhwh/ezekiel.json": "d0bd27bc4943240da199435095f5cb313150051e7b8680dd109cb9d52dfde0f2",
+    "assets/tagged/asv-yhwh/ezra.json": "a4f82f29712086535cb56b77fecfd992030fdecb15e0f1b2a2f03091ebdc7392",
+    "assets/tagged/asv-yhwh/galatians.json": "4eb7e9beac4ff22c26b8ae47b01293428eb07b863faf93b668f3667886d9797e",
+    "assets/tagged/asv-yhwh/genesis.json": "18a68e73fd3efe81c7b1d927e3951119dc26e5e8a202baad6dcae7e6199c5380",
+    "assets/tagged/asv-yhwh/habakkuk.json": "f161b0ce58f63746f43621e600bb5b6c7a0dfa9157b3f9a19f523489d5252d49",
+    "assets/tagged/asv-yhwh/haggai.json": "43fb97b4b436ca9b2763860769c568422507c4204edb505a17b569849f347201",
+    "assets/tagged/asv-yhwh/hebrews.json": "166626bf0c1b5a6f6a55c0c2992bc826f929beb446dad23790dc73a122f141d6",
+    "assets/tagged/asv-yhwh/hosea.json": "3230adbec4e856a97c99119029eca1cec1a00321bbfbfca24b4233031b3f54e7",
+    "assets/tagged/asv-yhwh/isaiah.json": "e8c0e28515fffb461b6a8c9981d11756ef5ca285662aff69b3031e03fa404faa",
+    "assets/tagged/asv-yhwh/james.json": "558a1803df3e6c92b0889f44cfc0a9b30c83e744499c24a64ae09cb751f4362b",
+    "assets/tagged/asv-yhwh/jeremiah.json": "04aa8866bf1610fb3dcd3bf7ba341ab9e84e06596cc6e180897f728f3fd5fd1c",
+    "assets/tagged/asv-yhwh/job.json": "4ba856900cdcad5b5cc702077044540a5dc663093e75a27fc3508cd631329cdf",
+    "assets/tagged/asv-yhwh/joel.json": "8fbceea3d124e1f62a7228e954599005398aa7978f494ae6497878981ca97d9b",
+    "assets/tagged/asv-yhwh/john.json": "331ef7c21c6f5920572c34aff0e309c52602739fce46ecd9c492d8f65972f68c",
+    "assets/tagged/asv-yhwh/jonah.json": "49144b8af16fb8a120b67889365fe42cb23e2a3b05a8a22aa23bb31a89180a8c",
+    "assets/tagged/asv-yhwh/joshua.json": "dd94136b9f5ca78e2184bf9710941b5012211b1a8923e9e14cf6d1d66f9cd5c3",
+    "assets/tagged/asv-yhwh/jude.json": "8af991aee7310afdd7579463a83d09d96d1bafbe283f1b772ef81545308419f3",
+    "assets/tagged/asv-yhwh/judges.json": "fbb74cd8f6fd1b00a6c85d4369a83b428fe63ffd6d78f7c00a1d019a7f358bcc",
+    "assets/tagged/asv-yhwh/lamentations.json": "f09c9643936530e11da98759bc834d2151f043ec0355f51293a0666c253df5df",
+    "assets/tagged/asv-yhwh/leviticus.json": "f3cc8d5f0032b1f25f2e4d4e03c41dc071839815623044e94d476a00fa311662",
+    "assets/tagged/asv-yhwh/luke.json": "278b9f9333a02476687f8b771259c72a860c926eb44b85631e715c448aba098d",
+    "assets/tagged/asv-yhwh/malachi.json": "a9beea925bb98dc0f353e119d7b193a4ba2eaae1e70e5a8873d837bdfd32130b",
+    "assets/tagged/asv-yhwh/mark.json": "ff966ca4e054a32197bbf7e6845f60ca4a67ea10601434a8a6bbc44c0ffb8ba0",
+    "assets/tagged/asv-yhwh/matthew.json": "31d526dcc71f39606ef0134efdcd140cc20044ea5f55eeae668e9c83fe1a0871",
+    "assets/tagged/asv-yhwh/micah.json": "4c1bbf780bb840c864a01440606224a6d3155efd9823c1705a2bb7aeb6267d37",
+    "assets/tagged/asv-yhwh/nahum.json": "e95f607d901e18c3a8c1154faed2b1c3eb66251133fd910211ff34909eb9b0b4",
+    "assets/tagged/asv-yhwh/nehemiah.json": "5a75c83989ca11eeeac94c53eb7018d560c11fa8495b1bde1ea11eac5ac6a8c9",
+    "assets/tagged/asv-yhwh/numbers.json": "e3b3e911fe5bc7dacf6b5007fd6dde77e1699225d04a66afb2d90eac5dcdb779",
+    "assets/tagged/asv-yhwh/obadiah.json": "d5e6a984e8df3e1b61e189fa9c3b43988ea7b5ce7d554220f1ea9e51fa153924",
+    "assets/tagged/asv-yhwh/philemon.json": "1361a687c4b27355ac58659d7695f5667ec1f9e9137fec8462091cacd8f8a22a",
+    "assets/tagged/asv-yhwh/philippians.json": "daa065dff53dccacfd1396189d83d9901a86054e7da30f386b4c5fd43cbcbde7",
+    "assets/tagged/asv-yhwh/proverbs.json": "4bc3627232c2a073934bb7ea110661dbf6898c58a209254d701ff696ef79658b",
+    "assets/tagged/asv-yhwh/psalms.json": "b5ca7a072f67583d2cc4beb8828cd0f195780503f21eead78143b81b464f1419",
+    "assets/tagged/asv-yhwh/revelation.json": "d2066ccaec38ae5db94dd29624894e82c12e1e4e7777ce47dfaaaf200ace1bac",
+    "assets/tagged/asv-yhwh/romans.json": "823cae7f7cee1b7869fef290eae06eba20f84e6e381e9ffd4e3815bc2c7a7688",
+    "assets/tagged/asv-yhwh/ruth.json": "60f66fd9bf33c2e0cc15707fd7487b980daf6767fd90e53dde90e9560c41d672",
+    "assets/tagged/asv-yhwh/song_of_solomon.json": "12cd64b83c38b19dfbb8b02690f68c70744c2baa19ac7fb3992105830ad5fcfd",
+    "assets/tagged/asv-yhwh/titus.json": "156dfd84c2eee4270a86976421fdc664ca69c4d433567c7c0d809f92ae2c9476",
+    "assets/tagged/asv-yhwh/zechariah.json": "66c0e55a9e2d6fe4f0eef8bf0d531497540cad593b0ff608242f2c2ab136d3b9",
+    "assets/tagged/asv-yhwh/zephaniah.json": "cfe6bc9de29a4a9721aeacaa0ff9073f32d7e4d2d5f7be87f602f13b21f9ad93"
+  },
+  "schema_anomalies": [],
+  "hebrews_7_27": {
+    "bib": [
+      {
+        "w": "ὃς ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(who)",
+        "s": "G3739",
+        "i": [],
+        "g": [
+          "RelPro-NMS"
+        ],
+        "t": "hos",
+        "o": "ὃς"
+      },
+      {
+        "w": " οὐκ ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(not)",
+        "s": "G3756",
+        "i": [],
+        "g": [
+          "Adv"
+        ],
+        "t": "ouk",
+        "o": "οὐκ"
+      },
+      {
+        "w": " ἔχει ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(has)",
+        "s": "G2192",
+        "i": [],
+        "g": [
+          "V-PIA-3S"
+        ],
+        "t": "echei",
+        "o": "ἔχει"
+      },
+      {
+        "w": " καθ’ ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(every)",
+        "s": "G2596",
+        "i": [],
+        "g": [
+          "Prep"
+        ],
+        "t": "kath’",
+        "o": "καθ"
+      },
+      {
+        "w": " ἡμέραν ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(day)",
+        "s": "G2250",
+        "i": [],
+        "g": [
+          "N-AFS"
+        ],
+        "t": "hēmeran",
+        "o": "ἡμέραν"
+      },
+      {
+        "w": " ἀνάγκην ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(need)",
+        "s": "G318",
+        "i": [],
+        "g": [
+          "N-AFS"
+        ],
+        "t": "anankēn",
+        "o": "ἀνάγκην"
+      },
+      {
+        "w": ", ὥσπερ ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(as)",
+        "s": "G5618",
+        "i": [],
+        "g": [
+          "Adv"
+        ],
+        "t": "hōsper",
+        "o": "ὥσπερ"
+      },
+      {
+        "w": " οἱ ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(the)",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "Art-NMP"
+        ],
+        "t": "hoi",
+        "o": "οἱ"
+      },
+      {
+        "w": " ἀρχιερεῖς ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(high priests)",
+        "s": "G749",
+        "i": [],
+        "g": [
+          "N-NMP"
+        ],
+        "t": "archiereis",
+        "o": "ἀρχιερεῖς"
+      },
+      {
+        "w": ", πρότερον ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(first)",
+        "s": "G4386",
+        "i": [],
+        "g": [
+          "Adv-C"
+        ],
+        "t": "proteron",
+        "o": "πρότερον"
+      },
+      {
+        "w": " ὑπὲρ ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(for)",
+        "s": "G5228",
+        "i": [],
+        "g": [
+          "Prep"
+        ],
+        "t": "hyper",
+        "o": "ὑπὲρ"
+      },
+      {
+        "w": " τῶν ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(the)",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "Art-GFP"
+        ],
+        "t": "tōn",
+        "o": "τῶν"
+      },
+      {
+        "w": " ἰδίων ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(own)",
+        "s": "G2398",
+        "i": [],
+        "g": [
+          "Adj-GFP"
+        ],
+        "t": "idiōn",
+        "o": "ἰδίων"
+      },
+      {
+        "w": " ἁμαρτιῶν ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(sins)",
+        "s": "G266",
+        "i": [],
+        "g": [
+          "N-GFP"
+        ],
+        "t": "hamartiōn",
+        "o": "ἁμαρτιῶν"
+      },
+      {
+        "w": ", θυσίας ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(sacrifices)",
+        "s": "G2378",
+        "i": [],
+        "g": [
+          "N-AFP"
+        ],
+        "t": "thysias",
+        "o": "θυσίας"
+      },
+      {
+        "w": " ἀναφέρειν ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(to offer up)",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "V-PNA"
+        ],
+        "t": "anapherein",
+        "o": "ἀναφέρειν"
+      },
+      {
+        "w": ", ἔπειτα ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(then)",
+        "s": "G1899",
+        "i": [],
+        "g": [
+          "Adv"
+        ],
+        "t": "epeita",
+        "o": "ἔπειτα"
+      },
+      {
+        "w": " τῶν ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(for those)",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "Art-GFP"
+        ],
+        "t": "tōn",
+        "o": "τῶν"
+      },
+      {
+        "w": " τοῦ ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(of the)",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "Art-GMS"
+        ],
+        "t": "tou",
+        "o": "τοῦ"
+      },
+      {
+        "w": " λαοῦ ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(people)",
+        "s": "G2992",
+        "i": [],
+        "g": [
+          "N-GMS"
+        ],
+        "t": "laou",
+        "o": "λαοῦ"
+      },
+      {
+        "w": "; τοῦτο ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(this)",
+        "s": "G3778",
+        "i": [],
+        "g": [
+          "DPro-ANS"
+        ],
+        "t": "touto",
+        "o": "τοῦτο"
+      },
+      {
+        "w": " γὰρ ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(for)",
+        "s": "G1063",
+        "i": [],
+        "g": [
+          "Conj"
+        ],
+        "t": "gar",
+        "o": "γὰρ"
+      },
+      {
+        "w": " ἐποίησεν ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(He did)",
+        "s": "G4160",
+        "i": [],
+        "g": [
+          "V-AIA-3S"
+        ],
+        "t": "epoiēsen",
+        "o": "ἐποίησεν"
+      },
+      {
+        "w": " ἐφάπαξ ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(once for all)",
+        "s": "G2178",
+        "i": [],
+        "g": [
+          "Adv"
+        ],
+        "t": "ephapax",
+        "o": "ἐφάπαξ"
+      },
+      {
+        "w": ", ἑαυτὸν ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(Himself)",
+        "s": "G1438",
+        "i": [],
+        "g": [
+          "RefPro-AM3S"
+        ],
+        "t": "heauton",
+        "o": "ἑαυτὸν"
+      },
+      {
+        "w": " ἀνενέγκας ",
+        "s": "",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "(having offered up)",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "V-APA-NMS"
+        ],
+        "t": "anenenkas",
+        "o": "ἀνενέγκας"
+      },
+      {
+        "w": ". ",
+        "s": "",
+        "i": [],
+        "g": []
+      }
+    ],
+    "sblgnt": [
+      {
+        "w": "ὃς",
+        "s": "G3739",
+        "i": [],
+        "g": [
+          "R-NSM"
+        ]
+      },
+      {
+        "w": " οὐκ",
+        "s": "G3756",
+        "i": [],
+        "g": [
+          "ADV"
+        ]
+      },
+      {
+        "w": " ἔχει",
+        "s": "G2192",
+        "i": [],
+        "g": [
+          "V-PAI-3S"
+        ]
+      },
+      {
+        "w": " καθ’",
+        "s": "G2596",
+        "i": [],
+        "g": [
+          "PREP"
+        ]
+      },
+      {
+        "w": " ἡμέραν",
+        "s": "G2250",
+        "i": [],
+        "g": [
+          "N-ASF"
+        ]
+      },
+      {
+        "w": " ἀνάγκην",
+        "s": "G318",
+        "i": [],
+        "g": [
+          "N-ASF"
+        ]
+      },
+      {
+        "w": ", ὥσπερ",
+        "s": "G5618",
+        "i": [],
+        "g": [
+          "CONJ"
+        ]
+      },
+      {
+        "w": " οἱ",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "T-NPM"
+        ]
+      },
+      {
+        "w": " ἀρχιερεῖς",
+        "s": "G749",
+        "i": [],
+        "g": [
+          "N-NPM"
+        ]
+      },
+      {
+        "w": ", πρότερον",
+        "s": "G4387",
+        "i": [],
+        "g": [
+          "A-ASN-C"
+        ]
+      },
+      {
+        "w": " ὑπὲρ",
+        "s": "G5228",
+        "i": [],
+        "g": [
+          "PREP"
+        ]
+      },
+      {
+        "w": " τῶν",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "T-GPF"
+        ]
+      },
+      {
+        "w": " ἰδίων",
+        "s": "G2398",
+        "i": [],
+        "g": [
+          "A-GPF"
+        ]
+      },
+      {
+        "w": " ἁμαρτιῶν",
+        "s": "G266",
+        "i": [],
+        "g": [
+          "N-GPF"
+        ]
+      },
+      {
+        "w": " θυσίας",
+        "s": "G2378",
+        "i": [],
+        "g": [
+          "N-APF"
+        ]
+      },
+      {
+        "w": " ἀναφέρειν",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "V-PAN"
+        ]
+      },
+      {
+        "w": ", ἔπειτα",
+        "s": "G1899",
+        "i": [],
+        "g": [
+          "ADV"
+        ]
+      },
+      {
+        "w": " τῶν",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "T-GPF"
+        ]
+      },
+      {
+        "w": " τοῦ",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "T-GSM"
+        ]
+      },
+      {
+        "w": " λαοῦ",
+        "s": "G2992",
+        "i": [],
+        "g": [
+          "N-GSM"
+        ]
+      },
+      {
+        "w": " (τοῦτο",
+        "s": "G3778",
+        "i": [],
+        "g": [
+          "D-ASN"
+        ]
+      },
+      {
+        "w": " γὰρ",
+        "s": "G1063",
+        "i": [],
+        "g": [
+          "CONJ"
+        ]
+      },
+      {
+        "w": " ἐποίησεν",
+        "s": "G4160",
+        "i": [],
+        "g": [
+          "V-AAI-3S"
+        ]
+      },
+      {
+        "w": " ἐφάπαξ",
+        "s": "G2178",
+        "i": [],
+        "g": [
+          "ADV"
+        ]
+      },
+      {
+        "w": " ἑαυτὸν",
+        "s": "G1438",
+        "i": [],
+        "g": [
+          "P-ASM"
+        ]
+      },
+      {
+        "w": " ἀνενέγκας)",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "V-AAP-NSM"
+        ]
+      },
+      {
+        "w": "·",
+        "s": "",
+        "i": [],
+        "g": []
+      }
+    ],
+    "cuvs-yhwh": [
+      {
+        "w": "他",
+        "s": "G3739"
+      },
+      {
+        "w": "不",
+        "s": "G3756"
+      },
+      {
+        "w": "像",
+        "s": "G5618"
+      },
+      {
+        "w": "那些大祭司，",
+        "s": "G749",
+        "i": [
+          "G3588"
+        ]
+      },
+      {
+        "w": "每日",
+        "s": "G2596",
+        "i": [
+          "G2250"
+        ]
+      },
+      {
+        "w": "必须",
+        "s": "G2192",
+        "i": [
+          "G318"
+        ],
+        "g": [
+          "G5719"
+        ]
+      },
+      {
+        "w": "先",
+        "s": "G4386"
+      },
+      {
+        "w": "为",
+        "s": "G5228"
+      },
+      {
+        "w": "自己的",
+        "s": "G2398"
+      },
+      {
+        "w": "罪，",
+        "s": "G266",
+        "i": [
+          "G3588"
+        ]
+      },
+      {
+        "w": "后",
+        "s": "G1899"
+      },
+      {
+        "w": "为",
+        "s": "G3588"
+      },
+      {
+        "w": "百姓的",
+        "s": "G2992",
+        "i": [
+          "G3588"
+        ]
+      },
+      {
+        "w": "罪献",
+        "s": "G399",
+        "g": [
+          "G5721"
+        ]
+      },
+      {
+        "w": "祭；",
+        "s": "G2378"
+      },
+      {
+        "w": "因为",
+        "s": "G1063",
+        "i": [
+          "G5124"
+        ]
+      },
+      {
+        "w": "他只一次",
+        "s": "G2178"
+      },
+      {
+        "w": "将自己",
+        "s": "G1438"
+      },
+      {
+        "w": "献上，",
+        "s": "G399",
+        "g": [
+          "G5660"
+        ]
+      },
+      {
+        "w": "就把这事成全了。",
+        "s": "G4160",
+        "g": [
+          "G5656"
+        ]
+      }
+    ],
+    "bsb": [
+      {
+        "w": "[Unlike] ",
+        "s": "G5618"
+      },
+      {
+        "w": "the [other] ",
+        "s": "G3588"
+      },
+      {
+        "w": "high priests, ",
+        "s": "G749"
+      },
+      {
+        "w": "[He] ",
+        "s": "G3739"
+      },
+      {
+        "w": "does ",
+        "s": "G2192"
+      },
+      {
+        "w": "not ",
+        "s": "G3756"
+      },
+      {
+        "w": "need ",
+        "s": "G318"
+      },
+      {
+        "w": "to offer ",
+        "s": "G399"
+      },
+      {
+        "w": "daily ",
+        "s": "G2250",
+        "i": [
+          "G2596"
+        ]
+      },
+      {
+        "w": "sacrifices, ",
+        "s": "G2378"
+      },
+      {
+        "w": "first ",
+        "s": "G4386"
+      },
+      {
+        "w": "for ",
+        "s": "G5228"
+      },
+      {
+        "w": "[His] ",
+        "s": "G3588"
+      },
+      {
+        "w": "own ",
+        "s": "G2398"
+      },
+      {
+        "w": "sins ",
+        "s": "G266"
+      },
+      {
+        "w": "and then ",
+        "s": "G1899"
+      },
+      {
+        "w": "for [the sins] ",
+        "s": "G3588"
+      },
+      {
+        "w": "of the ",
+        "s": "G3588"
+      },
+      {
+        "w": "people; ",
+        "s": "G2992"
+      },
+      {
+        "w": "He [sacrificed for sin] ",
+        "s": "G4160",
+        "i": [
+          "G3778",
+          "G1063"
+        ]
+      },
+      {
+        "w": "once for all ",
+        "s": "G2178"
+      },
+      {
+        "w": "when He offered up ",
+        "s": "G399"
+      },
+      {
+        "w": "Himself.",
+        "s": "G1438"
+      }
+    ],
+    "kjvs": [
+      {
+        "w": "Who",
+        "s": "G3739",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " needeth",
+        "s": "G2192",
+        "i": [
+          "G318"
+        ],
+        "g": [
+          "5719"
+        ]
+      },
+      {
+        "w": " not",
+        "s": "G3756",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " daily",
+        "s": "G2596",
+        "i": [
+          "G2250"
+        ],
+        "g": []
+      },
+      {
+        "w": ", as",
+        "s": "G5618",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " those high priests",
+        "s": "G749",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": ", to offer up",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "5721"
+        ]
+      },
+      {
+        "w": " sacrifice",
+        "s": "G2378",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": ", first",
+        "s": "G4386",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " for",
+        "s": "G5228",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " his own",
+        "s": "G2398",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " sins",
+        "s": "G266",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": ", and then",
+        "s": "G1899",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " for the people's",
+        "s": "G2992",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": ": for",
+        "s": "G1063",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " this",
+        "s": "G5124",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " he did",
+        "s": "G4160",
+        "i": [],
+        "g": [
+          "5656"
+        ]
+      },
+      {
+        "w": " once",
+        "s": "G2178",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": ", when he offered up",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "5660"
+        ]
+      },
+      {
+        "w": " himself.",
+        "s": "G1438",
+        "i": [],
+        "g": []
+      }
+    ],
+    "lxxwh": [
+      {
+        "w": "ος",
+        "s": "G3739",
+        "i": [],
+        "g": [
+          "R-NSM"
+        ]
+      },
+      {
+        "w": " ουκ",
+        "s": "G3756",
+        "i": [],
+        "g": [
+          "PRT-N"
+        ]
+      },
+      {
+        "w": " εχει",
+        "s": "G2192",
+        "i": [],
+        "g": [
+          "V-PAI-3S"
+        ]
+      },
+      {
+        "w": " καθ",
+        "s": "G2596",
+        "i": [],
+        "g": [
+          "PREP"
+        ]
+      },
+      {
+        "w": " ημεραν",
+        "s": "G2250",
+        "i": [],
+        "g": [
+          "N-ASF"
+        ]
+      },
+      {
+        "w": " αναγκην",
+        "s": "G318",
+        "i": [],
+        "g": [
+          "N-ASF"
+        ]
+      },
+      {
+        "w": " ωσπερ",
+        "s": "G5618",
+        "i": [],
+        "g": [
+          "ADV"
+        ]
+      },
+      {
+        "w": " οι",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "T-NPM"
+        ]
+      },
+      {
+        "w": " αρχιερεις",
+        "s": "G749",
+        "i": [],
+        "g": [
+          "N-NPM"
+        ]
+      },
+      {
+        "w": " προτερον",
+        "s": "G4386",
+        "i": [],
+        "g": [
+          "ADV-C"
+        ]
+      },
+      {
+        "w": " υπερ",
+        "s": "G5228",
+        "i": [],
+        "g": [
+          "PREP"
+        ]
+      },
+      {
+        "w": " των",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "T-GPF"
+        ]
+      },
+      {
+        "w": " ιδιων",
+        "s": "G2398",
+        "i": [],
+        "g": [
+          "A-GPF"
+        ]
+      },
+      {
+        "w": " αμαρτιων",
+        "s": "G266",
+        "i": [],
+        "g": [
+          "N-GPF"
+        ]
+      },
+      {
+        "w": " θυσιας",
+        "s": "G2378",
+        "i": [],
+        "g": [
+          "N-APF"
+        ]
+      },
+      {
+        "w": " αναφερειν",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "V-PAN"
+        ]
+      },
+      {
+        "w": " επειτα",
+        "s": "G1899",
+        "i": [],
+        "g": [
+          "ADV"
+        ]
+      },
+      {
+        "w": " των",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "T-GPF"
+        ]
+      },
+      {
+        "w": " του",
+        "s": "G3588",
+        "i": [],
+        "g": [
+          "T-GSM"
+        ]
+      },
+      {
+        "w": " λαου",
+        "s": "G2992",
+        "i": [],
+        "g": [
+          "N-GSM"
+        ]
+      },
+      {
+        "w": " τουτο",
+        "s": "G3778",
+        "i": [],
+        "g": [
+          "D-ASN"
+        ]
+      },
+      {
+        "w": " γαρ",
+        "s": "G1063",
+        "i": [],
+        "g": [
+          "CONJ"
+        ]
+      },
+      {
+        "w": " εποιησεν",
+        "s": "G4160",
+        "i": [],
+        "g": [
+          "V-AAI-3S"
+        ]
+      },
+      {
+        "w": " εφαπαξ",
+        "s": "G2178",
+        "i": [],
+        "g": [
+          "ADV"
+        ]
+      },
+      {
+        "w": " εαυτον",
+        "s": "G1438",
+        "i": [],
+        "g": [
+          "F-3ASM"
+        ]
+      },
+      {
+        "w": " ανενεγκας",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "V-AAP-NSM"
+        ]
+      }
+    ],
+    "cuvs-plus": [
+      {
+        "w": "他",
+        "s": "G3739",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "不",
+        "s": "G3756",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "像",
+        "s": "G5618",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "那些大祭司",
+        "s": "G749",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "，每日",
+        "s": "G2596",
+        "i": [
+          "G2250"
+        ],
+        "g": []
+      },
+      {
+        "w": "必须",
+        "s": "G2192",
+        "i": [
+          "G318"
+        ],
+        "g": [
+          "5719"
+        ]
+      },
+      {
+        "w": "先",
+        "s": "G4386",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "为",
+        "s": "G5228",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "自己的",
+        "s": "G2398",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "罪",
+        "s": "G266",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "，后",
+        "s": "G1899",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "为百姓的",
+        "s": "G2992",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "罪献",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "5721"
+        ]
+      },
+      {
+        "w": "祭",
+        "s": "G2378",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "；因为",
+        "s": "G1063",
+        "i": [
+          "G5124"
+        ],
+        "g": []
+      },
+      {
+        "w": "他只一次",
+        "s": "G2178",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "将自己",
+        "s": "G1438",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": "献上",
+        "s": "G399",
+        "i": [],
+        "g": [
+          "5660"
+        ]
+      },
+      {
+        "w": "，就把这事成全了。",
+        "s": "G4160",
+        "i": [],
+        "g": [
+          "5656"
+        ]
+      }
+    ],
+    "csb": [
+      {
+        "w": "He doesn’t need",
+        "s": "G2192",
+        "i": [
+          "G318"
+        ],
+        "g": []
+      },
+      {
+        "w": " to offer",
+        "s": "G399",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " sacrifices",
+        "s": "G2378",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " every day",
+        "s": "G2596",
+        "i": [
+          "G2250"
+        ],
+        "g": []
+      },
+      {
+        "w": ", as",
+        "s": "G5618",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " high priests",
+        "s": "G749",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " do ​— ​first",
+        "s": "G4386",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " for",
+        "s": "G5228",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " their own",
+        "s": "G2398",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " sins",
+        "s": "G266",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": ", then",
+        "s": "G1899",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " for those",
+        "s": "G3588",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " of the",
+        "s": "G3588",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " people",
+        "s": "G2992",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": ". He did",
+        "s": "G4160",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " this",
+        "s": "G5124",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " once for all time",
+        "s": "G2178",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " when he offered",
+        "s": "G399",
+        "i": [],
+        "g": []
+      },
+      {
+        "w": " himself.",
+        "s": "G1438",
+        "i": [],
+        "g": []
+      }
+    ],
+    "bsb-yhwh": [
+      {
+        "w": "Unlike",
+        "s": "G5618"
+      },
+      {
+        "w": " the other",
+        "s": "G3588"
+      },
+      {
+        "w": " high priests",
+        "s": "G749"
+      },
+      {
+        "w": ", He",
+        "s": "G3739"
+      },
+      {
+        "w": " does",
+        "s": "G2192"
+      },
+      {
+        "w": " not",
+        "s": "G3756"
+      },
+      {
+        "w": " need",
+        "s": "G318"
+      },
+      {
+        "w": " to offer",
+        "s": "G399",
+        "i": [
+          "G2596"
+        ]
+      },
+      {
+        "w": " daily",
+        "s": "G2250"
+      },
+      {
+        "w": " sacrifices",
+        "s": "G2378"
+      },
+      {
+        "w": ", first",
+        "s": "G4386"
+      },
+      {
+        "w": " for",
+        "s": "G5228"
+      },
+      {
+        "w": " His",
+        "s": "G3588"
+      },
+      {
+        "w": " own",
+        "s": "G2398"
+      },
+      {
+        "w": " sins",
+        "s": "G266"
+      },
+      {
+        "w": " and then",
+        "s": "G1899"
+      },
+      {
+        "w": " for the sins",
+        "s": "G3588"
+      },
+      {
+        "w": " of the",
+        "s": "G3588"
+      },
+      {
+        "w": " people",
+        "s": "G2992"
+      },
+      {
+        "w": ";",
+        "s": "",
+        "i": [
+          "G1063"
+        ]
+      },
+      {
+        "w": " He sacrificed for sin",
+        "s": "G4160",
+        "i": [
+          "G3778"
+        ]
+      },
+      {
+        "w": " once for all",
+        "s": "G2178"
+      },
+      {
+        "w": " when He offered up",
+        "s": "G399"
+      },
+      {
+        "w": " Himself.",
+        "s": "G1438"
+      }
+    ],
+    "asv-yhwh": [
+      {
+        "w": "who",
+        "s": "G3739"
+      },
+      {
+        "w": " ",
+        "s": "G2192"
+      },
+      {
+        "w": "needeth",
+        "s": "G318"
+      },
+      {
+        "w": " not",
+        "s": "G3756"
+      },
+      {
+        "w": " ",
+        "s": "G2596"
+      },
+      {
+        "w": "daily",
+        "s": "G2250"
+      },
+      {
+        "w": ", like",
+        "s": "G5618"
+      },
+      {
+        "w": " those high priests",
+        "s": "G749"
+      },
+      {
+        "w": ", to offer up",
+        "s": "G399"
+      },
+      {
+        "w": " sacrifices",
+        "s": "G2378"
+      },
+      {
+        "w": ", first",
+        "s": "G4386"
+      },
+      {
+        "w": " for",
+        "s": "G5228"
+      },
+      {
+        "w": " his own",
+        "s": "G2398"
+      },
+      {
+        "w": " sins",
+        "s": "G266"
+      },
+      {
+        "w": ", and then",
+        "s": "G1899"
+      },
+      {
+        "w": " for the [sins] of the people",
+        "s": "G2992"
+      },
+      {
+        "w": ": for",
+        "s": "G1063"
+      },
+      {
+        "w": " this",
+        "s": "G5124"
+      },
+      {
+        "w": " he did",
+        "s": "G4160"
+      },
+      {
+        "w": " once",
+        "s": "G2178"
+      },
+      {
+        "w": " for all, when he offered up",
+        "s": "G399"
+      },
+      {
+        "w": " himself.",
+        "s": "G1438"
+      }
+    ]
+  },
+  "totals": {
+    "files": 582,
+    "verses": 264195,
+    "tokens": 3733302,
+    "multi_distinct_lexical": 183445,
+    "multi_dictionary_backed": 183420,
+    "implied_only": 11214,
+    "additional_s2": 749,
+    "missing_dictionary_numbers": 72,
+    "grammar_range_in_lexical_fields": 72,
+    "hebrews_verses": 3030
+  }
+}

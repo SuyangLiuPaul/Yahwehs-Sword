@@ -2,6 +2,7 @@ import 'dart:async' show unawaited;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'tagged_number_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:yahwehs_sword/constants/bible_versions.dart'
@@ -175,8 +176,7 @@ class _OriginalsSheetState extends State<OriginalsSheet> {
 
   /// The choice the panel resolved this build — which edition, and
   /// whether it is the reader's own or a substitute.
-  InterlinearChoice _choice =
-      (version: null, source: InterlinearSource.none);
+  InterlinearChoice _choice = (version: null, source: InterlinearSource.none);
 
   /// `"Genesis-1-1"` → that verse's runs in [_choice], or null when the
   /// edition has nothing for it. Missing key = not loaded yet.
@@ -251,14 +251,21 @@ class _OriginalsSheetState extends State<OriginalsSheet> {
   /// when a tagged translation word is clicked: the number is still
   /// real and still has a lexicon entry, so refusing the tap would be
   /// worse than showing the entry under the translation's own word.
-  void _onRunTap(TaggedRun run, _VerseOriginals vo) {
+  Future<void> _onRunTap(TaggedRun run, _VerseOriginals vo,
+      [String? selected]) async {
+    final number = selected ??
+        await chooseTaggedNumber(context,
+            text: run.text, numbers: run.lexicalNumbers);
+    if (!mounted || number == null) return;
     for (final w in vo.words ?? const <OriginalWord>[]) {
-      if (w.strongs == run.strongs) {
+      if (w.strongs == number) {
         _onWordTap(w);
         return;
       }
     }
-    _onWordTap(OriginalWord(text: run.text.trim(), strongs: run.strongs));
+    // A lexical fallback, without pretending a translated phrase is a
+    // separately aligned original word or carrying the primary word's grammar.
+    _onWordTap(OriginalWord(text: '', strongs: number));
   }
 
   /// Scroll controller for the embedded (docked-pane) presentation; the
@@ -669,8 +676,8 @@ class _OriginalsSheetState extends State<OriginalsSheet> {
   /// a reader choose a text they recognise.
   Widget _buildInterlinearPicker(ColorScheme scheme, String locale) {
     final offered = interlinearEditions;
-    final label = uiStrings['interlinearVersion']?[locale] ??
-        'Interlinear version';
+    final label =
+        uiStrings['interlinearVersion']?[locale] ?? 'Interlinear version';
 
     if (offered.isEmpty || _choice.version == null) {
       return Padding(
@@ -727,9 +734,8 @@ class _OriginalsSheetState extends State<OriginalsSheet> {
                                 ? Icons.check
                                 : Icons.check_box_outline_blank,
                             size: _ty.scaled(14),
-                            color: code == shown
-                                ? _st.accent
-                                : Colors.transparent,
+                            color:
+                                code == shown ? _st.accent : Colors.transparent,
                           ),
                           const SizedBox(width: 6),
                           Flexible(
@@ -749,8 +755,8 @@ class _OriginalsSheetState extends State<OriginalsSheet> {
                   decoration: BoxDecoration(
                     color: _st.chipFill,
                     borderRadius: _st.r(8),
-                    border:
-                        Border.all(color: _st.chipBorder, width: _st.borderWidth),
+                    border: Border.all(
+                        color: _st.chipBorder, width: _st.borderWidth),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -787,8 +793,8 @@ class _OriginalsSheetState extends State<OriginalsSheet> {
               (uiStrings['interlinearSubstituted']?[locale] ??
                       '{reading} carries no Strong\'s alignment, so the line '
                           'below is {shown}.')
-                  .replaceAll(
-                      '{reading}', fullBibleVersionLabel(widget.currentVersion!))
+                  .replaceAll('{reading}',
+                      fullBibleVersionLabel(widget.currentVersion!))
                   .replaceAll('{shown}', fullBibleVersionLabel(shown)),
               style: TextStyle(
                 fontSize: _st.gloss,
@@ -872,6 +878,7 @@ class _OriginalsSheetState extends State<OriginalsSheet> {
                           context.watch<AppSettings>().showStrongsInOriginals,
                       highlightStrongs: _selectedWord?.strongs,
                       onTapRun: (run) => _onRunTap(run, vo),
+                      onTapNumber: (run, number) => _onRunTap(run, vo, number),
                     )
                   : Text(
                       verseText,

@@ -320,7 +320,8 @@ void main() {
     testWidgets('the highlighted number is marked wherever it renders',
         (tester) async {
       // H5921 (עַל) is the last run's own number AND the implied number
-      // on 面. Only the run that RENDERS it may be marked.
+      // on 面. Both actual occurrences now have independent targets and
+      // both must show where the selected source number appears.
       await pumpLine(tester, highlight: 'H5921');
       final marked = tester
           .widgetList<Container>(find.descendant(
@@ -329,7 +330,8 @@ void main() {
           ))
           .where((c) => c.decoration != null)
           .length;
-      expect(marked, 1);
+      expect(marked, 2);
+      expect(_renderedText(tester), contains('(H5921)'));
     });
   });
 
@@ -474,5 +476,6 @@ void main() {
 /// word and its comma, that an implied number keeps its parentheses.
 String _renderedText(WidgetTester tester) => tester
     .widgetList<RichText>(find.byType(RichText))
-    .map((r) => r.text.toPlainText())
+    // Layout uses nonbreaking separators; content assertions compare spaces.
+    .map((r) => r.text.toPlainText().replaceAll('\u00a0', ' '))
     .join(' ');

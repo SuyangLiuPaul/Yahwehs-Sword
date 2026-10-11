@@ -251,7 +251,8 @@ class _VerseNotesBlockState extends State<VerseNotesBlock> {
         0: IntrinsicColumnWidth(),
         1: FlexColumnWidth(),
       },
-      defaultVerticalAlignment: TableCellVerticalAlignment.top,
+      // Match the number to the centre of its note, including wrapped lines.
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: [
         for (var i = 0; i < notes.length; i++)
           TableRow(

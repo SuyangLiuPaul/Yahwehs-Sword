@@ -24,24 +24,9 @@
 /// whole run for the same reason — there is nothing finer in the data
 /// to point at.
 ///
-/// That is also why the tap target is not the numeral itself. At the
-/// modal's [WordStudyStyle.gloss] size a bare `H776` is roughly a
-/// 24 x 13 pt box on a phone, well under the 44 pt a finger needs, and
-/// this panel is used on a phone. Tapping anywhere on the run opens
-/// exactly what tapping the number would.
-///
-/// ## Rejected: RichText with per-run TapGestureRecognizers
-///
-/// A single `Text.rich` would let a long run break across lines, which
-/// a `Wrap` of per-run boxes cannot. It also needs one
-/// `TapGestureRecognizer` per run, created in build and disposed by
-/// hand — the leak `originals_sheet.dart` already keeps a
-/// `_tapRecognizers` list to avoid. Measured against the shipped
-/// assets the trade is cheap: runs are one to four words, so the widest
-/// English run in Genesis 1 is about 110 pt at the modal's 14 px and
-/// fits a 375 pt column many times over. `browse_window.dart` renders
-/// the same data as a `Wrap` for the same reason; matching it means the
-/// two tagged lines in this app cannot drift apart.
+/// Each displayed lexical number has its own navigation target. The
+/// whole translated run remains clickable as a larger fallback target.
+/// Recognizers are owned and disposed by this widget's state.
 ///
 /// ## Colour
 ///
@@ -55,6 +40,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 
 import 'package:yahwehs_sword/constants/word_study_style.dart';
 import 'package:yahwehs_sword/constants/workbench_theme.dart';
@@ -63,7 +49,7 @@ import 'package:yahwehs_sword/utils/font_catalog.dart' show kCjkFontFallback;
 import 'package:yahwehs_sword/utils/scripture_markup.dart';
 import 'package:yahwehs_sword/utils/strongs_inline.dart';
 
-class InterlinearVerseText extends StatelessWidget {
+class InterlinearVerseText extends StatefulWidget {
   const InterlinearVerseText({
     super.key,
     required this.runs,
@@ -71,6 +57,7 @@ class InterlinearVerseText extends StatelessWidget {
     required this.showNumbers,
     this.highlightStrongs,
     this.onTapRun,
+    this.onTapNumber,
   });
 
   /// The verse, as `TaggedTextService.forVerse` returned it.
@@ -98,6 +85,45 @@ class InterlinearVerseText extends StatelessWidget {
   /// has no word carrying that number.
   final void Function(TaggedRun run)? onTapRun;
 
+  final void Function(TaggedRun run, String number)? onTapNumber;
+
+  @override
+  State<InterlinearVerseText> createState() => _InterlinearVerseTextState();
+}
+
+class _InterlinearVerseTextState extends State<InterlinearVerseText> {
+  final Map<(TaggedRun, String), TapGestureRecognizer> _recognizers = {};
+  List<TaggedRun> get runs => widget.runs;
+  WordStudyStyle get style => widget.style;
+  bool get showNumbers => widget.showNumbers;
+  String? get highlightStrongs => widget.highlightStrongs;
+  void Function(TaggedRun)? get onTapRun => widget.onTapRun;
+
+  TapGestureRecognizer _numberTap(TaggedRun run, String number) =>
+      _recognizers.putIfAbsent(
+          (run, number),
+          () => TapGestureRecognizer()
+            ..onTap = () => widget.onTapNumber?.call(run, number));
+
+  void _clearRecognizers() {
+    for (final r in _recognizers.values) {
+      r.dispose();
+    }
+    _recognizers.clear();
+  }
+
+  @override
+  void didUpdateWidget(covariant InterlinearVerseText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.runs, widget.runs)) _clearRecognizers();
+  }
+
+  @override
+  void dispose() {
+    _clearRecognizers();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final wb = WbColors.of(context);
@@ -118,6 +144,7 @@ class InterlinearVerseText extends StatelessWidget {
             strongs: run.strongs,
             grammar: run.grammar,
             implied: run.implied,
+            additional: run.additional,
           )
         : const <StrongsNumberToken>[];
 
@@ -138,7 +165,12 @@ class InterlinearVerseText extends StatelessWidget {
             ),
         for (final n in numbers)
           TextSpan(
-            text: ' ${n.text}',
+            // Keep the leading separator with its number. A wrapped space
+            // creates a paragraph-wide web semantics hit box over other links.
+            text: '\u00a0${n.text}',
+            recognizer: n.lexicalNumber != null && widget.onTapNumber != null
+                ? _numberTap(run, n.lexicalNumber!)
+                : null,
             style: TextStyle(
               fontSize: style.gloss,
               fontWeight: FontWeight.w500,
@@ -164,8 +196,10 @@ class InterlinearVerseText extends StatelessWidget {
       ),
     );
 
-    final marked = run.isTagged && run.strongs == highlightStrongs;
-    if (!run.isTagged || onTapRun == null) {
+    final marked = [run.strongs, ...run.additional, ...run.implied]
+        .contains(highlightStrongs);
+    if ((!run.isTagged && run.implied.isEmpty && run.additional.isEmpty) ||
+        onTapRun == null) {
       return _box(marked: marked, child: body);
     }
     return InkWell(
