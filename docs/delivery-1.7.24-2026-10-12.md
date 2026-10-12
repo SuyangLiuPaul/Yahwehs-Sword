@@ -28,3 +28,10 @@
 - Paired Words status: its four Apple builds are also `VALID`; Google phone/Wear codes `20003066` and `20003067` are available on separate `internal` and `wear:internal` tracks; its Microsoft workflow returned `CommitStarted` for the existing draft and still needs certification/publication readback.
 
 No App Store review was canceled, no duplicate Store submission was created, and no immutable package was rebuilt. Internal availability, review, certification, approval, and public release remain distinct.
+
+## 2026-10-13 00:22 Melbourne follow-up
+
+- Sword Microsoft follow-up PR #75 passed full Flutter CI run `38253081262` and merged to `main` at the current release branch head. The updated guarded uploader uses the unique filename `yahwehs_sword-1.7.24.msix` while preserving the package identity and exact MSIX SHA.
+- A single guarded staging attempt from exact build run `38226914550` / source SHA `fc2901cb807cb0c80ae35b707f6986dccca32a0c` still returned HTTP 409 on the existing submission metadata PUT (workflow `38254635890`). It did not upload a blob or commit the submission. A fresh read-only API check (`38254871517`) confirms the same submission `1152921505702101034` remains `PendingCommit` with only the prior `1.7.22.0` package marked `Uploaded`; the 1.7.24 package is not staged. Do not repeat the PUT or create a replacement draft without resolving Microsoft's conflict reason.
+- Words delivery checkpoint PR #94 passed both CI jobs and merged to `main` at `0de1fd9f25cf1cc18b57e329ae7109c35b1a3e46`.
+- Apple and Play states above have not changed: four Apple builds are processed but no new 1.7.24 App Store version is submitted; Play phone remains internal-only. Existing Apple reviews and Microsoft draft are preserved.
