@@ -11,6 +11,8 @@
 /// no fact of its own.
 library;
 
+import '../utils/version_mapper.dart' as display_names;
+
 import 'package:yahwehs_sword/models/verse.dart';
 import 'package:yahwehs_sword/services/concordance_service.dart';
 import 'package:yahwehs_sword/services/originals_service.dart';
@@ -61,7 +63,7 @@ class PassageReportService {
     var before = 0;
 
     for (final v in verses) {
-      final ref = '${v.book} ${v.chapter}:${v.verse}';
+      final ref = '${display_names.bookNameForDisplay(v.book)} ${v.chapter}:${v.verse}';
       final words = <ReportWord>[];
       if (options.words) {
         final key = '${v.chapter}:${v.verse}';

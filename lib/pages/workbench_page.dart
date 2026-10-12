@@ -1276,7 +1276,7 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
     final key = versionAttributionKeys[mp.currentVersion];
     final out = await showPassageReport(
       context,
-      title: '$book $chapter',
+      title: '${localeAwareBookName(book, settings.locale, mp.currentVersion)} $chapter',
       versionLabel: shortBibleVersionLabel(mp.currentVersion),
       englishBook: english,
       verses: verses,

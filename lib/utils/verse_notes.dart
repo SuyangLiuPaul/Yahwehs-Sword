@@ -26,6 +26,7 @@
 /// passed in as the two maps `MainProvider` already exposes.
 library;
 
+import 'package:yahwehs_sword/utils/version_mapper.dart' as display_names;
 import 'package:yahwehs_sword/constants/book_groups.dart';
 import 'package:yahwehs_sword/models/verse.dart';
 
@@ -132,15 +133,15 @@ String verseNoteRangeLabel(List<Verse> verses) {
   if (verses.isEmpty) return '';
   final first = verses.first;
   if (verses.length == 1) {
-    return '${first.book} ${first.chapter}:${first.verseLabel}';
+    return '${display_names.bookNameForDisplay(first.book)} ${first.chapter}:${first.verseLabel}';
   }
   final last = verses.last;
   if (last.book == first.book && last.chapter == first.chapter) {
-    return '${first.book} ${first.chapter}:'
+    return '${display_names.bookNameForDisplay(first.book)} ${first.chapter}:'
         '${first.verseLabel}-${last.verseLabel}';
   }
-  return '${first.book} ${first.chapter}:${first.verseLabel} – '
-      '${last.book} ${last.chapter}:${last.verseLabel}';
+  return '${display_names.bookNameForDisplay(first.book)} ${first.chapter}:${first.verseLabel} – '
+      '${display_names.bookNameForDisplay(last.book)} ${last.chapter}:${last.verseLabel}';
 }
 
 /// One row of a note search: a stored note whose title or body contains

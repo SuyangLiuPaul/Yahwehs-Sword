@@ -1,3 +1,4 @@
+import '../utils/version_mapper.dart' as display_names;
 import 'dart:async';
 import 'dart:ui';
 
@@ -1010,7 +1011,7 @@ class _BibleReadingPaneState extends State<BibleReadingPane> {
       case 'withRef':
         return sorted
             .map((v) =>
-                '[${v.book} ${v.chapter}:${v.verseLabel}] ${sanitizeForCopy(v.text, stripParentheticals: strip)}')
+                '[${display_names.bookNameForDisplay(v.book)} ${v.chapter}:${v.verseLabel}] ${sanitizeForCopy(v.text, stripParentheticals: strip)}')
             .join('\n');
       case 'devotional':
         // 2026-05-17 (v1.2.48): join with a single space, not '\n'.
@@ -1020,13 +1021,13 @@ class _BibleReadingPaneState extends State<BibleReadingPane> {
         // mirrors this in getDevotionalFormattedText().
         final versesText = sorted.map((v) => sanitizeForCopy(v.text, stripParentheticals: strip)).join(' ');
         final range = _formatVerseRangeLabels(sorted);
-        return '$versesText\n(${first.book} ${first.chapter}:$range)';
+        return '$versesText\n(${display_names.bookNameForDisplay(first.book)} ${first.chapter}:$range)';
       case 'plain':
       default:
         final body = sorted
             .map((v) => '${v.verseLabel} ${sanitizeForCopy(v.text, stripParentheticals: strip)}')
             .join('\n');
-        return '${first.book} ${first.chapter}\n$body';
+        return '${display_names.bookNameForDisplay(first.book)} ${first.chapter}\n$body';
     }
   }
 
@@ -3302,7 +3303,7 @@ void _showChapterSermonsSheet({
       builder: (_, scrollController) => _PreloadedSermonsSheetBody(
         sermons: sermons,
         locale: locale,
-        title: '$book $chapter',
+        title: '${display_names.bookNameForDisplay(book, locale, context.read<MainProvider>().currentVersion)} $chapter',
         scrollController: scrollController,
       ),
     ),

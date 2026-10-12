@@ -31,6 +31,17 @@ void main() {
   const gen2 = Verse(book: 'Genesis', chapter: 1, verse: 2, text: 'b');
   const gen3 = Verse(book: 'Genesis', chapter: 1, verse: 3, text: 'c');
 
+
+  test('note range displays formal Genesis without changing verse identity', () {
+    const first = Verse(book: '创世纪', chapter: 1, verse: 1, text: 'a');
+    const last = Verse(book: '创世纪', chapter: 1, verse: 2, text: 'b');
+    expect(verseNoteRangeLabel([first, last]), '创世记 1:1-2');
+    expect(first.book, '创世纪');
+    expect(first.id, 'Genesis-1-1');
+    const traditional = Verse(book: '創世紀', chapter: 1, verse: 1, text: 'a');
+    expect(verseNoteRangeLabel([traditional]), '創世記 1:1');
+  });
+
   group('which note a selection shows', () {
     test('the first annotated verse wins, with its OWN title', () {
       final p = resolveNotePrefill(
