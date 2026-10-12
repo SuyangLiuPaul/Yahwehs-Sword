@@ -1,0 +1,46 @@
+name: Stage exact Sword 1.7.24 Microsoft draft package
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_run_id:
+        description: Exact Windows Store MSIX build run
+        required: true
+        type: string
+      artifact_source_sha:
+        description: Exact immutable v1.7.24 source SHA
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: store-microsoft-submission-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Verify exact source run and download package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.artifact_run_id }}
+          EXPECTED_SOURCE: ${{ inputs.artifact_source_sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          [[ "$RUN_ID" =~ ^[0-9]+$ ]] && [[ "$EXPECTED_SOURCE" =~ ^[0-9a-f]{40}$ ]]
+          actual=$(gh api "repos/$REPO/actions/runs/$RUN_ID" --jq .head_sha)
+          [[ "$actual" == "$EXPECTED_SOURCE" ]]
+          path=$(gh api "repos/$REPO/actions/runs/$RUN_ID" --jq .path)
+          [[ "$path" == '.github/workflows/windows-store-msix.yml' ]]
+          mkdir -p build/windows/x64/runner/Release
+          gh run download "$RUN_ID" --repo "$REPO" --name Yahwehs-Sword-msix --dir build/windows/x64/runner/Release
+      - name: Add and verify only the exact existing draft package
+        env:
+          MS_TENANT: ${{ secrets.MS_STORE_TENANT_ID }}
+          MS_CLIENT: ${{ secrets.MS_STORE_CLIENT_ID }}
+          MS_SECRET: ${{ secrets.MS_STORE_CLIENT_SECRET }}
+        run: python tools/windows_store_stage_1724.py
