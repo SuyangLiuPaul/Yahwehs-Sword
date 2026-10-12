@@ -624,7 +624,7 @@ class _BookChapterPickerState extends State<BookChapterPicker> {
               // Browse window puts its reference, and the grid gets
               // that row of vertical space back.
               Text(
-                '$book $chapter',
+                '${bookNameForDisplay(book, settings.locale, mainProvider.currentVersion)} $chapter',
                 style: TextStyle(
                   fontFamily: settings.fontFamily,
                   fontFamilyFallback: kCjkFontFallback,
