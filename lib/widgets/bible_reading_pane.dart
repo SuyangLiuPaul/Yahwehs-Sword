@@ -78,7 +78,8 @@ import 'package:yahwehs_sword/utils/floating_toast.dart' show showFloatingToast;
 import 'package:yahwehs_sword/utils/missing_chapter_message.dart'
     show missingChapterMessage;
 import 'package:yahwehs_sword/utils/version_mapper.dart'
-    show translateBookName, toEnglish, localeAwareBookName, sameBookName;
+    show translateBookName, toEnglish, localeAwareBookName, sameBookName,
+        bookNameForDisplay;
 import 'package:yahwehs_sword/widgets/highlights_sheet.dart';
 import 'package:yahwehs_sword/widgets/originals_sheet.dart';
 import 'package:yahwehs_sword/widgets/verse_widget.dart';
@@ -4977,6 +4978,9 @@ class _MiniReaderHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final settings = context.watch<AppSettings>();
+    // Keep the frozen corpus key for navigation, but use the formal
+    // localized spelling in the compact reader header.
+    final displayBook = bookNameForDisplay(book, locale, version);
     // 2026-05-24 (v1.3.32): platform-aware backdrop tuning so the
     // top band reads as intentional chrome on every host:
     //   * iOS / macOS / web (CanvasKit) — BackdropFilter blur for
@@ -5026,7 +5030,7 @@ class _MiniReaderHeader extends StatelessWidget {
             // Left: where you are (book + chapter).
             Expanded(
               child: Text(
-                '$book $chapter',
+                '$displayBook $chapter',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: bookStyle,
@@ -5976,6 +5980,10 @@ class _FloatingHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settings = context.watch<AppSettings>();
+    // `book` is the frozen corpus key (创世纪 for cuvs-yhwh), not always
+    // the reader-facing spelling. Keep it for navigation, but render the
+    // formal book name consistently in the reader header.
+    final displayBook = bookNameForDisplay(book, locale, version);
     // 2026-08 (ported from YsWords v1.3.156): paper-tinted ColorScheme
     // swap for the chrome bar's own contents (icons/labels), so they
     // don't stay blue against the cream surface. Whole-scheme
@@ -6137,8 +6145,8 @@ class _FloatingHeader extends StatelessWidget {
                                     final useShort = screenW < 390;
                                     return Text(
                                       useShort
-                                          ? '${shortBookName(book, locale, version)} $chapter'
-                                          : '$book $chapter',
+                                          ? '${shortBookName(displayBook, locale, version)} $chapter'
+                                          : '$displayBook $chapter',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
