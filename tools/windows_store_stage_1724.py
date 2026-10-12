@@ -3,7 +3,7 @@ import copy, hashlib, json, os, urllib.parse, urllib.request, zipfile, xml.etree
 from pathlib import Path
 PRODUCT="9P93XHHFP6H3"; DRAFT="1152921505702101034"; IDENTITY="YahwehsPeople.YahwehsSword"
 VERSION="1.7.24.0"; PUBLISHER="CN=C4997401-2CEE-44B6-9803-4775768C89A5"
-PACKAGE="yahwehs_sword.msix"; SHA256="a142b871f746ca6d1429843edeffd33b37182e38bf152afc808bdf298702f0a7"
+SOURCE_PACKAGE="yahwehs_sword.msix"; PACKAGE="yahwehs_sword-1.7.24.msix"; SHA256="a142b871f746ca6d1429843edeffd33b37182e38bf152afc808bdf298702f0a7"
 BASE="https://manage.devcenter.microsoft.com/v1.0/my/applications/"+PRODUCT
 
 def api(url, method="GET", payload=None, headers=None):
@@ -18,7 +18,7 @@ def api(url, method="GET", payload=None, headers=None):
 
 def main():
  import urllib.error
- p=Path("build/windows/x64/runner/Release")/PACKAGE
+ p=Path("build/windows/x64/runner/Release")/SOURCE_PACKAGE
  if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=SHA256: raise SystemExit("Exact retained package SHA mismatch")
  with zipfile.ZipFile(p) as z:
   root=ET.fromstring(z.read("AppxManifest.xml")); ident=root.find("{http://schemas.microsoft.com/appx/manifest/foundation/windows10}Identity")
