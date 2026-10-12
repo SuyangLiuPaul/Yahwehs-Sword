@@ -11,6 +11,7 @@
 
 - Paired release branch is being prepared from merged main. Visible version target: **1.7.24**; Apple build target **1070024**. Play phone code remains workflow-allocated and must be validated against the current Play API before upload.
 - Localized Play and Microsoft release notes are prepared in `store-notes-1.7.24.json` and `microsoft-store-release-notes-1.7.24.json`.
+- The in-app changelog asset has been regenerated for 1.7.24 from the merged commit history; CI caught and rejected the stale 1.7.23 asset before merge.
 - **No 1.7.24 tag, package build, website deployment, or store upload is claimed yet.** Before each upload, read current store state and preserve active reviews/drafts. Upload, processing, review, and public availability are separate states.
 
 ## Verification limits
