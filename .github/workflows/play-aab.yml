@@ -23,9 +23,9 @@ on:
         options: [internal, alpha, beta]
         default: internal
       release_status:
-        description: 'Draft upload only; publishing requires a separate reviewed action'
+        description: 'Draft keeps the upload unpublished; completed is allowed only for the existing internal track'
         type: choice
-        options: [draft]
+        options: [draft, completed]
         default: draft
 
 # Same service account may have only one active Play edit per app.
@@ -174,4 +174,5 @@ jobs:
         if: ${{ inputs.upload_to_play }}
         env:
           PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          RELEASE_STATUS: ${{ inputs.release_status }}
         run: python tools/play_store_upload.py '${{ inputs.track }}' build/app/outputs/bundle/intlRelease/app-intl-release.aab
