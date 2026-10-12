@@ -13,7 +13,7 @@ from pathlib import Path
 
 PRODUCT = "9P93XHHFP6H3"
 DRAFT = "1152921505702101034"
-PACKAGE = "yahwehs_sword.msix"
+PACKAGE = "yahwehs_sword-1.7.24.msix"
 EXPECTED_SHA256 = "a142b871f746ca6d1429843edeffd33b37182e38bf152afc808bdf298702f0a7"
 IDENTITY = "YahwehsPeople.YahwehsSword"
 VERSION = "1.7.24.0"

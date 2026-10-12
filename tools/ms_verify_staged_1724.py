@@ -8,7 +8,7 @@ import zipfile
 import xml.etree.ElementTree as ET
 
 EXPECTED = {
-    '9P93XHHFP6H3': ('yahwehs_sword.msix', 151544213, 'a142b871f746ca6d1429843edeffd33b37182e38bf152afc808bdf298702f0a7', 'YahwehsPeople.YahwehsSword', '1152921505702101034'),
+    '9P93XHHFP6H3': ('yahwehs_sword-1.7.24.msix', 151544213, 'a142b871f746ca6d1429843edeffd33b37182e38bf152afc808bdf298702f0a7', 'YahwehsPeople.YahwehsSword', '1152921505702101034'),
 }
 
 def verify_staged(submission, product):
