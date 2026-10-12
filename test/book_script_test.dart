@@ -124,6 +124,11 @@ void main() {
       expect(localeAwareBookName('Numbers', 'zh-Hans', 'bsb'), 'Numbers');
       expect(localeAwareBookName('Numbers', 'en', 'cuvs-yhwh'), '民数记');
       expect(localeAwareBookName('Numbers', 'en', 'cuvs-yhwh-tr'), '民數記');
+      expect(bookNameForDisplay('创世纪', 'zh-Hans', 'cuvs-yhwh'), '创世记');
+      expect(bookNameForDisplay('創世紀', 'zh-Hant', 'cuvs-yhwh-tr'), '創世記');
+      expect(bookNameForDisplay('Exodus', 'zh-Hans', 'cuvs-yhwh'), 'Exodus');
+      // Frozen bundle key remains unchanged for navigation/data lookups.
+      expect(translateBookName('Genesis', 'cuvs-yhwh'), '创世纪');
     });
 
     test('locale-driven when no version is available', () {

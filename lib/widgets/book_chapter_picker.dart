@@ -53,7 +53,8 @@ import 'package:yahwehs_sword/constants/ui_strings.dart';
 import 'package:yahwehs_sword/constants/workbench_theme.dart';
 import 'package:yahwehs_sword/models/app_settings.dart';
 import 'package:yahwehs_sword/utils/responsive.dart';
-import 'package:yahwehs_sword/utils/version_mapper.dart' show toEnglish;
+import 'package:yahwehs_sword/utils/version_mapper.dart'
+    show bookNameForDisplay, toEnglish;
 import 'package:yahwehs_sword/utils/fitted_label_metrics.dart'
     show columnsThatFit, widestLabelEmWidth;
 import 'package:yahwehs_sword/utils/font_catalog.dart' show kCjkFontFallback;
@@ -931,7 +932,8 @@ class _BookChapterPickerState extends State<BookChapterPicker> {
                 textColor: wb.link,
                 iconColor: wb.link,
                 title: Text(
-                  book.title,
+                  bookNameForDisplay(book.title, settings.locale,
+                      mainProvider.currentVersion),
                   style: TextStyle(
                       fontSize: settings.fontSize,
                       fontFamily: settings.fontFamily,
@@ -978,7 +980,8 @@ class _BookChapterPickerState extends State<BookChapterPicker> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      book.title,
+                      bookNameForDisplay(book.title, settings.locale,
+                          mainProvider.currentVersion),
                       style: TextStyle(
                         fontSize: settings.fontSize * 1.1,
                         fontFamily: settings.fontFamily,
@@ -1145,7 +1148,8 @@ class _BookChapterPickerState extends State<BookChapterPicker> {
     final fgColor = wb.text;
     final shortName = _shortBookTitle(book.title);
     return Tooltip(
-      message: book.title,
+      message: bookNameForDisplay(book.title, settings.locale,
+          context.read<MainProvider>().currentVersion),
       child: Material(
         color: isCurrent ? wb.selectionBg : wb.paneAltBg,
         shape: RoundedRectangleBorder(
