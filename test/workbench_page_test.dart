@@ -296,6 +296,26 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('the full-screen search opens on the Workbench\'s own search state',
+      (tester) async {
+    // 2026-10-15: the page used to build a fresh provider, so a scope
+    // picked in the Workbench (John and 1-3 John, say) was gone the moment
+    // the magnifier opened it and the search ran over the whole Bible.
+    addTearDown(tester.view.reset);
+    await pumpWorkbench(tester, const Size(390, 844), routable: true);
+    await tester.tap(find.descendant(
+        of: find.byType(WorkbenchToolbar),
+        matching: find.byIcon(Icons.search)));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 300));
+
+    final page = find.byType(CommandSearchPage);
+    expect(page, findsOneWidget);
+    expect(tester.widget<CommandSearchPage>(page).workbench, isNotNull,
+        reason: 'the page was opened without the Workbench provider, so '
+            'the search scope is lost');
+  });
+
   testWidgets('dragging the left divider resizes the command pane',
       (tester) async {
     addTearDown(tester.view.reset);

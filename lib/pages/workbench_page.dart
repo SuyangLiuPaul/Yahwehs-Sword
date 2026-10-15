@@ -1692,7 +1692,7 @@ class _WorkbenchPageState extends State<WorkbenchPage> {
   /// can hold, which is what the standalone reader has always pushed.
   void _focusCommandLine() {
     if (MediaQuery.sizeOf(context).width < _commandPaneMinWidth) {
-      pushPage(const CommandSearchPage());
+      pushPage(CommandSearchPage(workbench: _wb));
       return;
     }
     if (_leftOpen) {
