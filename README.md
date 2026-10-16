@@ -1,6 +1,6 @@
 <h1 align="center">Yahweh’s Sword · 雅伟之剑</h1>
 
-Latest web Settings update: Basic by default, expandable Advanced, deployed to dev/prod at 1.7.15. [Delivery and verification](docs/settings-basic-advanced-2026-10-08.md).
+**Status, 2026-10-17.** The latest release is **1.7.31**. Ahead of it, on the dev site and **not yet released**: [continuous vertical scrolling](#latest-additions) in the classic 阅读 reader and [Add-ons](docs/addon-modules.md) — importing Bible texts from MyBible.zone, MySword, theWord, Zefania XML, JSON and CSV. This file lags the code by design: `AGENTS.md` ranks it the least trustworthy document here; when it disagrees with the tree, the tree wins.
 
 <p align="center">
   <img src="brand/favicon-512.png" alt="SeekSparks App Icon" width="80"/>
@@ -52,6 +52,8 @@ among the additions since the fork, and none of them are in YsWords.
 
 ## Latest additions
 
+- **Add-ons: import your own Bible text** (Settings › Add-ons; unreleased, dev site). Reads **MyBible.zone** (`.SQLite3`), **MySword** (`.bbl.mybible`), **theWord** (`.ont` `.ot` `.nt`), **Zefania XML**, JSON and CSV on every platform, with a pure-Dart read-only SQLite reader (no native library, identical on web, iOS, Android, macOS, Windows). Local-only — never uploaded, synced or shared; the reader confirms the right to use the file first; an import is marked **Your file**, sorts after the shipped editions and is shown exactly as its file has it. Commentaries and dictionaries are recognised and declined for now; e-Sword and locked modules are refused. It **absorbs** the earlier web-only JSON importer (bwh47): the same IndexedDB database opens at version 2 and earlier imports are carried over. [Specification, evidence and limits](docs/addon-modules.md) · [what only a real module can prove](docs/addons-manual-verification.md).
+- **Continuous vertical scrolling** (unreleased, dev site): an optional reading mode in the classic 阅读 reader, off by default — chapters flow into each other in both directions. Settings, the reader's font sheet, the ⇅ button on the bottom bar or the ⋮ menu. The parallel 对照 pane is a different reader and is unchanged.
 - Scoped search charts compare matching verses by book; fuzzy and Chinese pinyin switches rerun the active text query without resetting its scope.
 - Berean Interlinear NT: Greek source forms, English glosses, transliteration, Strong’s numbers and source grammar. [Import provenance](docs/berean-interlinear-import.json).
 - [Eagle’s View commentary review](docs/eaglesview-theology-review.md): source-specific findings and explicit distinctions from CBOL app definitions.
@@ -138,7 +140,8 @@ Ten distinct, unedited captures from the actual iOS simulator app, prepared on 1
 | Workbench (3-pane workspace) | On pad-landscape/desktop (≥1024px) the reader is a BibleWorks-style workspace: command line + results verse list (left), Bible text (center), live original-language analysis that follows verse taps (right). Panes resize by drag, collapse by double-tap / fling / header button, widths persist. A "Classic Reader" menu entry leads back to the single-pane reader (and its Split View). |
 | Wide-screen layout | Split View and the sidebar are open by default in the classic reader at tablet width (600–1023px) — no extra tap needed on a bigger screen. |
 | Docked side panels | The Original-language word study opens as a persistent right-hand panel at desktop widths (≥1024px) instead of covering the text with a bottom sheet; falls back to the familiar bottom sheet below that width. |
-| Reading | English and Chinese reading editions, Chinese NET notes, One God Translation NT, tagged SBL Greek NT and Berean Interlinear NT. Restricted NASB modules are excluded from this repository and deployment. Light / Dark / System theme; adjustable font, size, line spacing; paragraph or verse-by-verse mode. |
+| Add-ons | Import a Bible text from MyBible.zone / MySword / theWord / Zefania XML / JSON / CSV — local-only, licence-confirmed, shown exactly as the file has it; commentaries and dictionaries recognised and declined for now ([details](docs/addon-modules.md)). |
+| Reading | English and Chinese reading editions, optional continuous vertical scrolling in the classic reader, Chinese NET notes, One God Translation NT, tagged SBL Greek NT and Berean Interlinear NT. Restricted NASB modules are excluded from this repository and deployment. Light / Dark / System theme; adjustable font, size, line spacing; paragraph or verse-by-verse mode. |
 | Unified command line | One box, BibleWorks' defining interaction: type a reference (`Gen 1:1`, `John 3`, `约翰福音 3:16`) and it navigates; type anything else and it searches. Navigating focuses the verse, so the Browse and Analysis panes follow. |
 | Morphology (parsing) | Every original-language word carries a real parse — `Qal perfect 3rd person masculine singular`, `verb · aorist active indicative · 3rd person singular` — in the word-study card, with the part of speech inline on each word chip. 437,952 of 438,821 words (99.8%) carry a morphology code across all 66 books, in EN / 简体 / 繁體 (`tools/audit_data_integrity.py`, check 2a). |
 | Analysis window (tabbed) | The right pane is tabbed: **Word Study**, **X-Refs** (TSK + OpenBible cross-references, 29,319 source verses indexed, shown with their text, tappable), **KWIC** (every occurrence of a tapped word, aligned on the word, across the whole Bible), **Related** (verses sharing weighted words with the current one), **Stats** (whole-Bible frequency of the verse's original words, rarest first). The chosen tab persists. |
@@ -270,6 +273,14 @@ They are listed in `.gitignore`, confirmed absent from `git ls-files`, and not r
 asset wiring, re-check all three with `git ls-files | grep -E 'nasb-ev|nsn-plus'` before you
 commit, because nothing else will stop it from shipping by accident.
 
+### Texts the reader imports (Add-ons)
+
+An edition imported through Settings › Add-ons is the reader's own file: this repository ships
+none of it, the app does not check where it came from or who owns it (the reader confirms they
+have the right to use it), it is stored on that device only, and it carries the disclaimer
+`aboutLicenseUserSupplied` everywhere it is shown. It is **not** exempt from the Copy Center's
+500-verse ceiling. See [`docs/addon-modules.md`](docs/addon-modules.md).
+
 ### Morphology, lexicons & reference data
 
 | Source | Covers | Licence |
@@ -320,6 +331,8 @@ filenames alone:
 | [`docs/OPEN-ITEMS.md`](docs/OPEN-ITEMS.md) | Everything **not** done, in one place: bugs, unfinished features, decisions waiting on the owner, and operational landmines. Every item is marked either verified on a date or carried forward unchecked, so a reader knows which are facts and which are leads. |
 | `docs/DATA-INTEGRITY.md` | Every cross-check ever run against the bundled data, numbered, with a measured count and a verdict for each — the log this README's own numbers are drawn from. |
 | `docs/WHEEL-PROVENANCE.md` | Where every date on the World History Wheel came from, and the audit that confirmed none of them were lifted from a copyrighted chart. |
+| [`docs/addon-modules.md`](docs/addon-modules.md) | The Add-ons importer: formats, what is read and dropped, the SQLite reader, the evidence behind each claim and what is still unverified. |
+| [`docs/addons-manual-verification.md`](docs/addons-manual-verification.md) | The checklist for what only a real module on a real device can prove. |
 | `docs/PARITY-BACKLOG.md` | What SeekSparks still owes each of the sources it draws on, and what it has deliberately decided not to build. |
 | `docs/PRODUCT-AUDIT.md` | A screen-by-screen audit asking "who opens this in a BibleWorks-class tool, and why" — the reasoning behind what stayed and what didn't. |
 | `docs/SEARCH-AUDIT.md` | Every syntax the command line accepts, driven once by hand, with the number it actually returned. |

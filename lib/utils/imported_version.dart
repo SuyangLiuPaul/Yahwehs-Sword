@@ -50,19 +50,17 @@ library;
 import 'dart:convert';
 
 import 'package:yahwehs_sword/constants/bible_versions.dart'
-    show bibleVersions, isKnownVersion;
+    show bibleVersions, isKnownVersion, isImportedVersion, kImportedVersionPrefix;
+
+// These two now live in `bible_versions.dart`, beside the catalog that
+// depends on them; re-exported so every earlier import keeps working.
+export 'package:yahwehs_sword/constants/bible_versions.dart'
+    show isImportedVersion, kImportedVersionPrefix;
 
 /// The attribution key an imported version carries. Declared here so
 /// the store, the picker and the Copy Center cannot each invent one.
 const String kImportedAttributionKey = 'aboutLicenseUserSupplied';
 
-/// Prefix on every imported version's code.
-///
-/// A namespace, and a load-bearing one: it is what stops an import
-/// called `kjv` from shadowing the bundled KJV, and what lets every
-/// surface tell a supplied text from a shipped one by looking at the
-/// code alone.
-const String kImportedVersionPrefix = 'user-';
 
 /// Largest import accepted, in characters of JSON.
 ///
@@ -309,9 +307,6 @@ const _kBookNamesZh = <String>[
   '约翰一书', '约翰二书', '约翰三书', '犹大书', '启示录',
 ];
 
-/// True when [code] names a text the reader supplied.
-bool isImportedVersion(String code) =>
-    code.startsWith(kImportedVersionPrefix);
 
 /// Guard: no bundled edition may ever take the imported prefix, or the
 /// two would become indistinguishable. Asserted by the test file.

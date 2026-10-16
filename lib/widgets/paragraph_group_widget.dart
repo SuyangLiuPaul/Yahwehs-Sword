@@ -259,6 +259,7 @@ class _ParagraphGroupWidgetState extends State<ParagraphGroupWidget> {
             locale: locale,
             isSelected: isSelected || isHighlighted,
             superscriptVerseNum: true,
+            versionCode: mainProvider.currentVersion,
             onTextTap: () => mainProvider.toggleVerse(verse: verse),
             spanBgColor: bgColor,
           ));
@@ -336,6 +337,7 @@ class _ParagraphGroupWidgetState extends State<ParagraphGroupWidget> {
                     text: group.first.superscription,
                     settings: settings,
                     leftIndent: blockPadding.left,
+                    versionCode: mainProvider.currentVersion,
                   ),
                 Container(
                   width: double.infinity,

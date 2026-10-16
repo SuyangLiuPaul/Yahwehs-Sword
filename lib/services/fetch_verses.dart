@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:yahwehs_sword/services/addons/addon_registry.dart';
 import 'package:yahwehs_sword/utils/berean_interlinear_display.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:yahwehs_sword/services/local_version_store.dart';
 import 'package:yahwehs_sword/utils/imported_version.dart'
     show isImportedVersion;
 import 'package:yahwehs_sword/models/verse.dart';
@@ -340,7 +340,7 @@ class FetchVerses {
   /// rather than as a text that is simply not in the bundle.
   static Future<String?> _importedJson(String version) async {
     if (!isImportedVersion(version)) return null;
-    return LocalVersionStore.read(version);
+    return AddonRegistry.readPayload(version);
   }
 
   static Future<List<Verse>> _loadAndParse(

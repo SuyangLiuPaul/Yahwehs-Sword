@@ -185,6 +185,12 @@ class MainProvider extends ChangeNotifier {
   final LinkedHashMap<String, List<Verse>> _versesCache =
       LinkedHashMap<String, List<Verse>>();
 
+  /// Forget [version]'s parsed verses (an add-on that was removed or turned
+  /// off must not be served from memory after it is gone).
+  void evictVersionCache(String version) {
+    _versesCache.remove(version);
+  }
+
   void _cacheVerses(String version, List<Verse> list) {
     // LRU touch: remove + re-insert so the most recently used key
     // sits at the end of the LinkedHashMap iteration order.

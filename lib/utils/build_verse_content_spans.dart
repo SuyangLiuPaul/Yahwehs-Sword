@@ -23,6 +23,9 @@ List<InlineSpan> buildVerseContentSpans({
   VoidCallback? onTextTap,
   Color? spanBgColor,
   List<String>? noteSink,
+  // The edition these verses came from: an imported one is shown exactly as
+  // its file has it (no divine-name rewrite).
+  String? versionCode,
 }) {
   final isReferenceLine = verse.paragraphType == 'reference';
 
@@ -72,7 +75,7 @@ List<InlineSpan> buildVerseContentSpans({
           return;
         }
         final toCopy =
-            '${verse.verseLabel} ${sanitizeVerseText(verse.scriptureText, stripParentheticals: settings.copyStripParentheticals)}';
+            '${verse.verseLabel} ${sanitizeVerseText(verse.scriptureText, stripParentheticals: settings.copyStripParentheticals, verbatim: isVerbatimEdition(versionCode))}';
         final ok = await ClipboardHelper.copyText(toCopy);
         if (!context.mounted) return;
         final msg = ok
@@ -144,6 +147,7 @@ List<InlineSpan> buildVerseContentSpans({
     onTextTap: onTextTap,
     spanBgColor: spanBgColor,
     noteSink: noteSink,
+    versionCode: versionCode,
   ));
 
   return spans;
@@ -172,6 +176,7 @@ List<InlineSpan> buildAnnotatedSpans({
   VoidCallback? onTextTap,
   Color? spanBgColor,
   List<String>? noteSink,
+  String? versionCode,
 }) {
   final fs = fontSize ?? settings.fontSize;
   // 2026-05-07: drop stray spaces between a `[`/`{`/`<note:` annotation
@@ -549,7 +554,7 @@ List<InlineSpan> buildAnnotatedSpans({
       // adjacent chunks (sanitizeForSearch's `.trim()` would collapse
       // them and merge words across span boundaries).
       spans.add(TextSpan(
-        text: displayCleanup(part),
+        text: displayCleanup(part, verbatim: isVerbatimEdition(versionCode)),
         recognizer: onTextTap != null
             ? (TapGestureRecognizer()..onTap = onTextTap)
             : null,

@@ -73,6 +73,8 @@ dependencies:
   # complaining about a direct import without a direct dep.
   web: ^1.0.0
   url_launcher: ^6.3.2
+  # Add-ons importer: the platform file chooser (modules are picked, read as bytes, never uploaded).
+  file_selector: ^1.1.0
   # 2026-05-24 (v1.3.19): flutter_tts removed with the 朗读 feature.
   # path_provider + crypto were part of its audio cache and were kept on
   # the theory that a second consumer would turn up; task #281 found none

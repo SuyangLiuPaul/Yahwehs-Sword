@@ -161,6 +161,7 @@ class _VerseWidgetState extends State<VerseWidget> {
           locale: locale,
           isSelected: isSelected,
           superscriptVerseNum: inParagraphMode,
+          versionCode: mainProvider.currentVersion,
           // v1.3.17: light haptic on verse tap — iOS Taptic Engine
           // selection click, Android vibrator pulse, no-op elsewhere.
           onTextTap: () {
@@ -246,6 +247,7 @@ class _VerseWidgetState extends State<VerseWidget> {
                     text: verse.superscription,
                     settings: settings,
                     leftIndent: leftIndent,
+                    versionCode: mainProvider.currentVersion,
                   ),
                 Stack(
                   children: [

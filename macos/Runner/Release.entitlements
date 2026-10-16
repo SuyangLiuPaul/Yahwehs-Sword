@@ -19,5 +19,13 @@
 	<array>
 		<string>$(AppIdentifierPrefix)com.example.yahwehswords</string>
 	</array>
+	<!-- 2026-10-17: the Add-ons file picker. file_selector on macOS is
+	     NSOpenPanel, and a sandboxed app may only READ the file the reader
+	     chose in that panel if it holds user-selected.read-only. Without it
+	     the panel still opens and still returns a path — but reading that
+	     path is refused, so the picker looks like it worked and the import
+	     never gets its bytes. Read-only on purpose: nothing here writes. -->
+	<key>com.apple.security.files.user-selected.read-only</key>
+	<true/>
 </dict>
 </plist>

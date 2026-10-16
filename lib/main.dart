@@ -34,7 +34,7 @@ import 'package:yahwehs_sword/services/url_sync_service.dart';
 import 'package:yahwehs_sword/services/workbench_warmup.dart'
     show warmWorkbenchFirstPaint;
 import 'package:provider/provider.dart';
-import 'package:yahwehs_sword/services/version_import_service.dart';
+import 'package:yahwehs_sword/services/addons/addon_registry.dart';
 import 'package:yahwehs_sword/utils/font_catalog.dart' show kCjkFontFallback;
 import 'package:yahwehs_sword/widgets/retired_version_notice.dart'
     show RetiredVersionNotice;
@@ -99,8 +99,8 @@ void main() {
     // Failure stays silent by design: a reader who has never imported
     // anything should get the app, not an error about a feature they
     // have not used.
-    await VersionImportService.restore()
-        .timeout(const Duration(seconds: 1), onTimeout: () {})
+    await AddonRegistry.restore()
+        .timeout(const Duration(seconds: 2), onTimeout: () {})
         .catchError((_) {});
     ErrorReporter.init();
 

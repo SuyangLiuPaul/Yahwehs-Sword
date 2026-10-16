@@ -4,6 +4,7 @@ import '../widgets/diagnosis_tile.dart';
 // 2026-05-20 (v1.2.67): `dart:js_interop` was here. See
 // `lib/utils/clear_cache_helper.dart` for the conditional-import
 // pattern that replaced it.
+import 'package:yahwehs_sword/pages/addons_page.dart';
 import 'package:yahwehs_sword/utils/atomic_text_edit.dart';
 import 'package:yahwehs_sword/utils/clear_cache_helper.dart';
 import 'package:yahwehs_sword/utils/clipboard_helper.dart';
@@ -17,9 +18,6 @@ import 'package:yahwehs_sword/constants/text_patterns.dart'
     show parentheticalNotePattern, sanitizeForCopy;
 import 'package:yahwehs_sword/constants/sermon_credit.dart';
 import 'package:yahwehs_sword/constants/bible_versions.dart';
-import 'package:yahwehs_sword/services/local_version_store.dart';
-import 'package:yahwehs_sword/services/version_import_service.dart';
-import 'package:yahwehs_sword/utils/pick_text_file.dart';
 import 'package:yahwehs_sword/constants/fuzzy_search_strings.dart';
 import 'package:yahwehs_sword/constants/ui_strings.dart';
 import 'package:yahwehs_sword/widgets/manual_update_tile.dart';
@@ -1219,75 +1217,35 @@ class _SettingsPageBodyState extends State<_SettingsPageBody> {
                     value: settings.showOriginalRows,
                     onChanged: (val) => settings.setShowOriginalRows(val),
                   ),
-                  // bwh47. Under the search/originals block
-                  // because it is about which TEXTS the app holds,
-                  // and shown only where there is a store to hold
-                  // them — a control that cannot work is not a
-                  // feature, it is a promise.
-                  if (canPickTextFile && LocalVersionStore.isAvailable) ...[
-                    const Divider(height: 1),
-                    ListTile(
-                      title: Text(
-                        uiStrings['importVersionTitle']?[settings.locale] ??
-                            'Import your own Bible',
-                        style: TextStyle(
-                          fontSize: settings.fontSize + 2,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: settings.fontFamily,
-                          fontFamilyFallback: kCjkFontFallback,
-                        ),
-                      ),
-                      subtitle: Text(
-                        uiStrings['importVersionSubtitle']?[settings.locale] ??
-                            'A JSON file of verses. Stored on this '
-                                'device only.',
-                        style: TextStyle(
-                          fontSize: settings.fontSize,
-                          fontFamily: settings.fontFamily,
-                          fontFamilyFallback: kCjkFontFallback,
-                        ),
-                      ),
-                      trailing: const Icon(Icons.file_open_outlined),
-                      onTap: () => _importVersion(context, settings),
-                    ),
-                    ValueListenableBuilder<int>(
-                      valueListenable: VersionImportService.changes,
-                      builder: (context, _, __) => Column(
-                        children: [
-                          for (final e in importedVersionLabels.entries)
-                            ListTile(
-                              dense: true,
-                              title: Text(
-                                e.value,
-                                style: TextStyle(
-                                  fontSize: settings.fontSize,
-                                  fontFamily: settings.fontFamily,
-                                  fontFamilyFallback: kCjkFontFallback,
-                                ),
-                              ),
-                              subtitle: Text(
-                                uiStrings['aboutLicenseUserSupplied']
-                                        ?[settings.locale] ??
-                                    'Supplied by you',
-                                style: TextStyle(
-                                  fontSize: settings.fontSize - 1,
-                                  fontFamily: settings.fontFamily,
-                                  fontFamilyFallback: kCjkFontFallback,
-                                ),
-                              ),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.delete_outline),
-                                tooltip: uiStrings['importVersionForget']
-                                        ?[settings.locale] ??
-                                    'Remove from this device',
-                                onPressed: () => _forgetImportedVersion(
-                                    context, settings, e.key, e.value),
-                              ),
-                            ),
-                        ],
+                  // Add-ons: Bible texts the reader brings from elsewhere
+                  // (MyBible, MySword, theWord, Zefania, JSON, CSV). Under the
+                  // search/originals block because it is about which TEXTS the
+                  // app holds. Replaces bwh47's single JSON import card.
+                  const Divider(height: 1),
+                  ListTile(
+                    key: const ValueKey('settings.addons'),
+                    title: Text(
+                      uiStrings['addonsTitle']?[settings.locale] ?? 'Add-ons',
+                      style: TextStyle(
+                        fontSize: settings.fontSize + 2,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: settings.fontFamily,
+                        fontFamilyFallback: kCjkFontFallback,
                       ),
                     ),
-                  ],
+                    subtitle: Text(
+                      uiStrings['addonsSettingsSubtitle']?[settings.locale] ??
+                          'Read a Bible text you downloaded elsewhere',
+                      style: TextStyle(
+                        fontSize: settings.fontSize,
+                        fontFamily: settings.fontFamily,
+                        fontFamilyFallback: kCjkFontFallback,
+                      ),
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: (_) => const AddonsPage())),
+                  ),
                   // bwh16's Cross Versions Search Mode. A dropdown
                   // and not three switches: the modes are exclusive
                   // and widen in one direction, so a list the reader
@@ -4496,61 +4454,6 @@ String _crossVersionModeKey(CrossVersionSearchMode m) {
     case CrossVersionSearchMode.sameLanguage:
       return 'crossVersionModeSameLanguage';
   }
-}
-
-/// bwh47's import, from the reader's side.
-///
-/// Reads the file, validates it, stores it, and says which of the four
-/// things happened — because "your file is malformed" and "your browser
-/// would not keep it" send the reader in completely different
-/// directions, and a single "import failed" would send them the wrong
-/// way half the time.
-/// The reader's own file is not ours to re-supply: once removed it is
-/// gone from this device, so it asks first.
-Future<void> _forgetImportedVersion(BuildContext context, AppSettings settings,
-    String code, String label) async {
-  final locale = settings.locale;
-  String s(String key, String fallback) => uiStrings[key]?[locale] ?? fallback;
-  final ok = await showDialog<bool>(
-    context: context,
-    builder: (ctx) => AlertDialog(
-      title: Text(s('importVersionForget', 'Remove from this device')),
-      content: Text(s('importVersionForgetConfirm',
-              'Remove {name}? You would need the file to import it again.')
-          .replaceAll('{name}', label)),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(s('cancel', 'Cancel'))),
-        TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(s('importVersionForget', 'Remove from this device'))),
-      ],
-    ),
-  );
-  if (ok == true) await VersionImportService.forget(code);
-}
-
-Future<void> _importVersion(BuildContext context, AppSettings settings) async {
-  final picked = await pickTextFile();
-  if (picked == null || !context.mounted) return;
-  final name = picked.name.replaceAll(RegExp(r'\.[A-Za-z0-9]+$'), '');
-  final result = await VersionImportService.import(picked.text, name);
-  if (!context.mounted) return;
-  final locale = settings.locale;
-  String s(String key, String fallback) => uiStrings[key]?[locale] ?? fallback;
-  final message = switch (result.outcome) {
-    ImportOutcome.imported => s('importVersionDone', 'Imported {n} verses')
-        .replaceAll('{n}', '${result.verseCount}'),
-    ImportOutcome.couldNotStore =>
-      s('importVersionNoRoom', 'Your browser would not store it'),
-    ImportOutcome.unsupported =>
-      s('importVersionUnsupported', 'Not available on this device'),
-    ImportOutcome.rejected =>
-      '${s('importVersionRejected', 'That file could not be read')}'
-          '${result.detail == null ? '' : ' (${result.detail})'}',
-  };
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
 }
 
 /// Simplified or Traditional for a Chinese-only literal, by [locale].

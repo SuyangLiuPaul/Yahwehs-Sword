@@ -80,7 +80,7 @@ import 'package:yahwehs_sword/constants/bible_versions.dart'
 import 'package:yahwehs_sword/constants/projection_setup.dart';
 import 'package:yahwehs_sword/constants/projection_strings.dart';
 import 'package:yahwehs_sword/constants/text_patterns.dart'
-    show sanitizeForProjection;
+    show isVerbatimEdition, sanitizeForProjection;
 import 'package:yahwehs_sword/constants/workbench_theme.dart'
     show WbColors, WbMetrics;
 import 'package:yahwehs_sword/models/verse.dart';
@@ -371,13 +371,21 @@ class ProjectionStage extends StatelessWidget {
   List<Widget> _firstLines(WbColors wb) {
     if (layout.flow == ProjectionFlow.continuous) {
       return [
-        _runTogether(wb, [for (final v in verses) sanitizeForProjection(v.text)],
+        _runTogether(wb, [
+          for (final v in verses)
+            sanitizeForProjection(v.text,
+                verbatim: isVerbatimEdition(versionCode))
+        ],
             typeSize, wb.text)
       ];
     }
     return [
       for (var i = 0; i < verses.length; i++)
-        _line(wb, sanitizeForProjection(verses[i].text), verses[i].verseLabel,
+        _line(
+            wb,
+            sanitizeForProjection(verses[i].text,
+                verbatim: isVerbatimEdition(versionCode)),
+            verses[i].verseLabel,
             typeSize, wb.text),
     ];
   }
@@ -508,7 +516,7 @@ class ProjectionStage extends StatelessWidget {
     // The companion edition carries the same markup the first one does,
     // and the same rule applies to it: the room reads scripture, not
     // the apparatus the file stores it with.
-    return sanitizeForProjection(text);
+    return sanitizeForProjection(text, verbatim: isVerbatimEdition(secondCode));
   }
 
   /// The reference, and the edition or editions it belongs to.

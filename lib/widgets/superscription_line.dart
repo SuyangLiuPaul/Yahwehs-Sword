@@ -28,11 +28,16 @@ class SuperscriptionLine extends StatelessWidget {
   /// above rather than with the page edge.
   final double? leftIndent;
 
+  /// The edition the title belongs to; an imported one is shown exactly as its
+  /// file has it.
+  final String? versionCode;
+
   const SuperscriptionLine({
     super.key,
     required this.text,
     required this.settings,
     this.leftIndent,
+    this.versionCode,
   });
 
   @override
@@ -66,6 +71,7 @@ class SuperscriptionLine extends StatelessWidget {
             isSelected: false,
             italic: true,
             fontSize: fs,
+            versionCode: versionCode,
           ),
         ),
       ),

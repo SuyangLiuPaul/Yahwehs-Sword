@@ -501,6 +501,52 @@ final Map<String, String> importedVersionLabels = <String, String>{};
 /// is registered without one, which is the old behaviour.
 final Map<String, String> importedVersionScripts = <String, String>{};
 
+/// code → the picker tab: `en`, `zh-Hans`, `zh-Hant` or `other`.
+final Map<String, String> importedVersionFamilies = <String, String>{};
+
+/// code → (covers the Old Testament, covers the New Testament).
+final Map<String, ({bool ot, bool nt})> importedVersionCoverage =
+    <String, ({bool ot, bool nt})>{};
+
+/// Prefix on every imported edition's code. A namespace: it is what stops an
+/// import called `kjv` from shadowing the bundled KJV, and what lets every
+/// surface tell a supplied text from a shipped one by looking at the code.
+const String kImportedVersionPrefix = 'user-';
+
+/// True when [code] names a text the reader supplied.
+bool isImportedVersion(String code) => code.startsWith(kImportedVersionPrefix);
+
+/// The edition to put in anything that LEAVES the device in place of [code].
+/// An imported edition's code is a slug of a name the reader typed, and
+/// "imported content never leaves the device" has to be literally true of that
+/// too.
+String syncSafeVersion(String code) {
+  if (!isImportedVersion(code)) return code;
+  switch (importedVersionFamilies[code] ?? importedVersionScripts[code]) {
+    case 'zh-Hans':
+      return 'cuvs-yhwh';
+    case 'zh-Hant':
+      return 'cuvs-yhwh-tr';
+    default:
+      return 'kjv';
+  }
+}
+
+/// The catalog row for [code], bundled or imported — THE one place that
+/// answers "what is this version", so no two callers can disagree about an
+/// imported edition's label, language or script.
+BibleVersionInfo? versionInfoFor(String code) {
+  for (final v in bibleVersions) {
+    if (v.value == code) return v;
+  }
+  if (importedVersionLabels.containsKey(code)) {
+    for (final v in importedVersions) {
+      if (v.value == code) return v;
+    }
+  }
+  return null;
+}
+
 /// The catalog rows for the imported editions, built on demand.
 ///
 /// The language is the one the file's own BOOK NAMES are written in,
@@ -517,7 +563,8 @@ List<BibleVersionInfo> get importedVersions => [
           shortLabel:
               e.value.length <= 6 ? e.value : '${e.value.substring(0, 5)}…',
           menuLabel: e.value,
-          language: importedVersionScripts[e.key] ?? 'en',
+          language:
+              importedVersionFamilies[e.key] ?? importedVersionScripts[e.key] ?? 'en',
           editionYear: '',
         ),
     ];
@@ -539,7 +586,9 @@ List<BibleVersionInfo> get availableVersions => [
 /// available version are kept (defensive against a future all-disabled
 /// language).
 List<String> get bibleLanguageOrder {
-  const order = ['en', 'zh-Hant', 'zh-Hans', 'he', 'grc'];
+  // `other` is for an imported edition in a language the interface has no tab
+  // for — Russian, Spanish, Korean.
+  const order = ['en', 'zh-Hant', 'zh-Hans', 'other', 'he', 'grc'];
   final present = availableVersions.map((v) => v.language).toSet();
   return order.where(present.contains).toList();
 }
@@ -553,23 +602,22 @@ List<BibleVersionInfo> versionsForLanguage(String language) =>
 /// Falls back to `zh-Hans` for an unknown code (the app's primary
 /// audience) so the picker never lands on an empty tab.
 String bibleVersionLanguage(String value) {
-  for (final v in bibleVersions) {
-    if (v.value == value) return v.language;
-  }
+  final info = versionInfoFor(value);
+  if (info != null) return info.language;
+  // An imported edition this device does not hold: English is the only guess
+  // that does not strand a reader on a text in a script they did not choose.
+  if (isImportedVersion(value)) return 'en';
   return 'zh-Hans';
 }
 
 String shortBibleVersionLabel(String version) {
-  return bibleVersions
-      .firstWhere(
-        (item) => item.value == version,
-        orElse: () => BibleVersionInfo(
-          value: version,
-          shortLabel: version,
-          menuLabel: version,
-          language: 'zh-Hans',
-        ),
-      )
+  return (versionInfoFor(version) ??
+          BibleVersionInfo(
+            value: version,
+            shortLabel: version,
+            menuLabel: version,
+            language: 'zh-Hans',
+          ))
       .shortLabel;
 }
 
@@ -589,20 +637,13 @@ String shortBibleVersionLabel(String version) {
 /// and to the raw code for one that is not in the catalog at all —
 /// which is what an imported edition is, and its code IS its name.
 String fullBibleVersionLabel(String version) {
-  for (final v in bibleVersions) {
-    if (v.value != version) continue;
-    return v.editionYear.isEmpty
-        ? v.menuLabel
-        : '${v.menuLabel} · ${v.editionYear}';
-  }
-  return menuBibleVersionLabel(version);
+  final v = versionInfoFor(version);
+  if (v == null) return menuBibleVersionLabel(version);
+  return v.editionYear.isEmpty ? v.menuLabel : '${v.menuLabel} · ${v.editionYear}';
 }
 
 String menuBibleVersionLabel(String version) {
-  for (final v in bibleVersions) {
-    if (v.value == version) return v.menuLabel;
-  }
-  return version;
+  return versionInfoFor(version)?.menuLabel ?? version;
 }
 
 /// Some bundled versions only ship one Testament — most notably the
@@ -616,6 +657,20 @@ String menuBibleVersionLabel(String version) {
 /// Returns the version code to fall back to, or null when [version]
 /// already has full OT+NT coverage.
 String? bibleVersionFullCanonFallback(String version) {
+  // An imported edition may be a single Testament: name the same-family
+  // full-canon edition the app ships.
+  if (isImportedVersion(version)) {
+    final cov = importedVersionCoverage[version];
+    if (cov == null || (cov.ot && cov.nt)) return null;
+    switch (importedVersionFamilies[version] ?? importedVersionScripts[version]) {
+      case 'zh-Hans':
+        return 'cuvs-yhwh';
+      case 'zh-Hant':
+        return 'cuvs-yhwh-tr';
+      default:
+        return 'bsb-yhwh';
+    }
+  }
   switch (version) {
     case 'bib':
     case 'ogt':

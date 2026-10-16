@@ -310,9 +310,11 @@ BookScript bookScriptFor(String locale, [String? version]) {
     // gets 創世紀 beside its English text — which is exactly what the
     // first browser test of the importer showed.
     if (isImportedVersion(v)) {
-      return (importedVersionScripts[v] ?? 'en') == 'en'
-          ? BookScript.english
-          : BookScript.simplified;
+      return switch (importedVersionScripts[v] ?? 'en') {
+        'zh-Hans' => BookScript.simplified,
+        'zh-Hant' => BookScript.traditional,
+        _ => BookScript.english,
+      };
     }
     return v.endsWith('-tr') ? BookScript.traditional : BookScript.simplified;
   }

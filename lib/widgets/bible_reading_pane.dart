@@ -1048,6 +1048,9 @@ class _BibleReadingPaneState extends State<BibleReadingPane> {
       });
 
     final first = sorted.first;
+    // An imported edition is copied exactly as its file has it.
+    final verbatim =
+        isVerbatimEdition(context.read<MainProvider>().currentVersion);
 
     // 2026-05-19 (v1.2.58): switched from `sanitizeForSearch` to
     // `sanitizeForCopy` so v1.2.57's internal `\n` poetry line
@@ -1060,7 +1063,7 @@ class _BibleReadingPaneState extends State<BibleReadingPane> {
       case 'withRef':
         return sorted
             .map((v) =>
-                '[${display_names.bookNameForDisplay(v.book)} ${v.chapter}:${v.verseLabel}] ${sanitizeForCopy(v.text, stripParentheticals: strip)}')
+                '[${display_names.bookNameForDisplay(v.book)} ${v.chapter}:${v.verseLabel}] ${sanitizeForCopy(v.text, stripParentheticals: strip, verbatim: verbatim)}')
             .join('\n');
       case 'devotional':
         // 2026-05-17 (v1.2.48): join with a single space, not '\n'.
@@ -1068,13 +1071,13 @@ class _BibleReadingPaneState extends State<BibleReadingPane> {
         // paragraph rather than one-verse-per-line. User report:
         // "灵修模式不是一节一行而是全部都一起的". Settings preview
         // mirrors this in getDevotionalFormattedText().
-        final versesText = sorted.map((v) => sanitizeForCopy(v.text, stripParentheticals: strip)).join(' ');
+        final versesText = sorted.map((v) => sanitizeForCopy(v.text, stripParentheticals: strip, verbatim: verbatim)).join(' ');
         final range = _formatVerseRangeLabels(sorted);
         return '$versesText\n(${display_names.bookNameForDisplay(first.book)} ${first.chapter}:$range)';
       case 'plain':
       default:
         final body = sorted
-            .map((v) => '${v.verseLabel} ${sanitizeForCopy(v.text, stripParentheticals: strip)}')
+            .map((v) => '${v.verseLabel} ${sanitizeForCopy(v.text, stripParentheticals: strip, verbatim: verbatim)}')
             .join('\n');
         return '${display_names.bookNameForDisplay(first.book)} ${first.chapter}\n$body';
     }

@@ -59,7 +59,12 @@ final _pilcrowPattern = RegExp(r'[¶§]\s*');
 ///     leak through depending on which CUVS variant the user opens.
 ///     We map both shapes to the corresponding Yahweh form for the
 ///     user's screen.
-String _normalizeDivineNames(String text) {
+String _normalizeDivineNames(String text, {bool verbatim = false}) {
+  // An edition the reader imported is shown exactly as its file has it: the
+  // restorations below are curated work this app stands behind, and a
+  // stranger's translation is not ours to amend (it would be shown under its
+  // publisher's name). See docs/addon-modules.md.
+  if (verbatim) return text;
   var out = text;
   // Chinese — must come before any English work, but order between
   // Hans/Hant doesn't matter (different glyphs).
@@ -149,14 +154,17 @@ String stripParentheticalNotes(String text) =>
 /// most copy paths) now keep the inner phrase. `<note: …>` continues
 /// to be fully stripped because it's a separate popup, not inline
 /// verse text.
-String sanitizeVerseText(String text, {bool stripParentheticals = false}) {
+String sanitizeVerseText(String text,
+    {bool stripParentheticals = false, bool verbatim = false}) {
   if (stripParentheticals) text = stripParentheticalNotes(text);
-  return _collapsePostStripDuplicates(_normalizeDivineNames(text
-          .replaceAll('\n', '')
-          .replaceAll(notePattern, '')
-          .replaceAll(versificationPattern, '')
-          .replaceAllMapped(bracePattern, (m) => m.group(1) ?? '')
-          .replaceAll(_pilcrowPattern, ''))
+  return _collapsePostStripDuplicates(_normalizeDivineNames(
+          text
+              .replaceAll('\n', '')
+              .replaceAll(notePattern, '')
+              .replaceAll(versificationPattern, '')
+              .replaceAllMapped(bracePattern, (m) => m.group(1) ?? '')
+              .replaceAll(_pilcrowPattern, ''),
+          verbatim: verbatim)
       .trim());
 }
 
@@ -251,13 +259,16 @@ String searchCorpusKey(String scriptureText) => collapseSearchSpaces(
 /// number-tap copy is even more strictly "one line"). `sanitizeForSearch`
 /// keeps `\n` (search indexes / library previews where line breaks
 /// are inert).
-String sanitizeForCopy(String text, {bool stripParentheticals = false}) {
+String sanitizeForCopy(String text,
+    {bool stripParentheticals = false, bool verbatim = false}) {
   if (stripParentheticals) text = stripParentheticalNotes(text);
-  return _collapsePostStripDuplicates(_normalizeDivineNames(text
-          .replaceAll(notePattern, '')
-          .replaceAllMapped(bracePattern, (m) => m.group(1) ?? '')
-          .replaceAll(_pilcrowPattern, '')
-          .replaceAll('\n', ' '))
+  return _collapsePostStripDuplicates(_normalizeDivineNames(
+          text
+              .replaceAll(notePattern, '')
+              .replaceAllMapped(bracePattern, (m) => m.group(1) ?? '')
+              .replaceAll(_pilcrowPattern, '')
+              .replaceAll('\n', ' '),
+          verbatim: verbatim)
       .trim());
 }
 
@@ -293,9 +304,16 @@ String _collapsePostStripDuplicates(String text) {
 /// pre-split InlineSpan list — strips pilcrows, normalizes divine
 /// names, but preserves leading/trailing whitespace so adjacent
 /// chunks don't collide. Used by `buildVerseContentSpans`.
-String displayCleanup(String chunk) {
-  return _normalizeDivineNames(chunk.replaceAll(_pilcrowPattern, ''));
+String displayCleanup(String chunk, {bool verbatim = false}) {
+  return _normalizeDivineNames(chunk.replaceAll(_pilcrowPattern, ''),
+      verbatim: verbatim);
 }
+
+/// True when text from [versionCode] must be shown exactly as its file has it
+/// — an edition the reader imported (`user-…`). Callers that know which
+/// edition a verse came from pass this as `verbatim:` to the sanitisers.
+bool isVerbatimEdition(String? versionCode) =>
+    versionCode != null && versionCode.startsWith('user-');
 
 final _previewMultiSpace = RegExp(r'\s{2,}');
 
@@ -348,7 +366,16 @@ String? versePreviewText(String? raw) {
 /// `{clarification}` and `[supplied]` kept because that IS the verse,
 /// pilcrows gone, and — unlike the copy path — LINE BREAKS KEPT, because
 /// a psalm set as verse on a wall is set as verse for a reason.
-String sanitizeForProjection(String text) => sanitizeForSearch(text);
+String sanitizeForProjection(String text, {bool verbatim = false}) {
+  if (!verbatim) return sanitizeForSearch(text);
+  // Same shape as the search sanitiser, minus the divine-name rewrite.
+  return _collapsePostStripDuplicates(text
+      .replaceAll(notePattern, '')
+      .replaceAll(versificationPattern, '')
+      .replaceAllMapped(bracePattern, (m) => m.group(1) ?? '')
+      .replaceAll(_pilcrowPattern, '')
+      .trim());
+}
 
 /// 2026-05-07: collapse stray ASCII spaces that sit between an
 /// annotation marker (`[…]`, `{…}`, `<note:…>`) and adjacent CJK
