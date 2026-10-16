@@ -106,28 +106,32 @@ class AboutPage extends StatelessWidget {
               _SectionTitle(
                   text: uiStrings['aboutSectionScriptures']?[locale] ??
                       'Bundled scripture texts',
-                  scheme: scheme),
+                  scheme: scheme,
+                  icon: Icons.menu_book_outlined),
               const SizedBox(height: 6),
               _ScripturesTable(scheme: scheme, locale: locale),
               const SizedBox(height: 20),
               _SectionTitle(
                   text: uiStrings['aboutSectionLexicons']?[locale] ??
                       "Strong's lexicons & original-language data",
-                  scheme: scheme),
+                  scheme: scheme,
+                  icon: Icons.translate_rounded),
               const SizedBox(height: 6),
               _LexiconsTable(scheme: scheme, locale: locale),
               const SizedBox(height: 20),
               _SectionTitle(
                   text: uiStrings['aboutSectionOther']?[locale] ??
                       'Maps · Sermons · Fonts · App icon',
-                  scheme: scheme),
+                  scheme: scheme,
+                  icon: Icons.category_outlined),
               const SizedBox(height: 6),
               _OtherAttributions(scheme: scheme, locale: locale),
               const SizedBox(height: 20),
               _SectionTitle(
                   text: uiStrings['aboutSectionAppLicense']?[locale] ??
                       'Application licence',
-                  scheme: scheme),
+                  scheme: scheme,
+                  icon: Icons.gavel_outlined),
               const SizedBox(height: 6),
               _AppLicenseCard(scheme: scheme, locale: locale),
               const SizedBox(height: 24),
@@ -280,7 +284,8 @@ class _MissionCard extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
               decoration: BoxDecoration(
                 color: scheme.primaryContainer.withValues(alpha: 0.4),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: const BorderRadius.all(
+                    Radius.circular(WbMetrics.radiusSurface)),
                 border: Border(
                     left: BorderSide(color: scheme.primary, width: 3)),
               ),
@@ -472,20 +477,42 @@ class _ContactCard extends StatelessWidget {
 class _SectionTitle extends StatelessWidget {
   final String text;
   final ColorScheme scheme;
-  const _SectionTitle({required this.text, required this.scheme});
+  final IconData? icon;
+  const _SectionTitle({required this.text, required this.scheme, this.icon});
   @override
   Widget build(BuildContext context) {
     final t = WbType.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: t.scaled(12),
-          fontWeight: FontWeight.w800,
-          color: scheme.primary,
-          letterSpacing: 0.6,
-        ),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      child: Row(
+        children: [
+          if (icon != null) ...[
+            // A tinted tile behind the glyph, as in Words, so the
+            // sections read as one set.
+            Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                color: scheme.primary.withValues(alpha: 0.11),
+                borderRadius: const BorderRadius.all(
+                    Radius.circular(WbMetrics.radiusSurface)),
+              ),
+              child: Icon(icon, size: 17, color: scheme.primary),
+            ),
+            const SizedBox(width: 10),
+          ],
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: t.scaled(14),
+                fontWeight: FontWeight.w800,
+                color: scheme.primary,
+                letterSpacing: 0.2,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -516,10 +543,25 @@ class _AttribRow extends StatelessWidget {
     final t = WbType.of(context);
     final scheme = Theme.of(context).colorScheme;
     final hasUrl = url != null && url!.isNotEmpty;
+    final nameStyle = TextStyle(
+      fontSize: t.scaled(13),
+      fontWeight: FontWeight.w700,
+      color: scheme.onSurface,
+      height: 1.4,
+    );
+    final licenceStyle = TextStyle(
+      fontSize: t.scaled(12),
+      color: scheme.onSurfaceVariant,
+      height: 1.5,
+    );
+    final openIcon = hasUrl
+        ? Icon(Icons.open_in_new_rounded,
+            size: 15, color: scheme.primary.withValues(alpha: 0.8))
+        : null;
     return InkWell(
       onTap: hasUrl ? () => _open(context) : null,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 14),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
@@ -530,40 +572,42 @@ class _AttribRow extends StatelessWidget {
             ),
           ),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 5,
-              child: Text(
-                name,
-                style: TextStyle(
-                  fontSize: t.scaled(12.5),
-                  fontWeight: FontWeight.w600,
-                  color: scheme.onSurface,
-                  height: 1.45,
-                ),
+        // Two columns only where there is room for them; on a phone the
+        // name and its licence stack, so neither is squeezed into half a
+        // screen.
+        child: LayoutBuilder(builder: (context, c) {
+          if (c.maxWidth >= 520) {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(flex: 5, child: Text(name, style: nameStyle)),
+                const SizedBox(width: 14),
+                Expanded(flex: 6, child: Text(licence, style: licenceStyle)),
+                if (openIcon != null) ...[
+                  const SizedBox(width: 6),
+                  openIcon,
+                ],
+              ],
+            );
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: Text(name, style: nameStyle)),
+                  if (openIcon != null) ...[
+                    const SizedBox(width: 8),
+                    openIcon,
+                  ],
+                ],
               ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 6,
-              child: Text(
-                licence,
-                style: TextStyle(
-                  fontSize: t.scaled(12),
-                  color: scheme.onSurfaceVariant,
-                  height: 1.45,
-                ),
-              ),
-            ),
-            if (hasUrl) ...[
-              const SizedBox(width: 4),
-              Icon(Icons.open_in_new_rounded,
-                  size: 14, color: scheme.primary.withValues(alpha: 0.75)),
+              const SizedBox(height: 4),
+              Text(licence, style: licenceStyle),
             ],
-          ],
-        ),
+          );
+        }),
       ),
     );
   }
