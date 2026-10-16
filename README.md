@@ -1,6 +1,6 @@
 <h1 align="center">Yahweh’s Sword · 雅伟之剑</h1>
 
-**Status, 2026-10-17.** The latest release is **1.7.31**. Ahead of it, on the dev site and **not yet released**: [continuous vertical scrolling](#latest-additions) in the classic 阅读 reader and [Add-ons](docs/addon-modules.md) — importing Bible texts from MyBible.zone, MySword, theWord, Zefania XML, JSON and CSV. This file lags the code by design: `AGENTS.md` ranks it the least trustworthy document here; when it disagrees with the tree, the tree wins.
+**Status, 2026-10-17.** The latest release is **1.7.32**: [continuous vertical scrolling](#latest-additions) in the classic 阅读 reader and [Add-ons](docs/addon-modules.md) — importing Bible texts from MyBible.zone, MySword, theWord, Zefania XML, JSON and CSV. This file lags the code by design: `AGENTS.md` ranks it the least trustworthy document here; when it disagrees with the tree, the tree wins.
 
 <p align="center">
   <img src="brand/favicon-512.png" alt="SeekSparks App Icon" width="80"/>
