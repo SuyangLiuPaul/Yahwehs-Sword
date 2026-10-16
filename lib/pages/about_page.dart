@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:yahwehs_sword/pages/settings_page.dart';
 import 'package:yahwehs_sword/widgets/store_links_card.dart';
 import 'package:provider/provider.dart';
 
 import 'package:yahwehs_sword/constants/app_version.dart';
 import 'package:yahwehs_sword/constants/sermon_credit.dart';
-import 'package:yahwehs_sword/widgets/manual_update_tile.dart';
-import 'package:yahwehs_sword/widgets/update_check_tile.dart';
 import 'package:yahwehs_sword/constants/ui_strings.dart';
 import 'package:yahwehs_sword/pages/changelog_page.dart';
 import 'package:yahwehs_sword/utils/app_nav.dart';
@@ -1015,21 +1014,26 @@ class _AppLicenseCard extends StatelessWidget {
               ),
               onPressed: () => _openRepo(context),
             ),
-            // 2026-06-16 (v1.3.88): native-only "Check for updates" against
-            // the GitHub release feed (hides itself on web — PWA is current).
-            UpdateCheckTile(locale: locale, scheme: scheme),
-            // 2026-10-06: the same question for web and store builds.
-            ManualUpdateTile(locale: locale),
-            // 2026-09-09: and what changed. NOT behind
-            // `UpdateService.isSupported` like the tile above it — the
-            // changelog is bundled, so it reads on the web too, where
-            // it is the only answer to "what changed" the reader has.
+            // 2026-10-16: the update controls (check, automatic check,
+            // how often) live in Settings and nowhere else — they used
+            // to be repeated here, and two copies of one switch is how
+            // two of them end up disagreeing. This page keeps what is
+            // about the app itself: what changed, and the way to them.
             TextButton.icon(
               icon: const Icon(Icons.history_rounded, size: 16),
               label: Text(
                 uiStrings['changelogOpen']?[locale] ?? "What's new",
               ),
               onPressed: () => pushPage(const ChangelogPage()),
+            ),
+            TextButton.icon(
+              key: const ValueKey('about.updateSettings'),
+              icon: const Icon(Icons.system_update_alt_rounded, size: 16),
+              label: Text(
+                uiStrings['aboutUpdateSettings']?[locale] ?? 'Update settings',
+              ),
+              onPressed: () =>
+                  pushPage(const SettingsPage(), routeName: '/settings'),
             ),
           ],
         ),
