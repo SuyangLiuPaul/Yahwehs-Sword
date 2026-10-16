@@ -127,4 +127,69 @@ void main() {
     }
     expect(mp.currentChapter, 4);
   });
+
+  testWidgets('the bottom bar has a switch for it, and it turns the mode on',
+      (tester) async {
+    final (mp, settings) = await pumpReader(tester, vertical: false);
+    expect(settings.verticalScroll, isFalse);
+    await tester.tap(find.byKey(const ValueKey('reader.verticalScrollBtn')));
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(settings.verticalScroll, isTrue);
+    expect(find.byKey(const ValueKey('flow.heading.Genesis 1')), findsOneWidget);
+    expect(mp.currentChapter, 1);
+    await tester.tap(find.byKey(const ValueKey('reader.verticalScrollBtn')));
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(settings.verticalScroll, isFalse);
+  });
+
+  testWidgets('the top-right menu has it too', (tester) async {
+    final (_, settings) = await pumpReader(tester, vertical: false);
+    await tester.tap(find.byIcon(Icons.more_vert_rounded));
+    await tester.pump(const Duration(milliseconds: 500));
+    final item = find.byKey(const ValueKey('reader.verticalScrollMenu'));
+    expect(item, findsOneWidget);
+    await tester.ensureVisible(item);
+    await tester.pump(const Duration(milliseconds: 600));
+    await tester.tap(find.descendant(of: item, matching: find.byIcon(Icons.swap_vert_rounded)));
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
+    expect(settings.verticalScroll, isTrue);
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump(const Duration(seconds: 3));
+  });
+
+  for (final width in <double>[320, 360]) {
+    for (final scale in <double>[1.0, 1.5]) {
+      testWidgets('seven bottom-bar buttons fit at ${width}px, menu x$scale',
+          (tester) async {
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.physicalSize = Size(width, 700);
+        addTearDown(tester.view.reset);
+        SharedPreferences.setMockInitialValues(<String, Object>{});
+        final settings = AppSettings();
+        await settings.setFontSize(28);
+        await settings.setMenuScale(scale);
+        await tester.pumpWidget(MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+                create: (_) => MainProvider()
+                  ..currentBook = 'Genesis'
+                  ..currentChapter = 1
+                  ..setBooks([
+                    Book(title: 'Genesis', chapters: [
+                      Chapter(title: 1, verses: _chapter('Genesis', 1)),
+                    ]),
+                  ])
+                  ..setVerses(_chapter('Genesis', 1))),
+            ChangeNotifierProvider<AppSettings>.value(value: settings),
+          ],
+          child: const MaterialApp(home: Scaffold(body: BibleReadingPane())),
+        ));
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pump(const Duration(milliseconds: 700));
+        expect(find.byKey(const ValueKey('reader.verticalScrollBtn')),
+            findsOneWidget);
+        expect(tester.takeException(), isNull);
+      });
+    }
+  }
 }
