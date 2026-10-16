@@ -907,7 +907,25 @@ Mapped against BibleWorks' own tab set (bwh10):
   with versification rather than with a settings row. Re-open it as
   *that*, with a reader asking for it, not as bwh29's list widget.
 - **Compiling your own version database (bwh47)** — **HAVE,
-  2026-09-07.** The owner answered the question this was blocked on —
+  2026-09-07; EXTENDED 2026-10-17 into the Add-ons system
+  (`docs/addon-modules.md`).** The single-format, web-only importer below
+  is absorbed: the same IndexedDB database now opens at version 2 (which
+  only adds a manifest), earlier imports are carried over the first time
+  the registry runs, and the importer reads MyBible.zone, MySword, theWord,
+  Zefania, JSON and CSV on **every** platform — native included, which
+  this row's "web-only" was the wrong half of. Two defects in the original
+  are fixed on the way: `LocalVersionStore.labels()` read every stored
+  Bible at boot to list their names (three imports could time the boot out
+  and make the reader's edition vanish), and `bibleVersionLanguage` called
+  every imported edition Chinese. `version_import_service.dart`,
+  `local_version_store*.dart` and `pick_text_file*.dart` are gone
+  (`imported_version.dart` stays: its constants and legacy validator are
+  still referenced). The paragraphs below describe the 2026-09-07 design
+  and remain true of what survived — local only, `user-` prefix, last in
+  the picker, the disclaimer, the 500-verse copy ceiling. *The store itself
+  still needs a browser; the Add-ons work adds one real import on dev as
+  its checkpoint (`docs/addons-manual-verification.md`).*
+  **HAVE, 2026-09-07.** The owner answered the question this was blocked on —
   「做纯本地导入器」 — and it is built, with the two things the row warned
   about handled in code rather than left to the reader.
   `imported_version.dart` validates, `local_version_store.dart` stores,
@@ -946,7 +964,19 @@ Mapped against BibleWorks' own tab set (bwh10):
   the catalog registry, the encode/decode round trip through quotes and
   newlines. The store itself needs a browser, and the next run should
   import a file on dev and say so here.
-- **Custom modules (bwh48)** — **REJECTED 2026-09-07, and the reason is
+- **Custom modules (bwh48)** — **PARTLY RE-OPENED 2026-10-17: Bible texts
+  are done; commentaries and dictionaries are Phase 2.** The condition
+  below — *a reader arrives with a specific work and a specific format* —
+  is met: the owner asked for third-party module import on 2026-10-16
+  (e-Sword, MyBible, theWord, MySword), and MyBible.zone's published
+  specification means the format is not ours to invent. Bible modules
+  (MyBible.zone, MySword, theWord, Zefania, plus our own JSON/CSV) are
+  imported as Add-ons. What stays true of the rejection: a commentary is
+  keyed to passages and a dictionary to headwords, each needs a surface
+  built for its shape, and MyBible commentaries/dictionaries are therefore
+  *recognised and declined with an honest message* until that surface
+  exists. e-Sword is not supported (see `docs/addon-modules.md` for why).
+  **Original entry, 2026-09-07 — REJECTED, and the reason is
   a difference from bwh47 rather than a repetition of it.**
   A user-supplied BIBLE has one shape — book, chapter, verse, text — and
   one place to go: the reading pane, beside the editions already there.
