@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yahwehs_sword/pages/settings_page.dart';
 import 'package:yahwehs_sword/widgets/store_links_card.dart';
 import 'package:provider/provider.dart';
 
@@ -1018,22 +1017,15 @@ class _AppLicenseCard extends StatelessWidget {
             // how often) live in Settings and nowhere else — they used
             // to be repeated here, and two copies of one switch is how
             // two of them end up disagreeing. This page keeps what is
-            // about the app itself: what changed, and the way to them.
+            // about the app itself: what changed. No signpost to
+            // Settings either: a button that only says "go and look
+            // elsewhere" is clutter on a credits page.
             TextButton.icon(
               icon: const Icon(Icons.history_rounded, size: 16),
               label: Text(
                 uiStrings['changelogOpen']?[locale] ?? "What's new",
               ),
               onPressed: () => pushPage(const ChangelogPage()),
-            ),
-            TextButton.icon(
-              key: const ValueKey('about.updateSettings'),
-              icon: const Icon(Icons.system_update_alt_rounded, size: 16),
-              label: Text(
-                uiStrings['aboutUpdateSettings']?[locale] ?? 'Update settings',
-              ),
-              onPressed: () =>
-                  pushPage(const SettingsPage(), routeName: '/settings'),
             ),
           ],
         ),
