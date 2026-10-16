@@ -189,7 +189,7 @@ void main() {
     // `(fontSize - 2).clamp(11, 15)` was already pinned at 15 at the
     // 20 pt default, so the slider moved this line only DOWNWARD and
     // only below 17 pt — 24 of its 29 stops did nothing.
-    const needle = 'Paul Liu';
+    const needle = 'support@';
     final mid = await sizesOf(tester, const ContactLine(), 20);
     final big = await sizesOf(tester, const ContactLine(), 40);
     final small = await sizesOf(tester, const ContactLine(), 12);

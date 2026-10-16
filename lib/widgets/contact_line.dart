@@ -8,7 +8,7 @@ import 'package:yahwehs_sword/services/link_opener.dart';
 import 'package:yahwehs_sword/utils/clipboard_helper.dart';
 import 'package:yahwehs_sword/utils/font_catalog.dart' show kCjkFontFallback;
 
-/// Single source of truth for the "Made by Paul Liu · contact" line
+/// Single source of truth for the "questions, feedback" line with the support address
 /// shown across YsWords, SeekSparks, DailyNews, bible-evidence redirect stub,
 /// and SmartHome. Copy is unified so updates only need to happen in
 /// one place per app surface.
@@ -37,8 +37,6 @@ class ContactLine extends StatelessWidget {
     final settings = context.watch<AppSettings>();
     final scheme = Theme.of(context).colorScheme;
     final locale = settings.locale;
-    final intro = uiStrings['contactIntro']?[locale] ??
-        'Made by Paul Liu';
     final tail = uiStrings['contactTail']?[locale] ??
         'Questions, feedback, or anything else:';
 
@@ -54,7 +52,8 @@ class ContactLine extends StatelessWidget {
           height: 1.4,
         ),
         children: [
-          TextSpan(text: '$intro  ·  $tail '),
+          // No author credit: this line is where to write, not who wrote.
+          TextSpan(text: '$tail '),
           TextSpan(
             text: email,
             style: TextStyle(
