@@ -5374,6 +5374,17 @@ const uiStrings = {
         'above the matched verse in the reading pane. The headings and '
         'notes are written for this app.',
   },
+  'verticalScroll': {
+    'zh-Hans': '连续滚动阅读',
+    'zh-Hant': '連續捲動閱讀',
+    'en': 'Continuous vertical scrolling',
+  },
+  'verticalScrollSubtitle': {
+    'zh-Hans': '上下滑动即可一路读下去，章与章首尾相连，不必翻页。',
+    'zh-Hant': '上下滑動即可一路讀下去，章與章首尾相連，不必翻頁。',
+    'en': 'Scroll up and down through the whole Bible, one chapter '
+        'flowing into the next, instead of turning pages.',
+  },
   'showBookIntro': {
     'zh-Hans': '书卷简介',
     'zh-Hant': '書卷簡介',

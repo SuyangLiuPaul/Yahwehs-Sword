@@ -147,6 +147,7 @@ const _kExcludeKetivFromSearch = 'excludeKetivFromSearch';
 const _kExcludeQereFromSearch = 'excludeQereFromSearch';
 const _kShowSectionTitles = 'showSectionTitles';
 const _kShowBookIntro = 'showBookIntro';
+const _kVerticalScroll = 'verticalScroll';
 
 // 2026-09-08: whether the app asks GitHub once a day whether a newer
 // release exists. Native only — the PWA is always current on reload, so
@@ -445,6 +446,10 @@ class AppSettings extends ChangeNotifier {
   /// when an intro is authored for that book. Default ON. Toggle in
   /// Settings → Reading.
   bool _showBookIntro = true;
+
+  /// Reader scrolls continuously through the Bible, chapter flowing into
+  /// chapter, instead of paging one chapter at a time. Default OFF.
+  bool _verticalScroll = false;
   bool _autoCheckUpdates = true;
   UpdateCheckFrequency _updateCheckFrequency = UpdateCheckFrequency.daily;
   int _lastUpdateCheckMs = 0;
@@ -531,6 +536,7 @@ class AppSettings extends ChangeNotifier {
 
   bool get showSectionTitles => _showSectionTitles;
   bool get showBookIntro => _showBookIntro;
+  bool get verticalScroll => _verticalScroll;
 
   /// Ask GitHub once a day whether a newer release exists. See
   /// [_kAutoCheckUpdates].
@@ -1075,6 +1081,14 @@ class AppSettings extends ChangeNotifier {
     await prefs.setBool(_kShowSectionTitles, enabled);
   }
 
+  Future<void> setVerticalScroll(bool enabled) async {
+    if (_verticalScroll == enabled) return;
+    _verticalScroll = enabled;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kVerticalScroll, enabled);
+  }
+
   Future<void> setShowBookIntro(bool enabled) async {
     if (_showBookIntro == enabled) return;
     _showBookIntro = enabled;
@@ -1154,6 +1168,7 @@ class AppSettings extends ChangeNotifier {
     _notificationsEnabled = false;
     _showSectionTitles = true;
     _showBookIntro = true;
+    _verticalScroll = false;
     _autoCheckUpdates = true;
     _updateCheckFrequency = UpdateCheckFrequency.daily;
     _lastUpdateCheckMs = 0;
@@ -1415,6 +1430,7 @@ class AppSettings extends ChangeNotifier {
     }
     _showSectionTitles = prefs.getBool(_kShowSectionTitles) ?? true;
     _showBookIntro = prefs.getBool(_kShowBookIntro) ?? true;
+    _verticalScroll = prefs.getBool(_kVerticalScroll) ?? false;
     _autoCheckUpdates = prefs.getBool(_kAutoCheckUpdates) ?? true;
     _updateCheckFrequency = UpdateCheckFrequency.fromPref(
         prefs.getString(_kUpdateCheckFrequency));
@@ -1554,6 +1570,7 @@ class AppSettings extends ChangeNotifier {
         'notificationsEnabled': _notificationsEnabled,
         'showSectionTitles': _showSectionTitles,
         'showBookIntro': _showBookIntro,
+        'verticalScroll': _verticalScroll,
         'notesSortMode': _notesSortMode,
         'chronologyView': _chronologyView,
         'interlinearVersion': _interlinearVersion,
@@ -1692,6 +1709,9 @@ class AppSettings extends ChangeNotifier {
       }
       if (m['showBookIntro'] is bool) {
         _showBookIntro = m['showBookIntro'] as bool;
+      }
+      if (m['verticalScroll'] is bool) {
+        _verticalScroll = m['verticalScroll'] as bool;
       }
       if (m['notesSortMode'] is String) {
         final raw = m['notesSortMode'] as String;
